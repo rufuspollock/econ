@@ -1,0 +1,46 @@
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Introduction
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+This project contains code for economics modelling. Currently the language
+of choice is python. Please see the AUTHORS file for contributors and the
+COPYING file for copyright and licence details.
+
+***********************************************************************
+Copyright
+***********************************************************************
+
+Copyright (c) 2004-2005 Open Knowledge Foundation. All rights reserved.
+
+Contributors to the project are listed in AUTHORS.
+
+***********************************************************************
+License
+***********************************************************************
+
+See the file "LICENSE" for the license on this software, including
+terms & conditions for usage, and a DISCLAIMER OF ALL WARRANTIES.
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Getting Started
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+Source files are kept in the src/ tree. Test harnesses are kept side by
+side with the classes and functions they test with test or Test
+appended to the file name.
+
+To get started try running all the tests by doing (you may need to
+first install additional libraries -- see Library Dependencies below):
+
+$ cd test
+$ python main.py test
+
+It is suggested that you create your own local copy of main.py called,
+say, main_<username>.py and modify this. DO NOT COMMIT any changes of
+main.py to the repository OR ADD your own copy of main.py.
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Library Dependencies
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+HtmlTableWriter depends on mx.Tidy package.
