@@ -86,7 +86,7 @@ class NetworkEffectsModelTest(unittest.TestCase):
         self._neModel1 = self.locationalINESymmetric(1, 5, 7)
         self._aa = 1.0
         self._bb1 = 2.0
-        self._bb2 = 2.0
+        self._bb2 = 5.0
         self._linearModel = self.linearNetworkEffects(self._aa, self._bb1,
             self._bb2)
     
@@ -147,4 +147,4 @@ class NetworkEffectsModelTest(unittest.TestCase):
         outWelfare = modelLinear.getConsumerWelfare(eq1)
         expectedWelfare = ( (self._aa - 0.5 * self._bb1) * eq1**2 +
             (self._aa - 0.5 * self._bb2) * (1-eq1)**2 )
-        self.assertEqual(outWelfare, expectedWelfare)
+        self.assertAlmostEqual(outWelfare, expectedWelfare)

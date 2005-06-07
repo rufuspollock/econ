@@ -46,7 +46,8 @@ class NetworkEffectsModel:
         4. Network effect first argument should be network size.
         
         @param nu_A: Network effect function for platform A
-        @param nu_B: Network effect function for platform B
+        @param nu_B: Network effect function for platform B (as a function of 
+            network A size)
         @param het_A: Heterogeneity function for network A
         @param het_A: Heterogeneity function for network B
         @param: priceFunction_A: these are independent of index and dependent
@@ -234,8 +235,9 @@ class NetworkEffectsModel:
         @return: total consumer welfare
         """
         networkAPart = equilibriumValue * self._nu_A(equilibriumValue)
+        # Remember _nu_B defined a function of network A size ...
         networkBPart = (1.0 - equilibriumValue) * \
-            self._nu_B(1.0 - equilibriumValue)
+            self._nu_B(equilibriumValue)
         
         hetAPart = integrate.quad(self._het_A, 0, equilibriumValue)[0]
         hetBPart = integrate.quad(self._het_B, equilibriumValue, 1)[0]
