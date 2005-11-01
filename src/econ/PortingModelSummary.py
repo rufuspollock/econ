@@ -22,10 +22,13 @@ class PortingModelSummary:
         beta0 = (2.0 / 3.0) * fixedCostConstant
         self.initialBeta = 0.0
         
-        def nu1_A(tindex, beta, beta0):
+        def portingCost(beta):
+            return beta0 + beta
+        
+        def nu1_A(tindex, beta):
             return - aa * math.sqrt((fixedCostConstant) / tindex)
-        def nu1_B(tindex, beta, beta0):
-            return - aa * math.sqrt((beta0  + beta) / (1 - tindex))
+        def nu1_B(tindex, beta):
+            return - aa * math.sqrt(portingCost(beta) / (1 - tindex))
         
         def het1_A(tindex, *args):
             return - bb * (tindex ** alpha)
@@ -40,11 +43,12 @@ class PortingModelSummary:
         self.neModel1 = NetworkEffectsModel(nu1_A, nu1_B,
                                             het1_A, het1_B,
                                             priceFunction_A, priceFunction_B,
-                                            [self.initialBeta, beta0])
+                                            [self.initialBeta])
         self.startSearch = 0.67
         self.endSearch = 0.95
         self.startBeta = 0.0
         self.endBeta = 1.4
+        self.portingCost = portingCost
     
     def costFunction(self, betaValue):
         """
@@ -96,7 +100,7 @@ class PortingModelSummary:
                                                 self.endSearch)
             consumerWelfare = self.neModel1.getConsumerWelfare(eq1)
             # no producer profits so welfare is just consumer welfare
-            results.append([betaValue,
+            results.append([self.portingCost(betaValue),
                             initialPriceA,
                             eq1,
                             0,
@@ -109,7 +113,7 @@ class PortingModelSummary:
             netProfits = grossProfits - self.costFunction(betaValue)
             self.neModel1.setPriceA(monopolyPrice)
             consumerWelfare = self.neModel1.getConsumerWelfare(demand)
-            results.append([betaValue,
+            results.append([self.portingCost(betaValue),
                             monopolyPrice,
                             demand,
                             netProfits,
@@ -119,8 +123,8 @@ class PortingModelSummary:
         writer1 = HtmlTableWriter()
         writer1.doPrettyPrint = False
         writer1.decimalPlaces = 3
-        caption = 'Welfare Results at Various Prices and Fixed Costs (Beta)'
-        headings = ['Beta',
+        caption = 'Welfare Results at Various Prices and Porting Costs'
+        headings = ['Porting Cost',
                     'Price of A Hardware',
                     'Demand for A (market share)',
                     'Net Profits for M',
@@ -197,8 +201,8 @@ class PortingModelSummary:
         pylab.grid(1)
         pylab.xticks(arange(0.4,1.0,0.1))
         pylab.legend(loc = 'upper left')
-        pylab.title('Summary Plot (Beta = ' + str(betaValue) + ')') 
-        pylab.xlabel('Network share of A/Index of a consumer (t)')
+        pylab.title('Summary Plot for Porting Model') 
+        pylab.xlabel('Network share of A/Index (t) of Agent')
     
     def _plotSummary(self, networkEffectsModel, start = 0.05, end = 0.95):
         eps = 0.05
