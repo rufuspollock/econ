@@ -2,15 +2,9 @@
 # Licensed under the GNU Public License (GPL) v2.0
 # See the LICENSE file in the root of the distribution for details
 
-class DemandFunction:
-    
-    def getDemand(self, price):
-        pass
+# Conveience functions
 
-class DemandFunctionFromFunction:
-    
-    def __init__(self, demandFunction):
-        self._demandFunction = demandFunction
-    
-    def getDemand(self, price):
-        return self._demandFunction(price)
+def getLinearDemandFunction(constant, slope):
+    def df(price):
+        return max(0.0, constant + slope * price)
+    return df
