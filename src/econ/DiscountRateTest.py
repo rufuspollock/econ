@@ -5,6 +5,7 @@
 import unittest
 
 from DiscountRate import *
+import data
 
 class DiscountRateTest(unittest.TestCase):
     
@@ -31,3 +32,14 @@ class DiscountRateTest(unittest.TestCase):
         drc1.setUnitDiscountRate(rate2)
         out2 = drc1.getUnitDiscountRate()
         self.assertEquals(rate2, out2)
+
+class DiscountRateHistoricalTest(unittest.TestCase):
+    
+    def setUp(self):
+        dataPoints = [(1850, 10.9), (1990,497.6), (2002, 695.1)]
+        self.discounter = DiscountRateHistorical(data.TimeSeries(dataPoints))
+    
+    def test1(self):
+        out1 = self.discounter.getReturn(1850, 2002)
+        exp1 = 695.1 / 10.9
+        self.assertAlmostEquals(out1, exp1)

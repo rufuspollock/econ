@@ -9,7 +9,7 @@
 import logging
 logger = logging.getLogger("econ")
 
-class DiscountRate:
+class DiscountRate(object):
     """
     Interface class for model/empirical discount rates
     """
@@ -23,7 +23,7 @@ class DiscountRate:
         For standard cumulation, e.g. interest rates, evaluationTimePoint follows receiveTimePoint
         """
         # might be worth not doing straightforward inheritance but rather using hook functions as that way we can do basic sanity checking in one place such as startPoint < endPoint here
-        pass
+        raise ('Abstract Method')
     
     def getReturn(self, evaluationTimePoint, receiveTimePoint = 0):
         return (1/(self.getDiscount(evaluationTimePoint, receiveTimePoint)))
@@ -54,5 +54,12 @@ class DiscountRateConstant(DiscountRate):
         else:
             return rate
 
-class InflationRate:
-    pass
+class DiscountRateHistorical(DiscountRate):
+    
+    def __init__(self, timeSeries):
+        self._timeSeries = timeSeries
+    
+    def getDiscount(self, receiveTimePoint, evaluationTimePoint = 0):
+        indexReceive = self._timeSeries.getValue(receiveTimePoint)
+        indexEval = self._timeSeries.getValue(evaluationTimePoint)
+        return indexReceive / indexEval
