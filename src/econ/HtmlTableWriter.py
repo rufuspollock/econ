@@ -2,7 +2,6 @@
 # Licensed under the GNU Public License (GPL) v2.0
 # See the LICENSE file in the root of the distribution for details
 
-import mx.Tidy
 import re
 
 class HtmlTableWriter:
@@ -93,6 +92,7 @@ class HtmlTableWriter:
     def prettyPrint(self, html):
         """pretty print html using HTMLTidy"""
         # [[TODO: strip out html wrapper stuff that is added (head, body etc)
+        import mx.Tidy
         return self.tabify(mx.Tidy.tidy(html, None, None, wrap = 0,
             indent = 'yes')[2])
         
