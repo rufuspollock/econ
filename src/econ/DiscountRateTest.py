@@ -37,7 +37,8 @@ class DiscountRateHistoricalTest(unittest.TestCase):
     
     def setUp(self):
         dataPoints = [(1850, 10.9), (1990,497.6), (2002, 695.1)]
-        self.discounter = DiscountRateHistorical(data.TimeSeries(dataPoints))
+        ts1 = data.TimeSeries(dataPoints)
+        self.discounter = DiscountRateHistorical(ts1)
     
     def test1(self):
         out1 = self.discounter.getReturn(1850, 2002)
