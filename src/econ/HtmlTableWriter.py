@@ -9,14 +9,16 @@ class HtmlTableWriter:
     Write python matrices to xhtml
     """
     
-    def __init__(self):
-        # Whether to pretty print (indent) output
-        self.doPrettyPrint = False
-        # css class for table. Set as empty string if none wanted
-        self.tableClass = 'data'
-        # number of decimal places to use when rounding numerical values when
-        # textifying for table
-        self.decimalPlaces = 2
+    def __init__(self, doPrettyPrint=False, tableClass='data', decimalPlaces=2):
+        """
+        @doPrettyPrint: whether to pretty print (indent) output
+        @tableClass: css class for table. Set as empty string if none wanted
+        @decimalPlaces: number of decimal places to use when rounding numerical 
+                        values when textifying for table
+        """
+        self.doPrettyPrint = doPrettyPrint
+        self.tableClass = tableClass
+        self.decimalPlaces = decimalPlaces
     
     def writeTable(self, data, caption = '', columnHeadings = [],
         rowHeadings = []):
@@ -29,9 +31,7 @@ class HtmlTableWriter:
         @param data: table of data that makes up table
         @param caption: the caption for the table (if empty no caption created)
         """
-        haveRowHeadings = False
-        if len(rowHeadings) > 0:
-            haveRowHeadings = True
+        haveRowHeadings = (len(rowHeadings) > 0)
         
         htmlTable = '<table'
         if self.tableClass != '':
@@ -43,9 +43,10 @@ class HtmlTableWriter:
             htmlTable += self._writeTag('caption', caption)
         
         # deal with col headings
-        # if we there are rowHeadings have to add blank column at front
-        if len(columnHeadings) > 0:
-            if haveRowHeadings:
+        # if we there are rowHeadings may want to add blank column at front
+        numColHeads = len(columnHeadings)
+        if numColHeads > 0:
+            if haveRowHeadings and numColHeads == len(data[0]):
                 # [[TODO: is this dangerous? should i make a copy ...]]
                 columnHeadings.insert(0, '')
             htmlTable += self.writeHeading(columnHeadings)
