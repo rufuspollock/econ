@@ -3,7 +3,7 @@ from scipy import *
 
 from econ.NetworkEffectsModel import *
 from econ import plot_help
-from econ.HtmlTableWriter import *
+import econ.data.tabular
 
 class PortingModelSummary:
     
@@ -120,8 +120,7 @@ class PortingModelSummary:
                             consumerWelfare,
                             consumerWelfare + netProfits])
         
-        writer1 = HtmlTableWriter()
-        writer1.doPrettyPrint = False
+        writer1 = econ.data.tabular.WriterHtml()
         writer1.decimalPlaces = 3
         caption = 'Welfare Results at Various Prices and Porting Costs'
         headings = ['Porting Cost',
@@ -134,7 +133,8 @@ class PortingModelSummary:
             'Beta at monopoly value, prices at initial value',
             'Beta at initial value, monopoly price on A',
             'Beta at monopoly value, monopoly price on A']
-        return writer1.writeTable(results, caption, headings, rowHeadings)
+        tabularData = econ.data.tabular.TabularData(results, headings)
+        return writer1.writeTable(tabularData, caption, rowHeadings)
     
     def plotProfitFunction(self):
         """
