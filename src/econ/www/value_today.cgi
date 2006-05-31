@@ -37,8 +37,10 @@ def renderPage():
 
 def getCurrentValue(startYear, endYear):
     import econ.data
+    import econ.store
     import econ.DiscountRate
-    filePath = '/Users/rgrp/Documents/info_cache/topics/economics/cache/data/uk_price_index_1850-2002_annual/data.csv'
+    databundle = econ.store.index['uk_price_index_1850-2002_annual']
+    filePath = databundle.data_path
     ts1 = econ.data.getTimeSeriesFromCsv(file(filePath))
     discounter = econ.DiscountRate.DiscountRateHistorical(ts1)
     return discounter.getReturn(startYear, endYear)
