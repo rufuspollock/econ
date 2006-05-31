@@ -1,0 +1,60 @@
+<?python
+page_title='Hello World'
+?>
+<html xmlns:py="http://purl.org/kid/ns#">
+  <head>
+		<title>Open Economics - ${page_title}</title>
+
+    <style type="text/css">
+      body
+      {
+        font-family: Georgia, "Hoefler Text", Times, "Times New Roman", Serif;
+        background: #a84542;
+        margin: 0 0 0 0; /* must be explicitly set at 0 0 0 0, NOT 0, as opera misbehaves */
+        padding: 10px 0 10px 0;
+      }
+      
+      div#airlock
+      {
+        padding: 20px;
+        margin-top: 50px;
+        width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+        background-color: white;
+        border-top: solid 2px #a2a2a2;
+        border-left: solid 2px #a2a2a2;
+      }
+      
+      #header h1
+      {
+        text-align: center;
+      }
+      
+      #footer
+      {
+        text-align: center;
+        font-size: 0.8em;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="airlock">
+      <div id="header">
+        <h1>
+					${page_title}
+        </h1>
+      </div>
+      
+      <content>
+        ... content will be inserted here ...
+			</content>
+      
+      <div id="footer">
+        <p>
+          Copyright (c) Rufus Pollock 2005-6. Licensed under Creative Commons by-sa 2.0 (US and EW)
+        </p>
+      </div>
+    </div>
+  </body>
+</html>

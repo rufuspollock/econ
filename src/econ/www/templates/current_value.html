@@ -1,0 +1,20 @@
+<?python
+layout_params['page_title'] = 'Current Value Calculator'
+errorMessage = ''
+?>
+
+<html py:layout="'layout.html'" xmlns:py="http://purl.org/kid/ns#">
+  <div py:match="item.tag == 'content'">
+  <p py:if="errorMessage != ''">
+    There was an error. Details: ${errorMessage}
+  </p>
+  <form action="${ownPath}" method="GET">
+		Year: <input name="year" value="${year}" />
+		<br />
+		<input type="submit" value="Get Current Value" />
+	</form>
+	<p>
+			Value of one pound from ${year} in 2002 was: ${value}
+	</p>
+  </div>
+</html>

@@ -1,0 +1,29 @@
+<?python
+layout_params['page_title'] = 'Store Index'
+store_index = [ ('id1', 'some title') ]
+?>
+<html py:layout="'layout.html'"
+      xmlns:py="http://purl.org/kid/ns#">
+
+	<div py:match="item.tag == 'content'">
+		<table border="1">
+		<thead>
+			<tr>
+				<th>Id</th>
+				<th>Title</th>
+				<th>Link</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr py:for="item in store_index">
+				<td py:content="item[0]">ID</td>
+				<td py:content="item[1]">Insert Title</td>
+				<td>
+					<a href="/view?data_id=${item[0]}&amp;format=raw">Raw</a><br />
+					<a href="/view?data_id=${item[0]}&amp;format=cleaned">Formatted</a><br />
+				</td>
+			</tr>
+		</tbody>
+		</table>
+	</div>
+</html>
