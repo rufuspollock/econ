@@ -6,8 +6,8 @@
 # Discount rates arise in relation to interest, inflation and utility
 # These can be derived either from models or from empirical data
 
-import logging
-logger = logging.getLogger("econ")
+import econ.log
+logger = econ.log.get_logger()
 
 class DiscountRate(object):
     """

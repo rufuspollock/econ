@@ -10,8 +10,8 @@ import math
 # optimize etc
 from scipy import *
 
-import logging
-logger = logging.getLogger('econ')
+import econ.log
+logger = econ.log.get_logger()
 
 class NetworkEffectsModel:
     """

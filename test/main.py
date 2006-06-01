@@ -4,16 +4,12 @@ import os
 import sys
 import re
 import unittest
-import logging
-import logging.config
 
 # Hack to get path to this directory
 basepath = os.path.abspath(os.path.dirname(sys.argv[0]))
 srcpath = os.path.abspath(os.path.join(basepath, '../src/'))
-sys.path.append(basepath)
-sys.path.append(srcpath)
-
-logging.config.fileConfig(os.path.join(basepath, 'logging_basic.conf'))
+sys.path.insert(0, basepath)
+sys.path.insert(0, srcpath)
 
 def makeTestSuite(testCaseRegex = ""):
     """

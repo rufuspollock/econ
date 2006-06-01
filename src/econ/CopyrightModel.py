@@ -8,8 +8,8 @@
 
 import math
 
-import logging
-logger = logging.getLogger("econ")
+import econ.log
+logger = econ.log.get_logger()
 
 ## **************************************************************************
 ## Income Model Classes
