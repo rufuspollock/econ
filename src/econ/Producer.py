@@ -5,8 +5,10 @@ See the LICENSE file in the distribution root for licensing details
 Models from Producer theory
 """
 
+# importing for cgi this bombs out on importing of scipy_base._compiled_base.so
+# via: scipy_base.__init__.py, scipy_base/index_tricks.py,
+# scipy_base.function_base.py
 from scipy import integrate, optimize, derivative, arange
-import matplotlib.figure
 # don't import pylab here as introduces dependency on a lot of graphics stuff
 
 class Producer(object):
