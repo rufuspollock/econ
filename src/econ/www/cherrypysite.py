@@ -1,8 +1,5 @@
 """
 Econ web interface via cherrypy.
-
-You can start cherrypy webserver by running:
-  $ python <path-to-this-file>
 """
 import cherrypy
 import os
@@ -60,16 +57,4 @@ class EconWebInterface:
             return 'The format requested, [%s], is unsupported' % format
         
     view.exposed = True
-
-
-cherrypy.root = EconWebInterface()
-
-if __name__ == '__main__':
-    # cherrypy.config.update(file = 'tutorial.conf')
-    configDict = { 'server.socketPort' : 8080,
-                   'server.threadPool' : 10,
-                   'server.showTracebacks' : True
-                 }
-    cherrypy.config.update(configDict)
-    cherrypy.server.start()
 

@@ -58,6 +58,26 @@ Open Econ is open-knowledge and open-source. See COPYING for details.
 Print an index of the data store located at <store-path>'''
         print usage
 
+    def do_runserver(self, line=None):
+        import econ.www.cherrypysite
+        import cherrypy
+        cherrypy.root = econ.www.cherrypysite.EconWebInterface()
+        configDict = {
+                'server.socketPort' : 8080,
+                'server.threadPool' : 10,
+                'server.showTracebacks' : True
+                }
+        cherrypy.config.update(configDict)
+        cherrypy.server.start()
+
+    def help_runserver(self, line=None):
+        usage = \
+'''Start a cherrypy webserver to provide access to econ web interface
+
+NB: the resulting website should be availabe at http://localhost:8080
+'''
+        print usage
+
 
 if __name__ == '__main__':
     import sys
