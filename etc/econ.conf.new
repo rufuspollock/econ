@@ -1,2 +1,3 @@
+[DEFAULT]
 # path to data store (see econ.store module)
 data_store_path = ''
