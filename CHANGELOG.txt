@@ -1,0 +1,26 @@
+v0.2: 2006-06
+*************
+  * Improved logging system
+  * Refactored testing
+  * web interface to data store fully functional
+
+v0.1: 2006-05
+*************
+Major overhaul and new features
+  * Added store package to work with economic data
+  * Started work on web interface using cherrypy
+  * Started work on data package and created tabular module
+
+2005-10
+*******
+  * Producer module
+  * Current value cgi script
+
+2005-04
+*******
+  * DiscountRate module
+
+2004
+****
+  * NetworkEffectsModel module
+  * HtmlTableWriter
