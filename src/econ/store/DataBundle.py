@@ -1,3 +1,24 @@
+"""
+A DataBundle is a dataset along with its associated metadata
+
+DataBundles are persisted and read from various backends:
+  1. local file
+  2. web
+  3. database
+
+At present only local file is supported.
+
+Local File
+**********
+
+A DataBundle serialized to disk appears consists of:
+  1. data file named data.<ext> where <ext> is the file type
+    * (only ext=csv is presently supported)
+  2. metadata file named metadata.txt
+    * this file should conform to the python ConfigParser format (RFC 822) and 
+    consist of a single section entitle [DEFAULT]
+"""
+
 import os
 import shutil
 import ConfigParser
