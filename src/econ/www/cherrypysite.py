@@ -49,12 +49,25 @@ class EconWebInterface:
         import econ.store
         index = econ.store.index
         if data_id not in index.keys():
-            return 'There is no data set with that id'
+            return 'Error: There is no data set with that id'
         bundle = index[data_id]
         if format == 'raw':
             return '<pre>' + file(bundle.data_path).read() + '</pre>'
+        elif format == 'html':
+            import econ.www.templates.view_html
+            template = econ.www.templates.view_html.Template()
+            template.html_table = get_html_table(bundle)
+            return template.serialize()
         else:
             return 'The format requested, [%s], is unsupported' % format
         
     view.exposed = True
 
+def get_html_table(bundle):
+    import econ.data.tabular
+    reader = econ.data.tabular.ReaderCsv()
+    writer = econ.data.tabular.WriterHtml({'id' : 'table_1'})
+    ff = file(bundle.data_path)
+    tabdata = reader.read(ff)
+    html = writer.write(tabdata)
+    return html

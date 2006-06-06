@@ -65,7 +65,13 @@ Print an index of the data store located at <store-path>'''
         configDict = {
                 'server.socketPort' : 8080,
                 'server.threadPool' : 10,
-                'server.showTracebacks' : True
+                'server.showTracebacks' : True,
+                '/scripts' : { 'staticFilter.on' : True,
+                              'staticFilter.dir': '/scripts'
+                              },
+                '/styles' : { 'staticFilter.on' : True,
+                             'staticFilter.dir': '/styles'
+                              },
                 }
         cherrypy.config.update(configDict)
         cherrypy.server.start()

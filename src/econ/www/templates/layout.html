@@ -1,5 +1,9 @@
 <?python
 page_title='Hello World'
+def page_specific_css():
+		return ''
+def page_specific_scripts():
+		return ''
 ?>
 <html xmlns:py="http://purl.org/kid/ns#">
   <head>
@@ -35,8 +39,24 @@ page_title='Hello World'
       {
         text-align: center;
         font-size: 0.8em;
-      }
-    </style>
+			}
+
+			table, table td, table th
+			{
+				border: solid 2px;
+			}
+		</style>
+		<script type="text/javascript" src="/scripts/mochikit/MochiKit.js">//pointless jscript comment</script>
+		<script type="text/javascript" src="/scripts/plotkit/Base.js"> //pointless jscript comment</script>
+		<script type="text/javascript" src="/scripts/plotkit/Layout.js"> //pointless jscript comment</script>
+		<script type="text/javascript" src="/scripts/plotkit/Canvas.js"> //pointless jscript comment</script>
+		<script type="text/javascript" src="/scripts/plotkit/SweetCanvas.js"> //pointless jscript comment</script>
+		${page_specific_css()}
+		${page_specific_scripts()}
+		<!-- you can then use something like the following in a derived template
+		<link py:def="page_specific_css()"
+		      href="layout.css" type="text/css" rel="stylesheet" />
+					-->
   </head>
   <body>
     <div id="airlock">
