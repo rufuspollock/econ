@@ -1,15 +1,15 @@
-# Do not modify this file for personal use
-# Instead make a copy to keep in your local checkout
+#!/usr/bin/env python
+# We assume that tests are in ./src relative to executor
+# (*not* relative to this file)
+# TODO: replace with a standard library e.g. schooltest, nose ...
 import os
 import sys
 import re
 import unittest
+from optparse import OptionParser
 
 # Hack to get path to this directory
-basepath = os.path.abspath(os.path.dirname(sys.argv[0]))
-srcpath = os.path.abspath(os.path.join(basepath, '../src/'))
-sys.path.insert(0, basepath)
-sys.path.insert(0, srcpath)
+srcpath = os.path.abspath('./src')
 
 def makeTestSuite(testCaseRegex = ""):
     """
@@ -33,16 +33,40 @@ def makeTestSuite(testCaseRegex = ""):
     modules =[__import__(tmp1,'','','*') for tmp1 in moduleNames]
     load = unittest.defaultTestLoader.loadTestsFromModule
     return unittest.TestSuite(map(load, modules))
-
-if __name__ == "__main__":
-    def usage():
-        print 'test [<test_case_regex>]:'
-        print '\tRun tests. If regex supplied run only those tests which match'
     
     if len(sys.argv) > 1 and sys.argv[1] == 'test':
         testCaseRegex = ''
         if len(sys.argv) > 2:
             testCaseRegex = sys.argv[2]
-        unittest.TextTestRunner(verbosity=1).run(makeTestSuite(testCaseRegex))
     else:
         usage()
+
+if __name__ == "__main__":
+    usage  = \
+'''usage: %prog [options] [test-case-regex]
+
+Run tests. If regex supplied run only those tests which match (otherwise run
+all)
+'''
+    parser = OptionParser(usage)
+    parser.add_option('-v', '--verbose',
+        action='store_true', dest='verbose', default=False,
+        help='Be verbose in printing status messages')
+    parser.add_option('-l', '--level',
+        action='store', type='int', dest='level', default=1,
+        help='Verbosity level of test runner')
+    
+    (options, args) = parser.parse_args()
+    # by default always 1 argument (name of file itself)
+    testCaseRegex = ''
+    if len(args) == 0:
+        testCaseRegex = ''
+    elif len(args) == 1:
+        testCaseRegex = args[0]
+    else:
+        print 'ERROR: you have supplied too many arguments\n'
+        parser.print_help()
+        sys.exit(0)
+    testSuite = makeTestSuite(testCaseRegex) 
+    testRunner = unittest.TextTestRunner(verbosity=options.level)
+    testRunner.run(testSuite)
