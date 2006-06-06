@@ -44,16 +44,17 @@ class WriterHtml:
     Write tabular data to xhtml
     """
     
-    def __init__(self, doPrettyPrint=False, tableClass='data', decimalPlaces=2):
+    def __init__(self, table_attributes = {'class': 'data'}, decimal_places=2, do_pretty_print=False):
         """
-        @doPrettyPrint: whether to pretty print (indent) output
-        @tableClass: css class for table. Set as empty string if none wanted
-        @decimalPlaces: number of decimal places to use when rounding numerical 
+        @do_pretty_print: whether to pretty print (indent) output
+        @attributes: dictionary of html attribute name/value pairs to be
+        added to the table element
+        @decimal_places: number of decimal places to use when rounding numerical 
                         values when textifying for table
         """
-        self.doPrettyPrint = doPrettyPrint
-        self.tableClass = tableClass
-        self.decimalPlaces = decimalPlaces
+        self.do_pretty_print = do_pretty_print
+        self.table_attributes = table_attributes
+        self.decimal_places = decimal_places
     
     def write(self, tabulardata, caption = '', rowHeadings = []):
         """
@@ -70,8 +71,8 @@ class WriterHtml:
         haveRowHeadings = (len(rowHeadings) > 0)
         
         htmlTable = '<table'
-        if self.tableClass != '':
-            htmlTable += ' class="' + self.tableClass + '"'
+        for key, value in self.table_attributes.items():
+            htmlTable += ' %s="%s"' % (key, value)
         htmlTable += '>'
         
         # deal with caption
@@ -98,7 +99,7 @@ class WriterHtml:
         
         htmlTable += '</tbody></table>'
         
-        if self.doPrettyPrint:
+        if self.do_pretty_print:
             return self.prettyPrint(htmlTable)
         else:
             return htmlTable
@@ -147,7 +148,7 @@ class WriterHtml:
     def _processTagValueToText(self, tagValue):
         # if not already text then round
         if type(tagValue) != type('text'):
-            roundedResult = str(round(tagValue, self.decimalPlaces))
+            roundedResult = str(round(tagValue, self.decimal_places))
             if len(str(tagValue)) < len(roundedResult):
                 return str(tagValue)
             else:

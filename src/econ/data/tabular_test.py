@@ -34,11 +34,11 @@ class WriterHtmlTest(unittest.TestCase):
     def setUp(self):
         rawData = [[1,1], [0,1]]
         self.indata1 = tabular.TabularData(data=rawData)
-        self.writer1 = tabular.WriterHtml()
+        self.writer1 = tabular.WriterHtml({'id':1, 'class': 'data'})
 
     def testSimple(self):
         indata1 = [[1,1], [0,1]]
-        expected = '<table class="data"><tbody><tr><td>1</td><td>1</td></tr>'+\
+        expected = '<table id="1" class="data"><tbody><tr><td>1</td><td>1</td></tr>'+\
             '<tr><td>0</td><td>1</td></tr></tbody></table>'
         out1 = self.writer1.write(self.indata1)
         self.assertEquals(expected, out1)
@@ -46,7 +46,7 @@ class WriterHtmlTest(unittest.TestCase):
     def testColHeadings(self):
         self.indata1.header = ['x','y']
         caption = ''
-        expected = '<table class="data"><thead><tr><th>x</th><th>y</th></tr>'+\
+        expected = '<table id="1" class="data"><thead><tr><th>x</th><th>y</th></tr>'+\
             '</thead><tbody><tr><td>1</td><td>1</td></tr><tr><td>0</td>' + \
             '<td>1</td></tr></tbody></table>'
         # no caption but headings
@@ -57,7 +57,7 @@ class WriterHtmlTest(unittest.TestCase):
         self.indata1.header = ['x','y']
         rowHeadings = ['Date 1', 'Date 2']
         caption = ''
-        expected = '<table class="data"><thead><tr><th></th><th>x</th>' + \
+        expected = '<table id="1" class="data"><thead><tr><th></th><th>x</th>' + \
             '<th>y</th></tr></thead><tbody><tr><th>Date 1</th><td>1</td>' + \
             '<td>1</td></tr><tr><th>Date 2</th><td>0</td><td>1</td></tr>' + \
             '</tbody></table>'
