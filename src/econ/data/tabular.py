@@ -2,6 +2,9 @@
 Tools for dealing with tabular data
 """
 
+import econ.log
+logger = econ.log.get_logger()
+
 class TabularData(object):
     """Holder for tabular data
 
@@ -13,9 +16,22 @@ class TabularData(object):
     TODO: handling of large datasets (iterators?)
     """
 
-    def __init__(self, data=[], header=[]):
-        self.data = data 
-        self.header = header
+    def __init__(self, data=None, header=None):
+        """
+        Initialize object. If data or header not set they are defaulted to
+        empty list.
+        
+        NB: must use None as default value for arguments rather than []
+        because [] is mutable and using it will result in subtle bugs. See:
+        'Default parameter values are evaluated when the function definition
+        is executed.' [http://www.python.org/doc/current/ref/function.html]
+        """
+        self.data = []
+        self.header = []
+        if data is not None:
+            self.data = data
+        if header is not None:
+            self.header = header
 
 import csv
 class ReaderCsv(object):
