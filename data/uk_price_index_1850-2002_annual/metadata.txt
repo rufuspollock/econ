@@ -1,0 +1,4 @@
+[DEFAULT]
+dc:title: A Long-term indicator of prices of consumer goods and services (Jan 74 = 100)
+rdfs:comments: Not seasonally adjusted,1974 = 100 Jan
+dct:last-modified: 2003-01-20

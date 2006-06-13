@@ -1,0 +1,6 @@
+[DEFAULT]
+title: Bank of England interest rate
+comments: rate is either minimum lending rate, minimum band 1 dealing rate, or repo rate depending on era. Converted by assuming where month or day not given that it was the first of the month (see data.original.csv)
+type: time-series
+date-type: date
+source: Bank of England Website (originally an xls)
