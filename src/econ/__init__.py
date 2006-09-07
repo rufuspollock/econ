@@ -8,11 +8,12 @@ def get_config():
     is taken in relation to the current directory.
     """
     import os
-    import configobj
+    import ConfigParser
     configFilePath = os.path.abspath('./etc/econ.conf')
     if os.environ.has_key('ECONCONF'):
         configFilePath = os.environ['ECONCONF']
-    config = configobj.ConfigObj(configFilePath)
+    config = ConfigParser.ConfigParser()
+    config.read(configFilePath)
     return config
 
 conf = get_config()

@@ -3,8 +3,7 @@ Introduction
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 This project contains code for economics modelling. Currently the language
-of choice is python. Please see the AUTHORS file for contributors and the
-COPYING file for copyright and licence details.
+of choice is python.
 
 Copyright
 *********
@@ -65,10 +64,11 @@ Finally in any environment from which you which to use the econ package (shell,
 webserver etc) you will need to set the ECONCONF variable to point to the
 location of this file.
 
-3. Test
-=======
+3. Test Installation
+====================
 
 You can test your installation by opening a python shell and running:
+
   >>> import econ
   >>> print econ.__version__
 
@@ -92,13 +92,5 @@ Source files are kept in the src/ tree. Test harnesses are kept side by
 side with the classes and functions they test with test or Test
 appended to the file name.
 
-To get started try running all the tests by doing (you may need to
-first install additional libraries -- see Library Dependencies below):
-
-$ cd test
-$ python main.py test
-
-It is suggested that you create your own local copy of main.py called,
-say, main_<username>.py and modify this. DO NOT COMMIT any changes of
-main.py to the repository OR ADD your own copy of main.py.
+  $ bin/econ-test
 

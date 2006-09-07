@@ -1,9 +1,9 @@
 [DEFAULT]
 # path to data store (see econ.store module)
-data_store_path = ''
+data_store_path = ./data
 
 [logging]
 # log level (follows naming of constants in python logging module)
 level = INFO
 # path to log file
-log_file_path = './econ.log'
+log_file_path = ./econ.log

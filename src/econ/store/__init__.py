@@ -12,4 +12,4 @@ def make_index(basePath):
             results[bundle.id] = bundle
     return results
 
-index = make_index(econ.conf['DEFAULT']['data_store_path'])
+index = make_index(econ.conf.get('DEFAULT', 'data_store_path'))
