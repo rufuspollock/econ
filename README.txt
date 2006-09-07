@@ -31,11 +31,13 @@ python
 This package is written in python (http://www.python.org/) and requires a
 python version >= 2.3 to function.
 
-configobj
-=========
+cherrypy + kid
+==============
 
-We use the voidspace configobj package. Please make sure that configobj is on
-the path (import configobj should work from a python shell).
+For the web user interface you need:
+  
+  * cherrypy >= 2.2
+  * kid >= 0.9
 
 mx.Tidy (optional)
 ===================

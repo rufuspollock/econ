@@ -1,9 +1,11 @@
 """
 Econ web interface via cherrypy.
 """
-import cherrypy
 import os
+import urllib
+import StringIO
 
+import cherrypy
 import kid
 kid.enable_import(suffixes=['.html', '.kid'])
 
@@ -37,37 +39,39 @@ class EconWebInterface:
             if _dict.has_key('title'):
                 return _dict['title']
             else: return 'No title available'
-        storeIndex = [ (ii[0], get_title(ii[1].metadata)) for ii in index ]
+        storeIndex = [ (ii[0], ii[1].metadata.get('title', 'No title available'), ii[1].data_path)
+            for ii in index ]
         template.store_index = storeIndex
         return template.serialize()
         
     store.exposed = True
 
-    def view(self, data_id=None, format='raw'):
-        if data_id is None:
-            return 'Please select a data set to view from the <a href="/store/">store</a>'
-        import econ.store
-        index = econ.store.index
-        if data_id not in index.keys():
-            return 'Error: There is no data set with that id'
-        bundle = index[data_id]
+    def view(self, data_url=None, format='raw'):
+        if not data_url.endswith('.csv'):
+            return 'At present only the viewing of csv format files is supported.'
+        fileobj = None
+        try:
+            # have to wrap in a StringIO object urllib.fd does not support seek
+            fileobj = StringIO.StringIO(urllib.urlopen(data_url).read())
+        except Exception, inst:
+            msg = 'Error: Unable to open the data file at %s because %s' % (data_url, inst)
+            return msg
         if format == 'raw':
-            return '<pre>' + file(bundle.data_path).read() + '</pre>'
+            return '<pre>' + fileobj.read() + '</pre>'
         elif format == 'html':
             import econ.www.templates.view_html
             template = econ.www.templates.view_html.Template()
-            template.html_table = get_html_table(bundle)
+            template.html_table = get_html_table(fileobj)
             return template.serialize()
         else:
             return 'The format requested, [%s], is unsupported' % format
         
     view.exposed = True
 
-def get_html_table(bundle):
+def get_html_table(fileobj):
     import econ.data.tabular
     reader = econ.data.tabular.ReaderCsv()
     writer = econ.data.tabular.WriterHtml({'id' : 'table_1'})
-    ff = file(bundle.data_path)
-    tabdata = reader.read(ff)
+    tabdata = reader.read(fileobj)
     html = writer.write(tabdata)
     return html
