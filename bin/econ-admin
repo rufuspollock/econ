@@ -58,31 +58,43 @@ Open Econ is open-knowledge and open-source. See COPYING for details.
 Print an index of the data store located at <store-path>'''
         print usage
 
-    def do_runserver(self, line=None):
-        import econ.www.cherrypysite
+    def _runserver_cherrypy(self):
+        import econ.www.cherrpysite
         import cherrypy
-        cherrypy.root = econ.www.cherrypysite.EconWebInterface()
         configDict = {
                 'server.socketPort' : 8080,
                 'server.threadPool' : 10,
                 'server.showTracebacks' : True,
-                '/scripts' : { 'staticFilter.on' : True,
-                              'staticFilter.dir': '/scripts'
-                              },
-                '/styles' : { 'staticFilter.on' : True,
-                             'staticFilter.dir': '/styles'
-                              },
                 }
         cherrypy.config.update(configDict)
-        cherrypy.server.start()
+        cherrypy.quickstart(econ.www.cherrypysite.EconWebInterface())
+
+    def _runserver_paste_plain(self):
+        import econ.www.plainwsgi
+        import paste.httpserver
+        app = econ.www.plainwsgi.EconWebInterface()
+        paste.httpserver.serve(app)
+
+    def do_runserver(self, line=None):
+        if line is None: # default
+            self._runserver_paste_plain()
+        elif line == 'paste':
+            self._runserver_paste_plain()
+        if line == 'cherrypy': # default
+            self._runserver_cherrypy()
+        else:
+            print 'Unknown argument: %s' % line
+            self.help_runserver()
 
     def help_runserver(self, line=None):
         usage = \
-'''Start a cherrypy webserver to provide access to econ web interface
+'''runserver [ cherrypy | paste ]
 
-NB: the resulting website should be availabe at http://localhost:8080
+Start a webserver (of optional type) to provide the user interface to the
+shakespeare package.
+
+The resulting website should be availabe at http://localhost:8080
 '''
-        print usage
 
 
 if __name__ == '__main__':
