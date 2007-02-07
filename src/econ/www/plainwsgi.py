@@ -8,7 +8,7 @@ import StringIO
 import paste.request
 
 import kid
-kid.enable_import(suffixes=['.html', '.kid'])
+kid.enable_import(ext=['.html', '.kid'])
 
 class EconWebInterface:
 
@@ -34,12 +34,12 @@ class EconWebInterface:
             format = self.queryinfo.get('format', 'raw')
             return self.view(data_url, format)
         else:
-            return response('Error')
+            return self.response('Error')
 
     def index(self):
-        out = '<h2><a href="current_value/">Current Value Calculator</a></h2>'
-        out += '<h2><a href="store/">Data Store</a></h2>'
-        return self.response(out)
+        import econ.www.templates.index
+        template = econ.www.templates.index.Template()
+        return self.response(template.serialize())
 
     def current_value(self, year=2001):
         try:
@@ -69,7 +69,8 @@ class EconWebInterface:
         
     def view(self, data_url=None, format='raw'):
         if not data_url.endswith('.csv'):
-            return 'At present only the viewing of csv format files is supported.'
+            self.response('At present only the viewing of csv format files is
+                    supported.')
         fileobj = None
         try:
             # have to wrap in a StringIO object urllib.fd does not support seek
