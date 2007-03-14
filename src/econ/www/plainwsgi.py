@@ -69,8 +69,7 @@ class EconWebInterface:
         
     def view(self, data_url=None, format='raw'):
         if not data_url.endswith('.csv'):
-            self.response('At present only the viewing of csv format files is
-                    supported.')
+            self.response('At present only the viewing of csv format files is supported.')
         fileobj = None
         try:
             # have to wrap in a StringIO object urllib.fd does not support seek
