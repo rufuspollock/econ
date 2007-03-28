@@ -76,11 +76,11 @@ Print an index of the data store located at <store-path>'''
         paste.httpserver.serve(app)
 
     def do_runserver(self, line=None):
-        if line is None: # default
+        if not line: # default
             self._runserver_paste_plain()
         elif line == 'paste':
             self._runserver_paste_plain()
-        if line == 'cherrypy': # default
+        elif line == 'cherrypy': # default
             self._runserver_cherrypy()
         else:
             print 'Unknown argument: %s' % line
@@ -95,6 +95,7 @@ shakespeare package.
 
 The resulting website should be availabe at http://localhost:8080
 '''
+        print usage
 
 
 if __name__ == '__main__':
