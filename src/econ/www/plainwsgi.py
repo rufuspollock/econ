@@ -6,9 +6,15 @@ import urllib
 import StringIO
 
 import paste.request
+import genshi
+import genshi.template
 
-import kid
-kid.enable_import(ext=['.html', '.kid'])
+import econ
+
+cfg = econ.conf
+template_path = cfg.get('web', 'template_dir')
+template_loader = genshi.template.TemplateLoader([template_path],
+        auto_reload=True)
 
 class EconWebInterface:
 
@@ -37,25 +43,23 @@ class EconWebInterface:
             return self.response('Error')
 
     def index(self):
-        import econ.www.templates.index
-        template = econ.www.templates.index.Template()
-        return self.response(template.serialize())
+        tmpl = template_loader.load('index.html')
+        result = tmpl.generate().render()
+        return self.response(result)
 
     def current_value(self, year=2001):
         try:
-            import econ.www.templates.current_value
-            template = econ.www.templates.current_value.Template()
-            template.year = year
-            template.ownPath = '/current_value/'
-            currentValue = '100 (WARN: this utility is broken)'
-            template.value = currentValue
-            return self.response(template.serialize())
+            currentValue = get_current_value(year)
+            tmpl = template_loader.load('current_value.html')
+            result = tmpl.generate(year=year,
+                    ownPath='/current_value/',
+                    value=currentValue)
+            return self.response(result.render())
         except Exception, inst:
             return self.response('<p><strong>There was an error: ' +  str(inst) + '</strong></p>')
 
     def store(self):
-        import econ.www.templates.store_index
-        template = econ.www.templates.store_index.Template()
+        tmpl = template_loader.load('store_index.html')
         import econ.store
         index = econ.store.index.items()
         def get_title(_dict):
@@ -64,8 +68,8 @@ class EconWebInterface:
             else: return 'No title available'
         storeIndex = [ (ii[0], ii[1].metadata.get('title', 'No title available'), ii[1].data_path)
             for ii in index ]
-        template.store_index = storeIndex
-        return self.response(template.serialize())
+        result = tmpl.generate(store_index=storeIndex)
+        return self.response(result.render())
         
     def view(self, data_url=None, format='raw'):
         if not data_url.endswith('.csv'):
@@ -81,10 +85,10 @@ class EconWebInterface:
         if format == 'raw':
             result = '<pre>' + fileobj.read() + '</pre>'
         elif format == 'html':
-            import econ.www.templates.view_html
-            template = econ.www.templates.view_html.Template()
-            template.html_table = get_html_table(fileobj)
-            result = template.serialize()
+            tmpl = template_loader.load('view_html.html')
+            html_table = get_html_table(fileobj)
+            result = tmpl.generate(html_table=html_table)
+            result = result.render()
         else:
             result = 'The format requested, [%s], is unsupported' % format
         return self.response(result)
@@ -97,3 +101,14 @@ def get_html_table(fileobj):
     tabdata = reader.read(fileobj)
     html = writer.write(tabdata)
     return html
+
+def get_current_value(startYear, endYear=2002):
+    import econ.data
+    import econ.store
+    import econ.DiscountRate
+    databundle = econ.store.index['uk_price_index_1850-2002_annual']
+    filePath = databundle.data_path
+    ts1 = econ.data.getTimeSeriesFromCsv(file(filePath))
+    discounter = econ.DiscountRate.DiscountRateHistorical(ts1)
+    return discounter.getReturn(startYear, endYear)
+

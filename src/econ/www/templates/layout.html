@@ -1,11 +1,6 @@
-<?python
-page_title='Hello World'
-def page_specific_css():
-		return ''
-def page_specific_scripts():
-		return ''
-?>
-<html xmlns:py="http://purl.org/kid/ns#">
+<html xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:py="http://genshi.edgewall.org/" 
+  xmlns:xi="http://www.w3.org/2001/XInclude">
   <head>
 		<title>Open Economics - ${page_title}</title>
 
@@ -49,12 +44,8 @@ def page_specific_scripts():
 		<script type="text/javascript" src="http://m.okfn.org/ext/mochikit/MochiKit.js">//pointless jscript comment</script>
 		<script type="text/javascript"
 			src="http://m.okfn.org/ext/plotkit/PlotKit_Packed.js"> //pointless jscript comment</script>
-		${page_specific_css()}
-		${page_specific_scripts()}
-		<!-- you can then use something like the following in a derived template
-		<link py:def="page_specific_css()"
-		      href="layout.css" type="text/css" rel="stylesheet" />
-					-->
+		${page_specific_css}
+		${page_specific_scripts}
   </head>
   <body>
     <div id="airlock">
@@ -64,9 +55,9 @@ def page_specific_scripts():
         </h1>
       </div>
       
-      <content>
-        ... content will be inserted here ...
-			</content>
+      <div id="content">
+        <content>Default content - this will be replaced</content>
+      </div>
       
       <div id="footer">
         <p>

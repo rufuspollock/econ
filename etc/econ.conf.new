@@ -7,3 +7,6 @@ data_store_path = ./data
 level = INFO
 # path to log file
 log_file_path = ./econ.log
+
+[web]
+template_dir = ./src/econ/www/templates

@@ -1,10 +1,9 @@
-<?python
-layout_params['page_title'] = 'View Dataset (html)'
-?>
-<html py:layout="'layout.html'"
-      xmlns:py="http://purl.org/kid/ns#">
+<html xmlns:py="http://genshi.edgewall.org/"
+  xmlns:xi="http://www.w3.org/2001/XInclude">
+  
+  <py:def function="page_title">View Dataset (html)</py:def>
 
-	<script type="text/javascript" py:def="page_specific_scripts()">
+	<script type="text/javascript" py:def="page_specific_scripts">
 function drawGraph() {
     var options = { "xOriginIsZero" : false}
     var layout = new PlotKit.Layout("line", options);
@@ -17,8 +16,10 @@ function drawGraph() {
 MochiKit.DOM.addLoadEvent(drawGraph);
 	</script>
 
-	<div py:match="item.tag == 'content'">
+	<div py:match="content">
 		<div style="margin: 2em;"><canvas id="graph" height="500" width="500"></canvas></div>
-		${XML(html_table)} 
+		${html_table}
 	</div>
+
+  <xi:include href="layout.html" />
 </html>

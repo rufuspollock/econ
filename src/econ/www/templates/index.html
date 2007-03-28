@@ -1,12 +1,13 @@
-<?python
-layout_params['page_title'] = 'Open Economics Index'
-?>
-<html py:layout="'layout.html'"
-      xmlns:py="http://purl.org/kid/ns#">
+<html xmlns:py="http://genshi.edgewall.org/"
+  xmlns:xi="http://www.w3.org/2001/XInclude">
+  
+  <py:def function="page_title">Open Economics Index</py:def>
 
-	<div py:match="item.tag == 'content'">
+	<div py:match="content">
 		<h2><a href="current_value/">Current Value Calculator</a></h2>
 		<h2><a href="store/">Data Store</a></h2>
 	</div>
+
+  <xi:include href="layout.html" />
 </html>
 

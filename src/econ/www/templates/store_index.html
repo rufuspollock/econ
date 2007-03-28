@@ -1,11 +1,9 @@
-<?python
-layout_params['page_title'] = 'Store Index'
-store_index = [ ('id1', 'some title') ]
-?>
-<html py:layout="'layout.html'"
-      xmlns:py="http://purl.org/kid/ns#">
+<html xmlns:py="http://genshi.edgewall.org/"
+  xmlns:xi="http://www.w3.org/2001/XInclude">
+  
+  <py:def function="page_title">Store Index</py:def>
 
-	<div py:match="item.tag == 'content'">
+  <div py:match="content">
 		<table border="1">
 		<thead>
 			<tr>
@@ -26,4 +24,6 @@ store_index = [ ('id1', 'some title') ]
 		</tbody>
 		</table>
 	</div>
+
+  <xi:include href="layout.html" />
 </html>

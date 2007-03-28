@@ -1,11 +1,10 @@
-<?python
-layout_params['page_title'] = 'Current Value Calculator'
-errorMessage = ''
-?>
+<html xmlns:py="http://genshi.edgewall.org/"
+  xmlns:xi="http://www.w3.org/2001/XInclude">
+  
+  <py:def function="page_title">Current Value Calculator</py:def>
 
-<html py:layout="'layout.html'" xmlns:py="http://purl.org/kid/ns#">
-  <div py:match="item.tag == 'content'">
-  <p py:if="errorMessage != ''">
+  <div py:match="content">
+  <p py:if="errorMessage">
     There was an error. Details: ${errorMessage}
   </p>
   <form action="${ownPath}" method="GET">
@@ -17,4 +16,6 @@ errorMessage = ''
 			Value of one pound from ${year} in 2002 was: ${value}
 	</p>
   </div>
+
+  <xi:include href="layout.html" />
 </html>
