@@ -1,4 +1,4 @@
-__version__ = '0.1a'
+__version__ = '0.3'
 
 def get_config():
     """Load config file and return configobj containing that information.

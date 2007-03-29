@@ -1,3 +1,11 @@
+v0.3 2007-03
+************
+  * Change to use plain wsgi and paste
+  * Convert from kid to genshi templates
+  * Current value working again (scipy does not conflict with plain wsgi)
+  * Several new added datasets
+  * Clean up and improve web user interface
+
 v0.2: 2006-06
 *************
   * Improved logging system
