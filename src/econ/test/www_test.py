@@ -52,12 +52,12 @@ class TestSite:
         web.find('1694-10-01,6')
         web.code(200)
 
-    def test_view_html_raw(self):
+    def test_view_html(self):
         offset = 'store'
         url = self.siteurl + offset
         web.go(url)
         # first on list
-        web.follow('HTML')
+        web.follow('uk_interest_rates')
         web.code(200)
         print web.show()
         web.title('View Dataset \(html\)')

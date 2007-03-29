@@ -4,26 +4,24 @@
   <py:def function="page_title">Store Index</py:def>
 
   <div py:match="content">
-		<table border="1">
-		<thead>
-			<tr>
-				<th>Id</th>
-				<th>Title</th>
-				<th>Link</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr py:for="item in store_index">
-				<td py:content="item[0]">ID</td>
-				<td py:content="item[1]">No Title Available</td>
-				<td>
-					<a href="/view?data_url=${item[2]}&amp;format=raw">Raw</a><br />
-					<a href="/view?data_url=${item[2]}&amp;format=html">HTML</a><br />
-				</td>
-			</tr>
-		</tbody>
-		</table>
-	</div>
+    <table border="1">
+    <thead>
+      <tr>
+        <th>Id</th>
+        <th>Title</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr py:for="item in store_index">
+        <td> 
+          <a href="/view?data_url=${item[2]}&amp;format=html">${item[0]}</a>
+          (<a href="/view?data_url=${item[2]}&amp;format=raw">Raw</a>)
+        </td>
+        <td py:content="item[1]">No Title Available</td>
+      </tr>
+    </tbody>
+    </table>
+  </div>
 
   <xi:include href="layout.html" />
 </html>
