@@ -43,9 +43,23 @@ class TestSite:
         web.title('Store Index')
         web.code(200)
 
-    def test_view_html(self):
-        offset = 'store/view/'
+    def test_view_raw(self):
+        offset = 'store'
         url = self.siteurl + offset
         web.go(url)
-        print web.show()
+        # first on list
+        web.follow('Raw')
+        web.find('1694-10-01,6')
         web.code(200)
+
+    def test_view_html_raw(self):
+        offset = 'store'
+        url = self.siteurl + offset
+        web.go(url)
+        # first on list
+        web.follow('HTML')
+        web.code(200)
+        print web.show()
+        web.title('View Dataset \(html\)')
+        web.find('1694-10-01')
+

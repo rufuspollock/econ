@@ -86,9 +86,9 @@ class EconWebInterface:
             result = '<pre>' + fileobj.read() + '</pre>'
         elif format == 'html':
             tmpl = template_loader.load('view_html.html')
-            html_table = get_html_table(fileobj)
+            html_table = genshi.XML(get_html_table(fileobj))
             result = tmpl.generate(html_table=html_table)
-            result = result.render()
+            result = result.render('html', strip_whitespace=False)
         else:
             result = 'The format requested, [%s], is unsupported' % format
         return self.response(result)
