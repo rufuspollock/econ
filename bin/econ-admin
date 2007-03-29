@@ -58,17 +58,6 @@ Open Econ is open-knowledge and open-source. See COPYING for details.
 Print an index of the data store located at <store-path>'''
         print usage
 
-    def _runserver_cherrypy(self):
-        import econ.www.cherrpysite
-        import cherrypy
-        configDict = {
-                'server.socketPort' : 8080,
-                'server.threadPool' : 10,
-                'server.showTracebacks' : True,
-                }
-        cherrypy.config.update(configDict)
-        cherrypy.quickstart(econ.www.cherrypysite.EconWebInterface())
-
     def _runserver_paste_plain(self):
         import econ.www.plainwsgi
         import paste.httpserver
@@ -78,20 +67,16 @@ Print an index of the data store located at <store-path>'''
     def do_runserver(self, line=None):
         if not line: # default
             self._runserver_paste_plain()
-        elif line == 'paste':
-            self._runserver_paste_plain()
-        elif line == 'cherrypy': # default
-            self._runserver_cherrypy()
         else:
             print 'Unknown argument: %s' % line
             self.help_runserver()
 
     def help_runserver(self, line=None):
         usage = \
-'''runserver [ cherrypy | paste ]
+'''runserver
 
-Start a webserver (of optional type) to provide the user interface to the
-shakespeare package.
+Start a webserver (of optional type) to provide a web user interface to the
+econ package.
 
 The resulting website should be availabe at http://localhost:8080
 '''
