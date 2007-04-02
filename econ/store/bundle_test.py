@@ -22,20 +22,37 @@ class TestDataBundle:
     
     def teardown_class(self):
         shutil.rmtree(self.tmpDir)
+
+    def test___init__(self):
+        bndl = DataBundle()
+        id = bndl.id
+        assert len(id) == 36
+        assert bndl.path == None
     
-    def test_writeBundle(self):
-        self.startBundle = DataBundle()
-        self.startBundle.id = self.title
-        self.startBundle.metadata = { 'title' : self.title }
-        self.startBundle.write(self.bundlePath)
-    
-    def test_readBundle(self):
+    def test_read(self):
         _makeTestData(self.bundlePath, self.title)
         bndl = DataBundle()
         bndl.read(self.bundlePath)
         assert (bndl.id == self.title)
         assert (bndl.metadata['title'] == self.title)
-
+    
+    def test_write(self):
+        bndl = DataBundle()
+        destpath = os.path.join(self.tmpDir, bndl.id)
+        bndl.path = destpath
+        bndl.write()
+        destpath = os.path.join(self.tmpDir, bndl.id)
+        metapath = os.path.join(destpath, 'metadata.txt')
+        assert os.path.exists(destpath)
+        assert os.path.exists(metapath)
+        meta = file(metapath).read()
+        assert '[DEFAULT]\nid = ' in meta
+    
+    def test_create(self):
+        bndl = econ.store.bundle.create(self.tmpDir)
+        assert os.path.exists(bndl.path)
+        assert len(bndl.id) == 36
+        
 
 class TestMakeIndex:
     

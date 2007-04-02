@@ -22,32 +22,73 @@ A DataBundle serialized to disk appears consists of:
 import os
 import shutil
 import ConfigParser
+import uuid
+
+def create(base_path):
+    bndl = DataBundle()
+    path = os.path.join(base_path, bndl.id)
+    bndl.path = path
+    bndl.write()
+    return bndl
 
 class DataBundle(object):
     """A 'Data Bundle' that is dataset with associated metadata.
     """
+
+    def set_path(self, value):
+        self._path = value
+        if self._path:
+            self._meta_path = os.path.join(self._path, 'metadata.txt')
+            self.data_path = os.path.join(self._path, 'data.csv')
+
+    def get_path(self):
+        return self._path
     
-    def __init__(self):
-        self.id = ''
+    def del_path(self):
+        del self._path
+
+    def set_id(self, value):
+        self.metadata['id'] = value
+
+    def get_id(self):
+        return self.metadata['id']
+
+    def del_id(self):
+        del self.metadata['id']
+
+    path = property(get_path, set_path, del_path)
+    id = property(get_id, set_id, del_id)
+
+    def __init__(self, id=None, path=None):
+        # must be set first
         self.metadata = {}
-        self.path = None
+        if id is None or id == '':
+            self.id = str(uuid.uuid1())
+        self._meta_path = None
         self.data_path = None
-    
+        self.path = path
+
     def read(self, path):
         self.path = path
-        # hack: assumes called data.csv
-        # [[TODO: work this out in some proper way]]
-        self.data_path = os.path.join(path, 'data.csv')
+        # TODO: remove using file names for ids
+        # set id from file name as default but may be overridden in metadata
         self.id = os.path.basename(path)
         self.readMetadataFromFile(os.path.join(path, 'metadata.txt'))
     
     def readMetadataFromFile(self, path):
         cfp = ConfigParser.ConfigParser()
         cfp.read(path)
-        self.metadata = cfp.defaults()
+        filemeta = cfp.defaults()
+        for key in filemeta:
+            self.metadata[key] = filemeta[key]
     
-    def write(self, path):
-        pass
+    def write(self):
+        if not os.path.exists(self._path):
+            os.makedirs(self._path)
+        cfp = ConfigParser.SafeConfigParser(self.metadata)
+        fo = file(self._meta_path, 'w')
+        cfp.write(fo)
+        fo.close()
     
     def __repr__(self):
         return 'DataBundle: ' + self.id + '\n' + str(self.metadata)

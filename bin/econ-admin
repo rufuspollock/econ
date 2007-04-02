@@ -82,6 +82,25 @@ The resulting website should be availabe at http://localhost:8080
 '''
         print usage
 
+    def do_bundle(self, line=None):
+        if line == 'make': # default
+            import econ.store.bundle
+            store_path = econ.conf.get('DEFAULT', 'data_store_path')
+            bndl = econ.store.bundle.create(store_path)
+            print 'Created new data bundle %s at %s' % (bndl.id, bndl.path)
+        else:
+            print 'Unknown argument: %s' % line
+            self.help_bundle()
+
+    def help_bundle(self, line=None):
+        usage = \
+'''bundle [ make ]
+
+make: create a new data empty data bundle.
+'''
+        print usage
+
+
 
 if __name__ == '__main__':
     import sys
