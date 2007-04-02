@@ -1,0 +1,5 @@
+[DEFAULT]
+id = 9d72cc30-df7f-11db-bac7-00145101c316
+title = Patents Enrolled in England 1660-1850
+source: Macleod p. 150. Source cited there is Woodcroft (ed) Chronological Index of Patents of Inventions (1854), corrected and amended
+
