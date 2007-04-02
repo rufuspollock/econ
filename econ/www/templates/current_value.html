@@ -7,13 +7,13 @@
   <p py:if="errorMessage">
     There was an error. Details: ${errorMessage}
   </p>
-  <form action="${ownPath}" method="GET">
+  <form action="${c.ownPath}" method="GET">
 		Year: <input name="year" value="${year}" />
 		<br />
 		<input type="submit" value="Get Current Value" />
 	</form>
 	<p>
-			Value of one pound from ${year} in 2002 was: ${value}
+			Value of one pound from ${c.year} in 2002 was: ${c.value}
 	</p>
   </div>
 

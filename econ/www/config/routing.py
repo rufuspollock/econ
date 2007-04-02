@@ -17,6 +17,8 @@ def make_map(global_conf={}, app_conf={}):
     # Define your routes. The more specific and detailed routes should be defined first,
     # so they may take precedent over the more generic routes. For more information, refer
     # to the routes manual @ http://routes.groovie.org/docs/
+    map.connect('', controller='root', action='index')
+    map.connect(':action', controller='root')
     map.connect(':controller/:action/:id')
     map.connect('*url', controller='template', action='view')
 

@@ -31,14 +31,6 @@ python
 This package is written in python (http://www.python.org/) and requires a
 python version >= 2.3 to function.
 
-cherrypy + kid
-==============
-
-For the web user interface you need:
-  
-  * cherrypy >= 2.2
-  * kid >= 0.9
-
 mx.Tidy (optional)
 ===================
 

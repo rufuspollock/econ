@@ -1,25 +1,6 @@
-from StringIO import StringIO
+from econ.www.tests import *
 
-import twill
-from twill import commands as web
-
-import econ.www.plainwsgi
-
-
-class TestSite:
-
-    port = 8080
-    siteurl = 'http://localhost:8080/'
-
-    def setup_method(self, name=''):
-        wsgi_app = econ.www.plainwsgi.EconWebInterface()
-        twill.add_wsgi_intercept('localhost', self.port, lambda : wsgi_app)
-        self.outp = StringIO()
-        twill.set_output(self.outp)
-
-    def teardown_method(self, name=''):
-        # remove intercept.
-        twill.remove_wsgi_intercept('localhost', self.port)
+class TestRoot(TestControllerTwill):
 
     def test_index(self):
         web.go(self.siteurl)
@@ -28,15 +9,16 @@ class TestSite:
         web.title('Open Economics Index')
 
     def test_current_value(self):
-        offset = 'current_value'
+        offset = '/current_value/?year=1900'
         url = self.siteurl + offset
         web.go(url)
         print web.show()
         web.code(200)
         web.find('Current Value')
+        web.find('Value of one pound from 1900 in 2002 was: 71.65')
 
     def test_store(self):
-        offset = 'store'
+        offset = '/store'
         url = self.siteurl + offset
         web.go(url)
         print web.show()
@@ -44,7 +26,7 @@ class TestSite:
         web.code(200)
 
     def test_view_raw(self):
-        offset = 'store'
+        offset = '/store'
         url = self.siteurl + offset
         web.go(url)
         # first on list
@@ -53,7 +35,7 @@ class TestSite:
         web.code(200)
 
     def test_view_html(self):
-        offset = 'store'
+        offset = '/store'
         url = self.siteurl + offset
         web.go(url)
         # first on list
