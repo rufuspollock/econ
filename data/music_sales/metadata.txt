@@ -1,5 +1,6 @@
 [DEFAULT]
+id: 5f014cc2-e1d1-11db-aac4-00145101c316
 title: Recorded Music Sales 1969-2004 Worldwide (in millions)
-source: IFPI
+source: IFPI, Recording Industry in Numbers (2005)
 comments: Other audio formats (MiniDisc, DVD-A, SACD, Other) included in totals from 1997 onwards. Music video figures (DVD, VHS, VCD) included in totals from 2001 onwards. $US ARP values are calculated based on 2004 average realised price by format
 data-structure: csv including headings

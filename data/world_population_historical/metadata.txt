@@ -1,4 +1,5 @@
 [DEFAULT]
+id = world_population_historical
 title: World Population Historical
 type: time-series
 date-type: date/year

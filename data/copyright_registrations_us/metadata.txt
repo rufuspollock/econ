@@ -1,5 +1,6 @@
 [DEFAULT]
-title: copyright registrations in the United States 1790-2000
+id: copyright_registrations_us 
+title: Copyright Registrations in the United States 1790-2000
 source: <a href="http://www.copyright.gov/reports/annual/2000/">Annual Report of the Register of Copyrights</a>
 comments: figure for 1790-1869 removed as reported as one. Also note that 1976 has an anomolous figure (see item 2 in data-notes below). 
 data-notes: 1. Estimated registrations made in the offices of the Clerks of the District Courts (source: pamphlet entitled Records in the Copyright Office Deposited by the United States District Courts Covering the Period 1790- 1870, by Martin A. Roberts, Chief Assistant Librarian, Library of Congress, 1939). 2. Registrations made July 1, 1976, through September 30, 1976, reported separately owing to the statutory change making the fiscal years run from October 1 through September 30 instead of July 1 through June 30.
