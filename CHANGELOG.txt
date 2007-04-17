@@ -1,34 +1,52 @@
-v0.3 2007-03
+v0.4 2007-04
 ************
+
+  * Change to use pylons (2007-03-31)
+  * Convert from kid to genshi templates (2007-03-29)
+  * Current value working again (scipy does not conflict with plain wsgi)
+  * Several new datasets
+  * Clean up and improve web user interface
+  * view 'action' gains a limit argument (2007-04-03)
+
+v0.3 2007-02
+************
+
   * Change to use plain wsgi and paste
   * Convert from kid to genshi templates
-  * Current value working again (scipy does not conflict with plain wsgi)
-  * Several new added datasets
+  * New datasets (e.g. world_population_historical)
   * Clean up and improve web user interface
+  * Make 'view' action use urls rather than bundle ids so it can work
+    standalone with any csv file
 
 v0.2: 2006-06
 *************
+
   * Improved logging system
   * Refactored testing
   * web interface to data store fully functional
 
 v0.1: 2006-05
 *************
+
 Major overhaul and new features
+
   * Added store package to work with economic data
   * Started work on web interface using cherrypy
   * Started work on data package and created tabular module
 
 2005-10
 *******
+
   * Producer module
   * Current value cgi script
 
 2005-04
 *******
+
   * DiscountRate module
 
 2004
 ****
+
   * NetworkEffectsModel module
   * HtmlTableWriter
