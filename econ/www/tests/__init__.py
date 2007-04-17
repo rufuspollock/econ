@@ -39,7 +39,7 @@ class TestControllerTwill(object):
 
     port = 8083
     host = 'localhost'
-    wsgiapp = loadapp('config:test.ini', relative_to=conf_dir)
+    wsgiapp = loadapp('config:development.ini', relative_to=conf_dir)
     siteurl = 'http://%s:%s' % (host, port)
 
     def setup_method(self, name=''):
