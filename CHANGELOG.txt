@@ -7,6 +7,7 @@ v0.4 2007-04
   * Several new datasets
   * Clean up and improve web user interface
   * view 'action' gains a limit argument (2007-04-03)
+  * Improvements to data bundle package (e.g. uuids). (2007-04-05)
 
 v0.3 2007-02
 ************
