@@ -63,7 +63,7 @@ class DataBundle(object):
         # must be set first
         self.metadata = {}
         if id is None or id == '':
-            self.id = str(uuid.uuid1())
+            self.id = str(uuid.uuid4())
         self._meta_path = None
         self.data_path = None
         self.path = path
