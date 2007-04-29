@@ -25,7 +25,7 @@ class RootController(BaseController):
 
     def store(self):
         import econ.store
-        index = econ.store.index.items()
+        index = econ.store.index().items()
         def get_title(_dict):
             if _dict.has_key('title'):
                 return _dict['title']
@@ -74,7 +74,7 @@ def get_current_value(startYear, endYear=2002):
     import econ.data
     import econ.store
     import econ.DiscountRate
-    databundle = econ.store.index['uk_price_index_1850-2002_annual']
+    databundle = econ.store.index()['uk_price_index_1850-2002_annual']
     filePath = databundle.data_path
     ts1 = econ.data.getTimeSeriesFromCsv(file(filePath))
     discounter = econ.DiscountRate.DiscountRateHistorical(ts1)
