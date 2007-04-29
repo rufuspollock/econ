@@ -30,6 +30,24 @@ class TabularData(object):
         if header is not None:
             self.header = header
 
+def transpose(data):
+    # transpose a list of lists
+    out = []
+    numrows = len(data)
+    if numrows == 0:
+        return out
+    numcols = len(data[0])
+    if numcols == 0:
+        return out
+    for jj in range(numcols):
+        newrow = []
+        for ii in range(numrows):
+            newrow.append(data[ii][jj])
+        out.append(newrow)
+    return out
+
+
+
 import csv
 class ReaderCsv(object):
     """Read data from a csv file into a TabularData structure
