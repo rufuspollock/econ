@@ -17,6 +17,23 @@ def download_data(series_id, format='csv'):
     out = zipfo.read(name)
     return out
 
+def parse_mdg_csv(csv):
+    pass
+
+
+def grab_metadata():
+    # does *not* work because of nasty javascript
+    # probably need to use selenium
+    from mechanize import Browser
+    br = Browser()
+    br.addheaders = [ ('User-agent', 'Firefox') ]
+    br.set_handle_robots(False)
+    br.open('http://mdgs.un.org/unsd/mdg/Metadata.aspx')
+    br.follow_link(text='Flat View')
+    assert br.viewing_html()
+    out = br.response().read()
+    # TODO: extract option list and then clean up
+    return out
 
 class TestStuff:
 
@@ -26,7 +43,13 @@ class TestStuff:
         out = download_data(580)
         assert len(out) > 0
         print out[:30]
-        assert False
+
+    def test_grab_metadata(self):
+        # out = grab_metadata()
+        # print out
+        # assert len(out) == 0
+        pass
+
                 
 if __name__ == '__main__':
     out = download_data(580, 'csv')
