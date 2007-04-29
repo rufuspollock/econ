@@ -83,10 +83,19 @@ The resulting website should be availabe at http://localhost:8080
         print usage
 
     def do_bundle(self, line=None):
-        if line == 'make': # default
+        args = []
+        if line:
+            args = line.split()
+        if args and args[0] == 'make': # default
+            import econ
+            args = line.split() 
+            if len(args) > 1:
+                path = args[1]
+            else:
+                store_path = econ.conf.get('DEFAULT', 'data_store_path')
+                path = store_path
             import econ.store.bundle
-            store_path = econ.conf.get('DEFAULT', 'data_store_path')
-            bndl = econ.store.bundle.create(store_path)
+            bndl = econ.store.bundle.create(path)
             print 'Created new data bundle %s at %s' % (bndl.id, bndl.path)
         else:
             print 'Unknown argument: %s' % line
@@ -94,9 +103,10 @@ The resulting website should be availabe at http://localhost:8080
 
     def help_bundle(self, line=None):
         usage = \
-'''bundle [ make ]
+'''bundle make [path]
 
-make: create a new data empty data bundle.
+make: create a new data empty data bundle at path. If path not provided create
+the bundle in the default data store (as specified in the config file).
 '''
         print usage
 
