@@ -2,9 +2,6 @@
 Tools for dealing with tabular data
 """
 
-import econ.log
-logger = econ.log.get_logger()
-
 class TabularData(object):
     """Holder for tabular data
 
