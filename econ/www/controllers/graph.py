@@ -16,23 +16,28 @@ class GraphController(BaseController):
         return render_response('graph/help')
 
     def _get_data(self):
-        self.data_url = request.params.get('data_url', '')
         limit = request.params.get('limit', '[:]')
-        if not self.data_url.endswith('.csv'):
-            msg = 'At present only the viewing of csv format files is supported.'
+        if request.params.has_key('data'):
+            data = request.params.get('data')
+        elif request.params.has_key('data_url'):
+            data_url = request.params.get('data_url')
+            if not data_url.endswith('.csv'):
+                msg = 'At present only the viewing of csv format files is supported.'
+                raise Exception(msg)
+            data = urllib.urlopen(data_url).read()
+        else:
+            msg = 'No data source provided'
             raise Exception(msg)
-        fileobj = None
-        # have to wrap in a StringIO object urllib.fd does not support seek
-        fileobj = StringIO.StringIO(urllib.urlopen(self.data_url).read())
+        fileobj = StringIO.StringIO(data)
         fileobj = limit_fileobj(fileobj, limit)
         return fileobj
-
+    
     def index(self):
         fileobj = None
         try:
             fileobj = self._get_data()
         except Exception, inst:
-            msg = 'Unable to open and process the data file at "%s" because:\n\n %s' % (self.data_url, inst)
+            msg = 'Error: %s' % inst
             c.error = msg
             return self.help()
         import genshi
@@ -44,8 +49,9 @@ class GraphController(BaseController):
         try:
             fileobj = self._get_data()
         except Exception, inst:
-            msg = 'Error: Unable to open and process the data file at %s because %s' % (data_url, inst)
-            return Response(msg)
+            msg = 'Error: %s' % inst
+            c.error = msg
+            return self.help()
         chart_code = self._get_chart_code(fileobj)
         return Response(chart_code, mimetype='text/plain')
 
