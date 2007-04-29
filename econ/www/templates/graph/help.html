@@ -1,0 +1,29 @@
+<html xmlns:py="http://genshi.edgewall.org/"
+  xmlns:xi="http://www.w3.org/2001/XInclude">
+  
+  <py:def function="page_title">Graph - Help</py:def>
+
+
+	<div py:match="content">
+    <div style="border: solid 3px red;" py:if="c.error">
+      <h3>There was an error:</h3>
+      <pre>${c.error}</pre>
+    </div>
+
+    <p>The 'graph' service provides graphing functionality.</p>
+
+    <p>You can use it as follows:
+
+    ${XML(
+    h.link_to(h.url_for(action='index'), h.url_for(action='index'))
+    )}
+    </p>
+    <p>Arguments:</p>
+    <ul>
+      <li>limit: limit the section of the dataset we use for plotting</li>
+    </ul>
+	</div>
+
+  <xi:include href="../layout.html" />
+</html>
+

@@ -1,0 +1,21 @@
+<div xmlns:py="http://genshi.edgewall.org/">
+  <div style="margin: 2em;">
+    <canvas id="graph" height="500" width="500"></canvas>
+  </div>
+
+  <script type="text/javascript">
+  function drawGraph() {
+      var options = { "xOriginIsZero" : false}
+      var layout = new PlotKit.Layout("line", options);
+      // layout.addDatasetFromTable("datatable", $("table_1"));
+      <py:for each="name, dataset in c.datasets">
+        layout.addDataset(${name}, ${dataset})
+      </py:for>
+      layout.evaluate();
+      var canvas = MochiKit.DOM.getElement("graph");
+      var plotter = new PlotKit.SweetCanvasRenderer(canvas, layout, {});
+      plotter.render();
+  }
+  MochiKit.DOM.addLoadEvent(drawGraph);
+  </script>
+</div>

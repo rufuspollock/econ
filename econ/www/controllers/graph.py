@@ -12,29 +12,59 @@ from econ.www.lib.base import *
 
 class GraphController(BaseController):
 
-    def _usage(self):
-        usage = '''To use this service:
-Arguments:
+    def help(self):
+        return render_response('graph/help')
 
-    - limit: limit the section of the dataset we plot
-            '''
+    def _get_data(self):
+        self.data_url = request.params.get('data_url', '')
+        limit = request.params.get('limit', '[:]')
+        if not self.data_url.endswith('.csv'):
+            msg = 'At present only the viewing of csv format files is supported.'
+            raise Exception(msg)
+        fileobj = None
+        # have to wrap in a StringIO object urllib.fd does not support seek
+        fileobj = StringIO.StringIO(urllib.urlopen(self.data_url).read())
+        fileobj = limit_fileobj(fileobj, limit)
+        return fileobj
 
     def index(self):
-        data_url = request.params.get('data_url', '')
-        limit = request.params.get('limit', '[:]')
-        if not data_url.endswith('.csv'):
-            return Response('At present only the viewing of csv format files is supported.')
         fileobj = None
         try:
-            # have to wrap in a StringIO object urllib.fd does not support seek
-            fileobj = StringIO.StringIO(urllib.urlopen(data_url).read())
-            fileobj = limit_fileobj(fileobj, limit)
+            fileobj = self._get_data()
         except Exception, inst:
-            msg = 'Error: Unable to open and process the data file at %s because %s' % (data_url, inst)
-            return Response(msg)
+            msg = 'Unable to open and process the data file at "%s" because:\n\n %s' % (self.data_url, inst)
+            c.error = msg
+            return self.help()
         import genshi
         c.html_table = genshi.XML(get_html_table(fileobj))
         return render_response('graph/chart', strip_whitespace=False)
+    
+    def source(self):
+        fileobj = None
+        try:
+            fileobj = self._get_data()
+        except Exception, inst:
+            msg = 'Error: Unable to open and process the data file at %s because %s' % (data_url, inst)
+            return Response(msg)
+        chart_code = self._get_chart_code(fileobj)
+        return Response(chart_code, mimetype='text/plain')
+
+    def _get_chart_code(self, fileobj):
+        fileobj.seek(0)
+        import econ.data.tabular
+        reader = econ.data.tabular.ReaderCsv()
+        tabdata = reader.read(fileobj)
+        # rows to columns
+        cols = econ.data.tabular.transpose(tabdata.data)
+        c.datasets = []
+        for ii in range(len(cols)):
+            name = 'data%s' % ii
+            c.datasets.append((name, str(cols[ii])))
+        result = render('graph/chart_code')
+        return result
+         
+
+
     
     def test(self):
         c.html_table = '''<table>
