@@ -1,0 +1,27 @@
+[DEFAULT]
+id = 27143e7e-4f96-4c1c-87b8-976ccc2bdc5a
+title = Government revenue (for 17 Countries in the period 1880-1913)
+source: Original data retrieved from <http://eh.net/databases/finance/> and then
+  reformatted (see ../prepare.py).
+  
+  That page also provides the following information about the
+  origins of the data:
+
+  > Below are data tables which accompany Marc Flandreau and Fredreric Zumer's book
+  > The Making of Global Finance, 1880-1913, OECD 2004. Please refer to it when
+  > quoting sources. A detailed presentation of the data and methodology is
+  > available in the monograph which can be read online.
+  >
+  > The tables provide economic data for seventeen countries:
+  >
+  > Argentina, Austria-Hungary, Belgium, Brazil, Denmark, France, Germany,
+  > Greece, Italy, Netherlands, Norway, Portugal, Russia, Spain, Sweden,
+  > Switzerland, and the United Kingdom.
+  >     
+  > Except when stated otherwise, units are million of domestic currency. The
+  > national units are: Argentina: paper peso; Austria-Hungary: florin;
+  > Belgium: Belgian franc; Brazil: Brazilian milreis; Denmark: kroner; France:
+  > French franc; Germany: mark; Greece: drachma, Italy: lira, Netherlands:
+  > Dutch florin; Norway: kroner, Portugal: Portuguese milreis; Spain: peseta;
+  > Sweden: kronor; Switzerland: Swiss franc; Russia: ruble; United Kingdom:
+  > pound.
