@@ -1,0 +1,5 @@
+[DEFAULT]
+id = e2021071-f299-40de-952a-f4f3b3375561
+title = Wheat, barley, oat, mutton and wool prices, and agricultural wages, 1500-1849 (10 year averages 1700-49 = 100)
+source = Mark Overton, *Agricultural Revolution in England: The transformation of the agrarian economy 1500-1850* [CUP 1996]. Table 3.1 p.64.
+
