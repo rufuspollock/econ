@@ -10,18 +10,45 @@
       <pre>${c.error}</pre>
     </div>
 
-    <p>The 'plot' service provides plotting functionality.</p>
-
-    <p>You can use it as follows:
-
+    <p>The 'plot' service provides plotting functionality -- you can send data
+    to the service and it will produce a graph of that data using the PlotKit
+    Javascript plotting library. The plot service is located at:</p>
+    <p>
     ${XML(
     h.link_to(h.url_for(action='index'), h.url_for(action='index'))
     )}
     </p>
-    <p>Arguments:</p>
+
+    <p>You send data to the service either by POSTing it or by providing the
+    url at which the data is located (in which case you can use a POST or a
+    GET). Currently the system will only plot tabular data in the comma
+    separated variables format. Furthermore, the data must be very clean -- no
+    blank lines, no empty or non-standard values for example.</p>
+
+    <p>Arguments to provide when using the service:</p>
     <ul>
-      <li>limit: limit the section of the dataset we use for plotting</li>
+      <li>data_url: a string providing the url to the data file you want
+      plotted.</li>
+      <li>data: the data itself (only supported with POSTs).</li>
+      <li>limit: limit the rows of the dataset we use for plotting. Uses
+      standard python list slicing syntax, e.g. limit=[2:] (all rows from 2
+      onwards), limit=[:-4] (all rows from the start to the 4th before the end)
+      etc.</li>
     </ul>
+
+    <h3>Examples</h3>
+    <p>
+    <a href="${h.url_for(action='index')}/?data_url=http://p.knowledgeforge.net/econ/svn/trunk/data/uk_price_index_1850-2002_annual/data.csv">
+      ${h.url_for(action='index')}/?data_url=http://p.knowledgeforge.net/econ/svn/trunk/data/uk_price_index_1850-2002_annual/data.csv</a>
+    </p>
+    <p>
+    <a href="${h.url_for(action='index')}/?data_url=http://p.knowledgeforge.net/econ/svn/trunk/data/world_population_historical/data.csv&amp;limit=[8:]">
+      ${h.url_for(action='index')}/?data_url=http://p.knowledgeforge.net/econ/svn/trunk/data/world_population_historical/data.csv&amp;limit=[8:]</a>
+
+    <br /><br />
+    Note that without the limit here the graph would not render because of the
+    massive span and uneven spacing of the X-axis values.
+    </p>
 	</div>
 
   <xi:include href="../layout.html" />
