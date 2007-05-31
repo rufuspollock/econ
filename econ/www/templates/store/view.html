@@ -1,0 +1,16 @@
+<html xmlns:py="http://genshi.edgewall.org/"
+  xmlns:xi="http://www.w3.org/2001/XInclude">
+  
+  <py:def function="page_title">Store - View</py:def>
+
+  <div py:match="content">
+    <h3>${c.title}</h3>
+    <ul>
+      <li py:for="key, value in c.metadata.items()">
+      <strong>${key}: </strong> ${value}
+      </li>
+    </ul>
+  </div>
+
+  <xi:include href="../layout.html" />
+</html>

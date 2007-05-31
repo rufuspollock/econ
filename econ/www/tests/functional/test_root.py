@@ -56,17 +56,6 @@ class TestRoot(TestControllerTwill):
 #        web.find('1694-10-01,6')
 #        web.code(200)
 
-    def test_view_html(self):
-        offset = '/store'
-        url = self.siteurl + offset
-        web.go(url)
-        # first on list
-        web.follow('uk_interest_rates')
-        web.code(200)
-        print web.show()
-        web.title('View Dataset \(html\)')
-        web.find('1694-10-01')
-
     def test_view_html_limit(self):
         offset = '/view/'
         query = '?data_url=./data/uk_interest_rates/data.csv&format=html&limit=[6:10]'
