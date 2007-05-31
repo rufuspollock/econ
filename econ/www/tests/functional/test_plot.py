@@ -1,27 +1,27 @@
 from econ.www.tests import *
 
 
-class TestGraph(TestControllerTwill):
+class TestPlot(TestControllerTwill):
 
     def test_test(self):
-        offset = url_for(controller='graph', action='test')
+        offset = url_for(controller='plot', action='test')
         url = self.siteurl + offset
         web.go(url)
         web.code(200)
         print web.show()
-        web.title('Graph - Chart')
+        web.title('Plot - Chart')
         web.find('1')
 
     def test_help(self):
-        offset = url_for(controller='graph', action='help')
+        offset = url_for(controller='plot', action='help')
         url = self.siteurl + offset
         web.go(url)
         web.code(200)
         print web.show()
-        web.find('provides graphing functionality')
+        web.find('provides plotting functionality')
     
     def test_source(self):
-        offset = url_for(controller='graph', action='source')
+        offset = url_for(controller='plot', action='source')
         dataurl = 'http://p.knowledgeforge.net/econ/svn/trunk/data/world_population_historical/data.csv'
         url = self.siteurl + offset + '?data_url=%s' % dataurl
         web.go(url)
@@ -30,19 +30,19 @@ class TestGraph(TestControllerTwill):
         web.find('<script')
 
     def test_index_data_url(self):
-        offset = url_for(controller='graph')
+        offset = url_for(controller='plot')
         dataurl = 'http://p.knowledgeforge.net/econ/svn/trunk/data/world_population_historical/data.csv'
         url = self.siteurl + offset + '?data_url=%s' % dataurl
         web.go(url)
         web.code(200)
         print web.show()
-        web.title('Graph - Chart')
+        web.title('Plot - Chart')
         web.find('Kremer')
 
     def test_index_post(self):
         # add intercept for urllib2
         add_urllib2_intercept(self.host, self.port, lambda : self.wsgiapp)
-        offset = url_for(controller='graph')
+        offset = url_for(controller='plot')
         url = self.siteurl + offset
         table = \
 '''0,1
@@ -52,8 +52,6 @@ class TestGraph(TestControllerTwill):
         the_page = response.read()
         assert '<table' in the_page
         assert '1' in the_page
-        print the_page
-        assert False
 
 def add_urllib2_intercept(host, port, appfunc):
     # NB: this needs wsgi_intercept code for urllib2

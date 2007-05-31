@@ -5,15 +5,15 @@ import genshi
 from econ.www.lib.base import *
 
 # Several steps:
-# 1. generate graph
+# 1. generate plot
 # 2. convert data to suitable format to use ...
 #   csv
 #   html 
 
-class GraphController(BaseController):
+class PlotController(BaseController):
 
     def help(self):
-        return render_response('graph/help')
+        return render_response('plot/help')
 
     def _get_data(self):
         limit = request.params.get('limit', '[:]')
@@ -42,7 +42,7 @@ class GraphController(BaseController):
             return self.help()
         import genshi
         c.html_table = genshi.XML(get_html_table(fileobj))
-        return render_response('graph/chart', strip_whitespace=False)
+        return render_response('plot/chart', strip_whitespace=False)
     
     def source(self):
         fileobj = None
@@ -66,7 +66,7 @@ class GraphController(BaseController):
         for ii in range(len(cols)):
             name = 'data%s' % ii
             c.datasets.append((name, str(cols[ii])))
-        result = render('graph/chart_code')
+        result = render('plot/chart_code')
         return result
          
 
@@ -81,7 +81,7 @@ class GraphController(BaseController):
         <td>1</td><td>1</td>
     </tr>
     '''
-        return render_response('graph/chart')
+        return render_response('plot/chart')
 
 
 def get_html_table(fileobj):

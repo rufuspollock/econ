@@ -1,23 +1,23 @@
 <html xmlns:py="http://genshi.edgewall.org/"
   xmlns:xi="http://www.w3.org/2001/XInclude">
   
-  <py:def function="page_title">Graph - Chart</py:def>
+  <py:def function="page_title">Plot - Chart</py:def>
 
 	<script type="text/javascript" py:def="page_specific_scripts">
-function drawGraph() {
+function drawPlot() {
     var options = { "xOriginIsZero" : false}
     var layout = new PlotKit.Layout("line", options);
     layout.addDatasetFromTable("datatable", $("table_1"));
     layout.evaluate();
-    var canvas = MochiKit.DOM.getElement("graph");
+    var canvas = MochiKit.DOM.getElement("plot");
     var plotter = new PlotKit.SweetCanvasRenderer(canvas, layout, {});
     plotter.render();
 }
-MochiKit.DOM.addLoadEvent(drawGraph);
+MochiKit.DOM.addLoadEvent(drawPlot);
 	</script>
 
 	<div py:match="content">
-		<div style="margin: 2em;"><canvas id="graph" height="500" width="500"></canvas></div>
+		<div style="margin: 2em;"><canvas id="plot" height="500" width="500"></canvas></div>
 		${c.html_table}
 	</div>
 
