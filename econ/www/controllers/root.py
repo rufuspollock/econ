@@ -23,18 +23,6 @@ class RootController(BaseController):
         except Exception, inst:
             return Response('<p><strong>There was an error: ' +  str(inst) + '</strong></p>')
 
-    def store(self):
-        import econ.store
-        index = econ.store.index().items()
-        def get_title(_dict):
-            if _dict.has_key('title'):
-                return _dict['title']
-            else: return 'No title available'
-        storeIndex = [ (ii[0], ii[1].metadata.get('title', 'No title available'), ii[1].data_path)
-            for ii in index ]
-        c.store_index = storeIndex
-        return render_response('store_index')
-        
     def view(self):
         data_url = request.params.get('data_url', None)
         format = request.params.get('format', 'raw')

@@ -45,14 +45,6 @@ class TestRoot(TestControllerTwill):
         web.find('Current Value')
         web.find('Value of one pound from 1900 in 2002 was: 71.65')
 
-    def test_store(self):
-        offset = '/store'
-        url = self.siteurl + offset
-        web.go(url)
-        print web.show()
-        web.title('Store Index')
-        web.code(200)
-
     def test_view_raw(self):
         offset = '/store'
         url = self.siteurl + offset

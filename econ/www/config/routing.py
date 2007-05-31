@@ -19,6 +19,7 @@ def make_map(global_conf={}, app_conf={}):
     # to the routes manual @ http://routes.groovie.org/docs/
     map.connect('', controller='root', action='index')
     map.connect('plot', controller='plot')
+    map.connect('store/:action/:id', controller='store')
     map.connect(':action', controller='root')
     map.connect(':controller/:action/:id')
     map.connect('*url', controller='template', action='view')
