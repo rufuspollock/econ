@@ -4,11 +4,19 @@
   <py:def function="page_title">Store - View</py:def>
 
   <div py:match="content">
-    <h3>${c.title}</h3>
+    <h2>${c.title}</h2>
+
+    <h3>Metadata</h3>
     <ul>
       <li py:for="key, value in c.metadata.items()">
       <strong>${key}: </strong> ${value}
       </li>
+    </ul>
+
+    <h3>Data</h3>
+    <ul>
+      <li><a href="${c.data_url}">Raw Data</a></li>
+      <li><a href="${c.plot_data_url}">Plot This Dataset</a></li>
     </ul>
   </div>
 

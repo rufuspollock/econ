@@ -1,8 +1,5 @@
 from econ.www.tests import *
 
-from econ.www.controllers.root import parse_limit, limit_fileobj
-from StringIO import StringIO
-
 class TestStore(TestControllerTwill):
 
     def test_index(self):
@@ -18,7 +15,7 @@ class TestStore(TestControllerTwill):
         # web.follow('world_population_historical')
         # web.code(200)
 
-    def test_read(self):
+    def test_view(self):
         id = 'uk_price_index_1850-2002_annual'
         offset = url_for(controller='store', action='view', id=id)
         url = self.siteurl + offset
@@ -27,6 +24,8 @@ class TestStore(TestControllerTwill):
         web.code(200)
         web.title('Store - View')
         web.find('UK Price Index')
+        web.find('Raw Data')
+        web.find('Plot This Dataset')
 
     def test_data(self):
         id = 'uk_price_index_1850-2002_annual'

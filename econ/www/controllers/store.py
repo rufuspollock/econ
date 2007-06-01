@@ -37,6 +37,9 @@ class StoreController(BaseController):
         bundle = self._get_bundle(id)
         c.title = bundle.metadata.get('title', 'No Title Provided')
         c.metadata = bundle.metadata
+        c.data_url = h.url_for(controller='store', action='data', id=id,
+                qualified=True)
+        c.plot_data_url = h.url_for(controller='plot', data_url=c.data_url)
         return render_response('store/view')
 
     def data(self, id):

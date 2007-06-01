@@ -21,9 +21,11 @@ class PlotController(BaseController):
             data = request.params.get('data')
         elif request.params.has_key('data_url'):
             data_url = request.params.get('data_url')
-            if not data_url.endswith('.csv'):
-                msg = 'At present only the viewing of csv format files is supported.'
-                raise Exception(msg)
+            # TODO: is this dangerous to allow any url to passed
+            # what about ../../../ type urls?
+            # if not data_url.endswith('.csv'):
+            #    msg = 'At present only the viewing of csv format files is supported.'
+            #    raise Exception(msg)
             data = urllib.urlopen(data_url).read()
         else:
             msg = 'No data source provided'

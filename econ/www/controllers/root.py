@@ -23,41 +23,6 @@ class RootController(BaseController):
         except Exception, inst:
             return Response('<p><strong>There was an error: ' +  str(inst) + '</strong></p>')
 
-    def view(self):
-        data_url = request.params.get('data_url', None)
-        format = request.params.get('format', 'raw')
-        limit = request.params.get('limit', '[:]')
-        if not data_url.endswith('.csv'):
-            self.response('At present only the viewing of csv format files is supported.')
-        fileobj = None
-        try:
-            # have to wrap in a StringIO object urllib.fd does not support seek
-            fileobj = StringIO.StringIO(urllib.urlopen(data_url).read())
-            fileobj = limit_fileobj(fileobj, limit)
-        except Exception, inst:
-            msg = 'Error: Unable to open and process the data file at %s because %s' % (data_url, inst)
-            return Response(msg)
-        if format == 'raw':
-            # TODO: set text plain stuff
-            result = fileobj.read()
-            return Response(result, mimetype='text/plain')
-        elif format == 'html':
-            import genshi
-            c.html_table = genshi.XML(get_html_table(fileobj))
-            return render_response('view_html', strip_whitespace=False)
-        else:
-            msg = 'The format requested, [%s], is unsupported' % format
-            return Response('msg')
-        
-
-def get_html_table(fileobj):
-    import econ.data.tabular
-    reader = econ.data.tabular.ReaderCsv()
-    writer = econ.data.tabular.WriterHtml({'id' : 'table_1'})
-    tabdata = reader.read(fileobj)
-    html = writer.write(tabdata)
-    return html
-
 def get_current_value(startYear, endYear=2002):
     import econ.data
     import econ.store
@@ -67,34 +32,4 @@ def get_current_value(startYear, endYear=2002):
     ts1 = econ.data.getTimeSeriesFromCsv(file(filePath))
     discounter = econ.DiscountRate.DiscountRateHistorical(ts1)
     return discounter.getReturn(startYear, endYear)
-
-def parse_limit(instr):
-    # if a bad string just return None, None
-    default = (None,None)
-    if not (instr.startswith('[') and instr.endswith(']')):
-        # log something?
-        return default
-    newstr = instr[1:-1]
-    try:
-        first, second = newstr.split(':')
-    except:
-        # log something?
-        return default
-    if first == '':
-        first = None
-    else:
-        first = int(first)
-    if second == '':
-        second = None
-    else:
-        second = int(second)
-    return (first, second)
-    
-def limit_fileobj(fo, limit_str):
-    start, end = parse_limit(limit_str)
-    lines = fo.readlines()
-    outlines = lines[start:end]
-    outstr = ''.join(outlines)
-    outfo = StringIO.StringIO(outstr)
-    return outfo
 
