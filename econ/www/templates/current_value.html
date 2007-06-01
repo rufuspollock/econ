@@ -4,8 +4,8 @@
   <py:def function="page_title">Current Value Calculator</py:def>
 
   <div py:match="content">
-  <p py:if="errorMessage">
-    There was an error. Details: ${errorMessage}
+  <p py:if="c.error_message" style="border: solid 2px red;">
+    There was an error. Details: ${c.error_message}
   </p>
   <form action="${c.ownPath}" method="GET">
 		Year: <input name="year" value="${year}" />
@@ -15,6 +15,9 @@
 	<p>
 			Value of one pound from ${c.year} in 2002 was: ${c.value}
 	</p>
+  <p>
+  <a href="${c.data_url}">Data Source</a>
+  </p>
   </div>
 
   <xi:include href="layout.html" />

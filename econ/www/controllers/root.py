@@ -6,6 +6,7 @@ from econ.www.lib.base import *
 
 import econ
 cfg = econ.conf
+import econ.store
 
 class RootController(BaseController):
 
@@ -13,19 +14,21 @@ class RootController(BaseController):
         return render_response('index')
 
     def current_value(self):
+        c.error_message = ''
         try:
             year = int(request.params.get('year', 2001))
             currentValue = get_current_value(year)
             c.year = year,
             c.ownPath = '/current_value/'
             c.value = currentValue
-            return render_response('current_value')
+            c.data_url = h.url_for(controller='store', action='view',
+                    id='uk_price_index_1850-2002_annual')
         except Exception, inst:
-            return Response('<p><strong>There was an error: ' +  str(inst) + '</strong></p>')
+            c.error_message = str(inst)
+        return render_response('current_value')
 
 def get_current_value(startYear, endYear=2002):
     import econ.data
-    import econ.store
     import econ.DiscountRate
     databundle = econ.store.index()['uk_price_index_1850-2002_annual']
     filePath = databundle.data_path
