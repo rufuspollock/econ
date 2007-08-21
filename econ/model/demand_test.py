@@ -7,7 +7,7 @@ import random
 
 from econ.model.demand import *
 
-class DemandFunctionTest(unittest.TestCase):
+class TestDemandFunction:
     
     def testGetLinearDemandFunction(self):
         constant = 2.0
@@ -15,7 +15,7 @@ class DemandFunctionTest(unittest.TestCase):
         df1 = getLinearDemandFunction(constant, slope)
         price1 = random.random() * 3.0
         expDemand = max(0, 2.0 + price1 * slope)
-        self.assertEqual(expDemand, df1(price1))
+        assert expDemand == df1(price1)
         
         
         

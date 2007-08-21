@@ -7,13 +7,13 @@ import unittest
 
 from network_effects import *
 
-class NetworkEffectsModelTest(unittest.TestCase):
+class TestNetworkEffectsModel(object):
     def __init__(self, methodName = 'testGetEquilibrium'):
         """
         Need this so that we can instantiate the class outside of test
         framework for use in graphing etc
         """
-        super(NetworkEffectsModelTest, self).__init__(methodName)
+        super(TestNetworkEffectsModel, self).__init__(methodName)
     
     ## ********************************************************************
     ## Network Effect Models
@@ -82,13 +82,16 @@ class NetworkEffectsModelTest(unittest.TestCase):
     ## Tests
     ## ********************************************************************
     
-    def setUp(self):
+    def setup_method(self, name=''):
         self._neModel1 = self.locationalINESymmetric(1, 5, 7)
         self._aa = 1.0
         self._bb1 = 2.0
         self._bb2 = 5.0
         self._linearModel = self.linearNetworkEffects(self._aa, self._bb1,
             self._bb2)
+
+    def assertAlmostEqual(self, x, y):
+        assert round(x-y, 6) == 0
     
     def testGetNuA(self):
         nuA = self._linearModel.getNuA()
@@ -126,8 +129,7 @@ class NetworkEffectsModelTest(unittest.TestCase):
         price = maxPrice * random.random()
         equilTmp = self._linearModel.getEquilibrium(0.0, 1.0)
         out1 = self._linearModel.getDemand(price, 0.0, equilTmp)
-        self.assertAlmostEqual(out1, demandFunction(price), 7,
-            'Error: price=' + str(price))
+        assert round(out1-demandFunction(price), 7) == 0, 'Error: price=' + str(price)
         
     def _plotDemand(self):
         """Useful helper for debugging"""
@@ -148,3 +150,7 @@ class NetworkEffectsModelTest(unittest.TestCase):
         expectedWelfare = ( (self._aa - 0.5 * self._bb1) * eq1**2 +
             (self._aa - 0.5 * self._bb2) * (1-eq1)**2 )
         self.assertAlmostEqual(outWelfare, expectedWelfare)
+
+
+# 2007-08-21 here for backwards compatability
+NetworkEffectsModelTest = TestNetworkEffectsModel

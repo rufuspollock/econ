@@ -9,7 +9,10 @@ import math
 from econ.model.copyright import *
 from econ.model.discount import *
 
-class CopyrightIncomeTest(unittest.TestCase):
+class TestCopyrightIncome:
+
+    def assertAlmostEqual(self, x, y):
+        assert round(x-y,5) == 0
     
     def testCopyrightIncomeModelLinear(self):
         # get the std linear model of form a + bt with b = 0, a = 1
@@ -17,7 +20,7 @@ class CopyrightIncomeTest(unittest.TestCase):
         incModel = CopyrightIncomeModelLinear()
         incModel.constant = a1
         
-        self.assertEquals(incModel.getIncome(random.randint(0, 2000)), a1)
+        assert incModel.getIncome(random.randint(0, 2000)) == a1
     
     def testCopyrightIncomeModelQuadratic(self):
         # - x (x - b) = - (x^2 - bx)
@@ -34,13 +37,13 @@ class CopyrightIncomeTest(unittest.TestCase):
         exponentialModel = CopyrightIncomeModelExponential()
         incomeModel = CopyrightIncomeModelHybrid()
         
-        self.assertEqual(0, incomeModel.getIncome(10))
+        assert 0 == incomeModel.getIncome(10)
         
         incomeModel.getModelList().append((1, linearModel))
         incomeModel.getModelList().append((5, exponentialModel))
         smallNumber = 0.2
         largeNumber = 100
-        self.assertNotEqual(1, incomeModel.getIncome(smallNumber))
+        assert 1 != incomeModel.getIncome(smallNumber)
         self.assertAlmostEqual(1, incomeModel.getIncome(largeNumber))
     
     def testSummary(self):
@@ -71,8 +74,9 @@ class CopyrightIncomeTest(unittest.TestCase):
         
         cis1 = CopyrightIncomeSummary(incModel, drc1)
         cis1.calculate()
-        self.assertAlmostEqual(cis1.totalPossibleIncome, linearSolutionTotal(a1, dr1), 1)
+        diff = cis1.totalPossibleIncome - linearSolutionTotal(a1, dr1)
+        assert round(diff, 1) == 0
         
         ran2 = random.randint(0,1500)
-        self.assertAlmostEqual(cis1.getProportionOfTotalPossibleIncome(ran2),
-            proportionOfTotalIncome(dr1, ran2), 1)
+        diff = cis1.getProportionOfTotalPossibleIncome(ran2) - proportionOfTotalIncome(dr1, ran2)
+        assert round(diff, 1) == 0
