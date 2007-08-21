@@ -1,4 +1,8 @@
 __version__ = '0.4'
+__description__ = 'An open set of economics related tools, data and services.'
+__long_description__ = \
+'''
+'''
 
 def get_config():
     """Load config file and return configobj containing that information.
