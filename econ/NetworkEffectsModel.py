@@ -10,8 +10,8 @@ import math
 # optimize etc
 from scipy import *
 
-import econ.log
-logger = econ.log.get_logger()
+# import econ.log
+# logger = econ.log.get_logger()
 
 class NetworkEffectsModel:
     """
@@ -144,7 +144,7 @@ class NetworkEffectsModel:
             tmsg = '(a,b,f(a),f(b)=' + str((a,b,fa,fb))
             tmsg += '\n\tA price:' + str(self._price_A)
             tmsg += '\n\tConstants:' + str(self._constantList)
-            logger.info(tmsg)
+            # logger.info(tmsg)
         return optimize.bisect(self.equilibriaFunction, a, b)
     
     def getDemand(self, price, startSearch, endSearch):
@@ -175,13 +175,13 @@ class NetworkEffectsModel:
         """
         (maximalPrice, boundaryDemand) = self._findMaximalAllowablePrice(
             startSearch, endSearch)
-        logger.debug('Maximal allowable price:' + str(maximalPrice))
+        # logger.debug('Maximal allowable price:' + str(maximalPrice))
         # if price too high no local solution for that demand so return
         # -ve demand
         if price > maximalPrice:
-            logger.info('getDemand: price (' + str(price) +
-                ') exceeeded maximal price (' +
-                str(maximalPrice) + '). Returning demand of 0')
+            # logger.info('getDemand: price (' + str(price) +
+            #    ') exceeeded maximal price (' +
+            #    str(maximalPrice) + '). Returning demand of 0')
             return 0
         # solve g(t) = f(p) for t
         self._price_A = price
@@ -245,8 +245,8 @@ class NetworkEffectsModel:
         priceAPart = equilibriumValue * self._priceFunction_A(self._price_A)
         priceBPart = equilibriumValue * self._priceFunction_B(self._price_B)
         
-        logger.debug('Welfare: (netA, netB, hetA, hetB): ' + \
-            str((networkAPart, networkBPart, hetAPart, hetBPart)))
+        # logger.debug('Welfare: (netA, netB, hetA, hetB): ' + \
+        #    str((networkAPart, networkBPart, hetAPart, hetBPart)))
         totalWelfare = (networkAPart + networkBPart +
                         hetAPart + hetBPart + priceAPart + priceBPart)
         return totalWelfare
