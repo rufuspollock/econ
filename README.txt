@@ -1,65 +1,44 @@
-+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-Introduction
-+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+## Introduction
 
-This project contains code for economics modelling. Currently the language
-of choice is python.
+This project contains economics-related open source and open data material.
 
-Copyright
-*********
 
-Copyright (c) 2004-2006 Open Knowledge Foundation. All rights reserved.
+## Copyright and License
+
+Copyright (c) 2004-2007 Open Knowledge Foundation. All rights reserved.
+
+All material is available under and open license see the file "LICENSE.txt" for
+details.
 
 Contributors to the project are listed in AUTHORS.
 
-License
-*******
 
-See the file "LICENSE" for the license on this software, including
-terms & conditions for usage, and a DISCLAIMER OF ALL WARRANTIES.
+## Installation
 
-+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-Getting Started
-+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+### Dependencies
 
-Dependencies
-************
+  * python. This package is written in python (http://www.python.org/) and
+    requires a python version >= 2.3 to function.
+  * setuptools (python package)
 
-python
-======
+### Install Code
 
-This package is written in python (http://www.python.org/) and requires a
-python version >= 2.3 to function.
+1. Either: Grab the source code and then run:
 
-mx.Tidy (optional)
-===================
+  $ sudo python setup.py install
 
-econ.data.tabular.HtmlWriter prettyPrint functionality depends on mx.Tidy
-package (this functionality is disabled in normal used) 
+2. OR: use easy_install: $ easy_install econ
 
+### Create Confirguation File
 
-Installation
-************
+Copy the file etc/econ.ini.new to development.ini and edit to reflect your
+setup.
 
-1. Install Code
-===============
-
-Either add the path to ./src to your PYTHONPATH or run:
-  $ python setup.py install
-
-2. Confirguation File
-=====================
-
-Make a copy the file etc/econ.conf.new and place it somewhere permanent (e.g.
-etc/econ.conf). Then open it in your favourite text editor and set any
-necessary configuration options.
-
-Finally in any environment from which you which to use the econ package (shell,
-webserver etc) you will need to set the ECONCONF variable to point to the
+Finally for convenience you may want to set the ECONCONF environment variable to point to the
 location of this file.
 
-3. Test Installation
-====================
+
+### Test Installation
 
 You can test your installation by opening a python shell and running:
 
@@ -67,24 +46,14 @@ You can test your installation by opening a python shell and running:
   >>> print econ.__version__
 
 
-Command Line Admin Utility
-**************************
+## Command Line Admin Utility
 
-  $ bin/econ-admin
+    $ bin/econ-admin
 
 Then follow the instructions to get help
 
 
-+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-For Developers
-+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+## For Developers
 
-Code Layout and Running the Tests 
-*********************************
-
-Source files are kept in the src/ tree. Test harnesses are kept side by
-side with the classes and functions they test with test or Test
-appended to the file name.
-
-  $ bin/econ-test
+Running tests: we use py.test for running test.
 

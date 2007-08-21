@@ -17,6 +17,9 @@ setup(
     packages=find_packages(exclude=['docs']),
     include_package_data=True,
     package_data={'econ.www': ['i18n/*/LC_MESSAGES/*.mo']},
+    # mx.Tidy (optional)
+    # econ.data.tabular.HtmlWriter prettyPrint functionality depends on mx.Tidy
+    # package (this functionality is disabled in normal used) 
     extras_require = {
         'www': ["Pylons>=0.9.4,<=1.0"],
         },
