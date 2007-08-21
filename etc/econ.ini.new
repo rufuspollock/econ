@@ -8,11 +8,17 @@ debug = true
 email_to = you@yourdomain.com
 smtp_server = localhost
 error_email_from = paste@localhost
+# path to data store (see econ.store module)
+data_store_path = ./data
+
+log.level = INFO
+# path to log file
+log.file_path = ./econ.log
 
 [server:main]
 use = egg:Paste#http
 host = 0.0.0.0
-port = 5000
+port = 5002
 
 [app:main]
 # use = egg:econ.www

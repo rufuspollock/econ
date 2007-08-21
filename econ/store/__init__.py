@@ -17,4 +17,5 @@ def make_index(basePath):
     return results
 
 def index():
-    return make_index(econ.conf.get('DEFAULT', 'data_store_path'))
+    store_path = econ.get_config()['data_store_path']
+    return make_index(store_path)

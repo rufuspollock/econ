@@ -5,7 +5,7 @@ import StringIO
 from econ.www.lib.base import *
 
 import econ
-cfg = econ.conf
+import econ.store
 
 class StoreController(BaseController):
 

@@ -8,9 +8,10 @@ import os
 
 import econ
 
-logging_level = econ.conf.get('logging', 'level')
-logging_log_file_path = econ.conf.get('logging', 'log_file_path')
-application_name = 'econ'
+cfg = econ.get_config()
+logging_level = cfg['log.level']
+logging_log_file_path = cfg['log.file_path']
+application_name = econ.__application_name__
 
 def get_logger():
     """
