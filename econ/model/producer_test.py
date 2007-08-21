@@ -1,20 +1,20 @@
 import unittest
 import random
 
-import DemandFunction
-import Producer
+import econ.model.demand
+import econ.model.producer
 
 class ProducerTest(unittest.TestCase):
     def setUp(self):
         self.dfConstant = 5.0
         self.dfSlope = -1.0
-        self.df = DemandFunction.getLinearDemandFunction(self.dfConstant,
+        self.df = econ.model.demand.getLinearDemandFunction(self.dfConstant,
                                                          self.dfSlope)
         self.marginalCost = 0.0
         def costFunction(quantity):
             return quantity * self.marginalCost
         self.cf = costFunction
-        self.producer = Producer.Producer(self.df, self.cf)
+        self.producer = econ.model.producer.Producer(self.df, self.cf)
     
     def testGetProfitFunction(self):
         def profitFunction(price):

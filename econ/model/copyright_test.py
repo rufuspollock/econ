@@ -6,8 +6,8 @@ import unittest
 import random
 import math
 
-from CopyrightModel import *
-from DiscountRate import *
+from econ.model.copyright import *
+from econ.model.discount import *
 
 class CopyrightIncomeTest(unittest.TestCase):
     

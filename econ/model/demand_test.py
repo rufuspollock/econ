@@ -5,7 +5,7 @@
 import unittest
 import random
 
-from DemandFunction import *
+from econ.model.demand import *
 
 class DemandFunctionTest(unittest.TestCase):
     

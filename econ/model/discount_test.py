@@ -4,8 +4,8 @@
 
 import unittest
 
-from DiscountRate import *
-import data
+from econ.model.discount import *
+import econ.data
 
 class DiscountRateTest(unittest.TestCase):
     
@@ -37,7 +37,7 @@ class DiscountRateHistoricalTest(unittest.TestCase):
     
     def setUp(self):
         dataPoints = [(1850, 10.9), (1990,497.6), (2002, 695.1)]
-        ts1 = data.TimeSeries(dataPoints)
+        ts1 = econ.data.TimeSeries(dataPoints)
         self.discounter = DiscountRateHistorical(ts1)
     
     def test1(self):

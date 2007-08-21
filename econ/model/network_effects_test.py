@@ -5,7 +5,7 @@
 import random
 import unittest
 
-from NetworkEffectsModel import *
+from network_effects import *
 
 class NetworkEffectsModelTest(unittest.TestCase):
     def __init__(self, methodName = 'testGetEquilibrium'):
