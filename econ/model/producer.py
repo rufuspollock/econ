@@ -37,11 +37,21 @@ class Producer(object):
         """
         Usual global vs. local issues ...
         """
-        startSearch = 1.0
+        startSearch = 0.0
         endSearch = self.MAXPRICE
         def tmpFunc(price):
             return - self.profitFunction(price)
         maxPrice = optimize.fminbound(tmpFunc, startSearch, endSearch)
+        steps = 500
+        eps = (endSearch - startSearch) / steps
+        # may need to use brute rather than fminbound for robustness 
+        # e.g. with fixed costs profit function is zero (with zero output) up
+        # to some threshold.
+        # just cannot get this to work ...
+        # maxPrice, maxDemand = optimize.brute(tmpFunc, ((startSearch, endSearch,
+        #    eps))
+        #        )
+        # maxPrice = optimize.fmin(tmpFunc, (startSearch - endSearch)/2.0)
         return maxPrice
     
     def getMonopolyProfits(self):
@@ -119,15 +129,30 @@ class ProducerSummary(object):
         
         priceValues = arange(minPrice, self._producer.MAXPRICE, self.eps)
         demandValues = [ prod.demandFunction(price) for price in priceValues ]
+        # fix zero division issues plus scale problems
+        def avg_cost(quantity):
+            if quantity == 0:
+                return prod.MAXPRICE
+            else:
+                return min(prod.MAXPRICE, prod.costFunction(quantity)/quantity)
+        avg_costs = [  avg_cost(dd) for dd in demandValues ]
         competitivePrice = prod.getCompetitivePrice()
         monopolyPrice = prod.getMonopolyPrice()
+        monopoly_profits = prod.profitFunction(monopolyPrice)
         competitiveDemand = prod.demandFunction(competitivePrice)
         monopolyDemand = prod.demandFunction(monopolyPrice)
+        dw_costs = prod.getMonopolyDeadweightCosts()
         # [[TODO what happens if this is infinite
         maxDemand = prod.demandFunction(minPrice)
+
+        print 'Monopoly price: ', monopolyPrice
+        print 'Monopoly demand: ', monopolyDemand
+        print 'Monopoly profits: ', monopoly_profits
+        print 'Deadweight losses: ', dw_costs
         
-        fig = matplotlib.figure.Figure()
+        fig = pylab.figure(1)
         pylab.plot(demandValues, priceValues)
+        pylab.plot(demandValues, avg_costs)
         pylab.xlabel('Demand')
         pylab.ylabel('Price')
         pylab.axis(xmin=demandAxisOrigin)

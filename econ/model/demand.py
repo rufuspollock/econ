@@ -1,10 +1,8 @@
-# Copyright (c) 2005, Rufus Pollock. All Rights Reserved
-# Licensed under the GNU Public License (GPL) v2.0
-# See the LICENSE file in the root of the distribution for details
-
-# Conveience functions
+# Convenience functions
 
 def getLinearDemandFunction(constant, slope):
     def df(price):
+        if price < 0:
+            return 0
         return max(0.0, constant + slope * price)
     return df
