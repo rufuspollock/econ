@@ -1,0 +1,44 @@
+[DEFAULT]
+id = 40b8f442-9c62-4edc-b018-1ef0dab0c9a6
+title = US Population Estimates (mid year) 1790 to 2005
+source = <http://eh.net/databases/uspop/uspop.txt>. Original file included the following notes:
+  
+  > For The Resident Population:
+  > 
+  > US Department of Commerce, Historical Statistics of the United States: Colonial Times to 1970 (Washington, 1975), I, 8, for 1900-1949
+  > 
+  > Census Bureau, Current Population Reports, Series P-25, No. 802 for 1950-59
+  > 
+  > US Department of Commerce, Statistical Abstract of the United States (Washington, 2005), p. 7, for 1960-1999 (also available online at http://www2.census.gov/prod2/statcomp/documents/)
+  > 
+  > www.census.gov/popest/national/NA-EST2004-01.html for 2000-2005
+  > 
+  > Alaska and Hawaii are left out until 1960
+  > 					
+  > 					
+  > For Total Population, Including Armed Forces Overseas:
+  > 
+  > US Department of Commerce, Historical Statistics of the United States: Colonial Times to 1970 (Washington, 1975), I, 8, for 1930-1949
+  > 
+  > Census Bureau, Current Population Reports, Series P-25, No. 802 for 1950-59
+  > 
+  > US Department of Commerce, Statistical Abstract of the United States (Washington, 2005), p. 7, for 1960-1999 (also available online at http://www2.census.gov/prod2/statcomp/documents/)
+  > 
+  > www.census.gov/popest/national/NA-EST2004-01.html for 2000-2005
+  > 
+  > also excludes Alaska and Hawaii until 1960
+  > 
+  > 				
+  > 				
+  > For Civilian Resident Population:
+  > 
+  > US Department of Commerce, Historical Statistics of the United States: Colonial Times to 1970 (Washington, 1975), I, 8, for 1917-1919 and 1930-1949
+  > 
+  > Census Bureau, Current Population Reports, Series P-25, No. 802 for 1950-59
+  > 
+  > US Department of Commerce, Statistical Abstract of the United States (Washington, 2005), p. 7, for 1960-1999 (also available online at http://www2.census.gov/prod2/statcomp/documents/)
+  > 
+  > www.census.gov/popest/national/NA-EST2004-01.html for 2000-2005
+  > 
+  > also excludes Alaska and Hawaii until 1960
+  > 
