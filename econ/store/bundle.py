@@ -90,6 +90,10 @@ class DataBundle(object):
         cfp.write(fo)
         fo.close()
     
-    def __repr__(self):
-        return 'DataBundle: ' + self.id + '\n' + str(self.metadata)
+    def __str__(self):
+        repr = 'DataBundle: ' + self.id + '\n'
+        repr += 'Title: ' + self.metadata['title'] + '\n\n'
+        for key, value in self.metadata.items():
+            repr += str(key) + ': ' + str(value) + '\n'
+        return repr
 

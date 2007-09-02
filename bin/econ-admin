@@ -30,7 +30,7 @@ class EconAdmin(cmd.Cmd):
         version = econ.__version__
         about = \
 '''Open Econ version %s. Copyright the Open Knowledge Foundation.
-Open Econ is open-knowledge and open-source. See COPYING for details.
+Open Econ is open-knowledge and open-source. See LICENSE.txt for details.
 ''' % version
         print about
 
@@ -45,17 +45,21 @@ Open Econ is open-knowledge and open-source. See COPYING for details.
     # start commands
 
     def do_store_index(self, line=None):
-        import econ.store.DataBundle
-        basePath = line
+        import econ.store
+        if line:
+            basePath = line
+        else:
+            basePath = econ.get_config()['data_store_path']
         indexList = econ.store.make_index(basePath)
         for key, item in indexList.items():
-            print key + '\t' + str(item) + '\n\n'
+            print str(item) + '\n'
 
     def help_store_index(self, line=None):
         usage = \
 '''store_index <store-path>
 
-Print an index of the data store located at <store-path>'''
+Print an index of the data store located at <store-path>. If <store-path> not
+supplied then use data_store_path specified in config.'''
         print usage
 
     def _runserver_paste_plain(self):
@@ -92,7 +96,7 @@ The resulting website should be availabe at http://localhost:8080
             if len(args) > 1:
                 path = args[1]
             else:
-                store_path = econ.conf.get('DEFAULT', 'data_store_path')
+                store_path = econ.get_config()['data_store_path']
                 path = store_path
             import econ.store.bundle
             bndl = econ.store.bundle.create(path)
