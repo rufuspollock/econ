@@ -1,0 +1,10 @@
+[DEFAULT]
+id = dfc885a0-5483-4b75-a514-1438721ee6cc
+title = Number of Published Articles in Economics (1970-2006)
+source = EconLit (see data.py for details). Note that EconLit is closed and
+  requires a password for access. Nevertheless as these statistics are
+  *calculated* from the underlying content of EconLit and do not reproduce
+  anything from EconLit they should not be subject to any restriction.
+type = time-series
+creator = rgrp
+
