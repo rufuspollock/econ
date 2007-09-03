@@ -151,16 +151,18 @@ class ProducerSummary(object):
         print 'Deadweight losses: ', dw_costs
         
         fig = pylab.figure(1)
-        pylab.plot(demandValues, priceValues)
-        pylab.plot(demandValues, avg_costs)
-        pylab.xlabel('Demand')
+        pylab.plot(demandValues, priceValues, 'k')
+        pylab.plot(demandValues, avg_costs, 'k--')
+        pylab.xlabel('Quantity')
         pylab.ylabel('Price')
         pylab.axis(xmin=demandAxisOrigin)
         
         # this assumes demand axis origin starts at 0
-        pylab.axhline(monopolyPrice, 0, monopolyDemand / maxDemand)
-        pylab.axhline(competitivePrice, 0, competitiveDemand / maxDemand)
-        pylab.axvline(monopolyDemand, 0, monopolyPrice / prod.MAXPRICE)
+        pylab.axhline(monopolyPrice, 0, monopolyDemand / maxDemand, color='k')
+        pylab.axhline(competitivePrice, 0, competitiveDemand / maxDemand,
+                color='k', linestyle='-.')
+        pylab.axvline(monopolyDemand, 0, monopolyPrice / prod.MAXPRICE,
+                color='k')
         # not sure we want this
         # pylab.axvline(competitiveDemand, 0, competitivePrice / maxDemand)
         
@@ -183,5 +185,5 @@ class ProducerSummary(object):
                 newLabels.append(newLabel)
             ticks(newLocs, newLabels)
         
-        addTicks(pylab.xticks, [(competitiveDemand, 'q_C'), (monopolyDemand, 'q_M')])
-        addTicks(pylab.yticks, [(competitivePrice, 'p_C'), (monopolyPrice, 'p_M')])
+        addTicks(pylab.xticks, [(competitiveDemand, 'qC'), (monopolyDemand, 'qM')])
+        addTicks(pylab.yticks, [(competitivePrice, 'pC'), (monopolyPrice, 'pM')])
