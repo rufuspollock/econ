@@ -8,19 +8,24 @@ class TestProducer:
     def setup_method(self, name=''):
         self.dfConstant = 5.0
         self.dfSlope = -1.0
-        self.df = econ.model.demand.getLinearDemandFunction(self.dfConstant,
+        self.df = econ.model.demand.get_linear_demand_function(self.dfConstant,
                                                          self.dfSlope)
+        self.fixed_cost = 0.0
         self.marginalCost = 0.0
-        def costFunction(quantity):
-            return quantity * self.marginalCost
-        self.cf = costFunction
+        def cost_function(quantity):
+            return quantity * self.marginalCost + self.fixed_cost
+        self.cf = cost_function
         self.producer = econ.model.producer.Producer(self.df, self.cf)
 
-    def assertAlmostEqual(self, x, y):
+    def assert_almost_equal(self, x, y):
         assert round(x-y, 6) == 0
+
+    def test_max_price_ok(self):
+        exp = self.dfConstant / -self.dfSlope + 0.1 
+        self.assert_almost_equal(self.producer.MAXPRICE, exp)
     
-    def testGetProfitFunction(self):
-        def profitFunction(price):
+    def test_profit_function(self):
+        def profit_function(price):
             return max(0,
                        self.dfConstant * price + (price ** 2) * self.dfSlope)
         maxPrice = self.producer.MAXPRICE
@@ -28,43 +33,74 @@ class TestProducer:
         price = 0.0
         while price < maxPrice:
             price += maxPrice / numsteps
-            self.assertAlmostEqual(self.producer.profitFunction(price),
-                                    profitFunction(price))
+            self.assert_almost_equal(self.producer.profit_function(price),
+                                    profit_function(price))
     
-    def testGetMonopolyPrice(self):
+    def test_monopoly_price(self):
         self.marginalCost = 0.0
         expectedPrice = - self.dfConstant / (2 * self.dfSlope)
-        assert expectedPrice == self.producer.getMonopolyPrice()
+        assert expectedPrice == self.producer.monopoly_price()
     
-    def testGetMonopolyPrice2(self):
+    def test_monopoly_price2(self):
         self.marginalCost = 1.0
         expectedPrice = (self.dfConstant - self.dfSlope) / (-2 * self.dfSlope)
-        assert expectedPrice == self.producer.getMonopolyPrice()
+        assert expectedPrice == self.producer.monopoly_price()
     
-    def testGetCompetitivePrice(self):
+    def test_monopoly_price_3(self):
+        self.fixed_cost = 4.0
+        expected = - self.dfConstant / ( 2 * self.dfSlope)
+        out = self.producer.monopoly_price()
+        print self.producer.profit_function(expected)
+        print self.producer.profit_function(out)
+        assert expected == out
+    
+    def test_competitive_price(self):
         """
         Constant marginal cost so very easy
         """
         self.marginalCost = 0.0
         expectedPrice = self.marginalCost
-        assert expectedPrice == self.producer.getCompetitivePrice()
+        assert expectedPrice == self.producer.competitive_price()
     
-    def testGetCompetitivePrice2(self):
+    def testGetCompetitivePrice_2(self):
         """
         Constant marginal cost so very easy
         """
         self.marginalCost = self.dfConstant * random.random()
         expectedPrice = self.marginalCost
-        self.assertAlmostEqual(expectedPrice, self.producer.getCompetitivePrice())
+        self.assert_almost_equal(expectedPrice, self.producer.competitive_price())
     
-    def testGetMonopolyDeadweightCosts(self):
+    def test_monopoly_deadweight_costs(self):
         self.marginalCost = self.dfConstant * random.random()
         # because linear demand function have shortcut since just a triangle
         # also use assumption of constant marginal cost)
-        monopolyPrice = self.producer.getMonopolyPrice()
-        monopolyQuantity = self.producer.demandFunction(monopolyPrice)
-        competiveQuantity = self.producer.demandFunction(self.marginalCost)
+        monopolyPrice = self.producer.monopoly_price()
+        monopolyQuantity = self.producer.demand_function(monopolyPrice)
+        competitiveQuantity = self.producer.demand_function(self.marginalCost)
         deadweightCosts = ( 0.5 * (monopolyPrice - self.marginalCost) * 
-            ( competiveQuantity - monopolyQuantity))
-        self.assertAlmostEqual(deadweightCosts,
-                                self.producer.getMonopolyDeadweightCosts())
+            ( competitiveQuantity - monopolyQuantity))
+        self.assert_almost_equal(deadweightCosts,
+                                self.producer.monopoly_deadweight_costs())
+
+    def test_average_costs(self):
+        self.fixed_cost = 2.0
+        q1 = 0.0
+        q2 = 2.0
+        out1 = self.producer.average_cost(q1)
+        out2 = self.producer.average_cost(q2)
+        assert out1 == self.fixed_cost / 0.001
+        assert out2 == 1.0
+
+    def test_solve_for_zero_profits(self):
+        self.fixed_cost = 4.0
+        out = self.producer.solve_for_zero_profits()
+        self.assert_almost_equal(out, 1.0)
+        # max profits are 25.0 / 4
+        self.fixed_cost = 25.0 /4 + 1.0
+        try:
+            self.producer.solve_for_zero_profits()
+            assert False, 'Should raise' 
+        except:
+            pass
+        
+
