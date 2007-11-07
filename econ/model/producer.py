@@ -68,6 +68,9 @@ class Producer(object):
     
     def monopoly_profits(self):
         return self.profit_function(self.monopoly_price())
+
+    def marginal_cost(self, quantity):
+        return derivative(self.cost_function, quantity)
     
     def competitive_price(self):
         """
@@ -79,10 +82,8 @@ class Producer(object):
         NB: various assumptions required such as no increasing returns as well
         as that c' > 0
         """
-        def marginal_cost(quantity):
-            return derivative(self.cost_function, quantity)
         def tmp_func(price):
-            return marginal_cost(self.demand_function(price)) - price
+            return self.marginal_cost(self.demand_function(price)) - price
         # initialGuess should be non-zero so as to avoid problems with demand
         # functions that go to infinity there
         initialGuess = self.MAXPRICE / 2.0
@@ -174,20 +175,20 @@ class ProducerSummary(object):
         self.competitive_price = self.p.competitive_price()
         self.monopoly_price = self.p.monopoly_price()
         self.monopoly_profits = self.p.profit_function(self.monopoly_price)
-        self.competitive_demand = self.p.demand_function(self.competitive_price)
-        self.monopoly_demand = self.p.demand_function(self.monopoly_price)
+        self.competitive_output = self.p.demand_function(self.competitive_price)
+        self.monopoly_output = self.p.demand_function(self.monopoly_price)
         self.dw_costs = self.p.monopoly_deadweight_costs()
         self.zero_profits_price = self.p.solve_for_zero_profits()
-        self.zero_profits_demand = self.p.demand_function(self.zero_profits_price)
+        self.zero_profits_output = self.p.demand_function(self.zero_profits_price)
 
     def print_info(self):
         self.info()
         print 'Monopoly price: ', self.monopoly_price
-        print 'Monopoly demand: ', self.monopoly_demand
+        print 'Monopoly demand: ', self.monopoly_output
         print 'Monopoly profits: ', self.monopoly_profits
         print 'Deadweight losses: ', self.dw_costs
         print 'Zero profits price: ', self.zero_profits_price
-        print 'Zero profits demand: ', self.zero_profits_demand
+        print 'Zero profits demand: ', self.zero_profits_output
     
     def plot_producer_summary(self):
         """
@@ -205,16 +206,16 @@ class ProducerSummary(object):
         # maxDemand = min(self.p.demand_function(self.min_price), self.max_quantity)
         avg_costs = [  self.p.average_cost(dd) for dd in self.demand_values ]
         avg_costs_restricted = [ min(xx, self.max_price) for xx in avg_costs ]
+        marginal_costs = [ self.p.marginal_cost(d) for d in self.demand_values ]
 
         fig = pylab.figure(1)
-        pylab.plot(self.demand_values, self.price_values, 'k')
-        pylab.plot(self.demand_values, avg_costs_restricted, 'k--')
-        pylab.xlabel('Quantity')
-        pylab.ylabel('Price')
         pylab.axis(xmin=self.min_quantity, xmax=self.max_quantity,
                 ymin=self.min_price, ymax=self.max_price)
-        
-
+        pylab.plot(self.demand_values, self.price_values, 'k')
+        pylab.plot(self.demand_values, avg_costs_restricted, 'k--')
+        # pylab.plot(self.demand_values, marginal_costs, 'k-.')
+        pylab.xlabel('Quantity')
+        pylab.ylabel('Price')
         
         newLocs = None
         newLabels = None
@@ -235,27 +236,35 @@ class ProducerSummary(object):
                 newLabels.append(newLabel)
             ticks(newLocs, newLabels)
         
-        add_ticks(pylab.xticks, [(self.competitive_demand, 'qC'), (self.monopoly_demand, 'qM')])
+        add_ticks(pylab.xticks, [(self.competitive_output, 'qC'), (self.monopoly_output, 'qM')])
         add_ticks(pylab.yticks, [(self.competitive_price, 'pC'), (self.monopoly_price, 'pM')])
 
     # TODO: these all assume demand axis origin starts at 0
     def monopoly_lines(self):
         import pylab
         pylab.axhline(self.monopoly_price, 0,
-                self.monopoly_demand/self.max_quantity, color='k')
-        pylab.axvline(self.monopoly_demand, 0,
+                self.monopoly_output/self.max_quantity, color='k')
+        pylab.axvline(self.monopoly_output, 0,
                 self.monopoly_price/self.max_price, color='k')
 
     def competitive_lines(self):
         import pylab
         pylab.axhline(self.competitive_price, 0,
-                self.competitive_demand/self.max_quantity, color='k')
-        pylab.axvline(self.competitive_demand, 0, self.competitive_price / self.max_quantity)
+                self.competitive_output/self.max_quantity, color='k')
+        pylab.axvline(self.competitive_output, 0, self.competitive_price / self.max_quantity)
 
     def zero_profit_lines(self):
         import pylab
         pylab.axhline(self.zero_profits_price, 0,
-                self.zero_profits_demand/self.max_quantity, color='k')
-        pylab.axvline(self.zero_profits_demand, 0,
+                self.zero_profits_output/self.max_quantity, color='k')
+        pylab.axvline(self.zero_profits_output, 0,
                 self.zero_profits_price/self.max_price, color='k')
+
+    def xrel(self, xval):
+        '''Convert to relative 0-1 coordinates from absolute coordinates.'''
+        return xval / (self.max_quantity - self.min_quantity)
+
+    def yrel(self, yval):
+        '''Convert to relative 0-1 coordinates from absolute coordinates.'''
+        return yval / (self.max_price - self.min_price)
 
