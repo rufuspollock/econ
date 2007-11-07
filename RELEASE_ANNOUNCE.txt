@@ -1,0 +1,51 @@
+New Version (v0.4) of Open Economics Released
+
+This is the fourth release of the Open Economics project and the first that has been deemed worthy of a proper release announcement. The Open Economics project provides data storage and visualization for economics data as well as associated web services and assorted modelling code. The project home page is: <http://www.okfn.org/econ/> while the open economics web interface is currently available at: <http://econ.dev.okfn.org/> (though note that we plan to move to a dedicated domain in the near future).
+
+To see some of the features of the web interface in action check out:
+
+  * <http://econ.dev.okfn.org/current_value/?year=1900> -- value of a pound/dollar from 1900 today
+  * <http://econ.dev.okfn.org/store/> -- data store browser with javascript graphing
+
+Work first started on an Open Economics project back in late 2004 with some basic modelling code. Since then, especially with work over the last year or so, it has expanded considerably to be both a resource in its own right and another experiment into what a knowledge package would look like. At present it consists of 3 components:
+
+  1. A python library for building economics models
+  2. A set of data (under trunk/data) along with 
+  3. A web interface for access the data store, visualizing the data and providing various simple 'web services'
+
+Finally, we should mention that the project is looking for contributors. Areas in which assistance would be valuable include:
+
+  * Uploading and creating data
+  * Improving code (python)
+  * Setting up a project blog/website
+  * Improving web frontend to services and data store
+
+
+## Release Announcement
+
+A new version of Open Economics is now out get it either:
+
+1. Direct from python package index with easy_install:
+
+   $ easy_install econ
+
+2. From subversion:
+   
+   $ svn co http://p.knowledgeforge.net/econ/svn/tags/econ-0.4
+
+### Changelog
+
+  * Change to use pylons (2007-03-31)
+  * Convert from kid to genshi templates (2007-03-29)
+  * Current value working again (scipy does not conflict with plain wsgi)
+  * Several new datasets
+  * Clean up and improve web user interface
+  * view 'action' gains a limit argument (2007-04-03)
+  * Improvements to data bundle package (e.g. uuids). (2007-04-05)
+
+### About Open Economics
+
+An open set of economics related tools, data and services.
+
+Project home page: <http://www.okfn.org/econ/>
+
