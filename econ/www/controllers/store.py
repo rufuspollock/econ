@@ -18,7 +18,7 @@ class StoreController(BaseController):
             title = bundle.metadata.get('title', 'No title available')
             storeIndex.append((h.url_for(bundle.id), title))
         c.store_index = storeIndex
-        return render_response('store/index')
+        return render('store/index')
 
     def _get_bundle(self, id):
         if id is None:
@@ -40,13 +40,14 @@ class StoreController(BaseController):
         c.data_url = h.url_for(controller='store', action='data', id=id,
                 qualified=True)
         c.plot_data_url = h.url_for(controller='plot', data_url=c.data_url)
-        return render_response('store/view')
+        return render('store/view')
 
     def data(self, id):
         bundle = self._get_bundle(id)
         fileobj = file(bundle.data_path)
         result = fileobj.read()
-        return Response(result, mimetype='text/plain')
+        response.headers['Content-Type'] = 'text/plain'
+        return result
 
     def create(self):
         pass

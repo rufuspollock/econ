@@ -1,19 +1,16 @@
 from econ.www.tests import *
 
-class TestRoot(TestControllerTwill):
+class TestRoot(TestController2):
 
     def test_index(self):
-        web.go(self.siteurl)
-        print web.show()
-        web.code(200)
-        web.title('Open Economics Index')
+        res = self.app.get('/')
+        print str(res)
+        assert 'Open Economics Index' in res
 
     def test_current_value(self):
         offset = '/current_value/?year=1900'
-        url = self.siteurl + offset
-        web.go(url)
-        print web.show()
-        web.code(200)
-        web.find('Current Value')
-        web.find('Value of one pound from 1900 in 2002 was: 71.65')
+        res = self.app.get(offset)
+        print str(res)
+        assert 'Current Value' in res
+        assert 'Value of one pound from 1900 in 2002 was: 71.65' in res
 

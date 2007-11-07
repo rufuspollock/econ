@@ -9,7 +9,7 @@ import econ.store
 class RootController(BaseController):
 
     def index(self):
-        return render_response('index')
+        return render('index')
 
     def current_value(self):
         c.error_message = ''
@@ -23,7 +23,7 @@ class RootController(BaseController):
                     id='uk_price_index_1850-2002_annual')
         except Exception, inst:
             c.error_message = str(inst)
-        return render_response('current_value')
+        return render('current_value')
 
 def get_current_value(startYear, endYear=2002):
     import econ.data

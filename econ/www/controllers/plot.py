@@ -13,7 +13,7 @@ from econ.www.lib.base import *
 class PlotController(BaseController):
 
     def help(self):
-        return render_response('plot/help')
+        return render('plot/help')
 
     def _get_data(self):
         limit = request.params.get('limit', '[:]')
@@ -44,7 +44,7 @@ class PlotController(BaseController):
             return self.help()
         import genshi
         c.html_table = genshi.XML(get_html_table(fileobj))
-        return render_response('plot/chart', strip_whitespace=False)
+        return render('plot/chart', strip_whitespace=False)
     
     def source(self):
         fileobj = None
@@ -55,7 +55,8 @@ class PlotController(BaseController):
             c.error = msg
             return self.help()
         chart_code = self._get_chart_code(fileobj)
-        return Response(chart_code, mimetype='text/plain')
+        response.headers['Content-Type'] = 'text/plain'
+        return chart_code 
 
     def _get_chart_code(self, fileobj):
         fileobj.seek(0)
@@ -83,7 +84,7 @@ class PlotController(BaseController):
         <td>1</td><td>1</td>
     </tr>
     '''
-        return render_response('plot/chart')
+        return render('plot/chart')
 
 
 def get_html_table(fileobj):

@@ -1,4 +1,9 @@
-from setuptools import setup, find_packages
+try:
+    from setuptools import setup, find_packages
+except ImportError:
+    from ez_setup import use_setuptools
+    use_setuptools()
+    from setuptools import setup, find_packages
 
 import sys
 sys.path.insert(0, '.')
@@ -16,17 +21,22 @@ setup(
     install_requires=[],
     packages=find_packages(exclude=['docs']),
     include_package_data=True,
+    test_suite='nose.collector',
     package_data={'econ.www': ['i18n/*/LC_MESSAGES/*.mo']},
     # mx.Tidy (optional)
     # econ.data.tabular.HtmlWriter prettyPrint functionality depends on mx.Tidy
     # package (this functionality is disabled in normal used) 
     extras_require = {
-        'www': ["Pylons>=0.9.4,<=1.0"],
+        'www': ["Pylons>=0.9.6.1"],
         },
+    #message_extractors = {'econ.www': [
+    #        ('**.py', 'python', None),
+    #        ('public/**', 'ignore', None)]},
     entry_points="""
-        [paste.app_factory]
-        main=econ.www:make_app
-        [paste.app_install]
-        main=paste.script.appinstall:Installer
+    [paste.app_factory]
+    main = econ.www.config.middleware:make_app
+
+    [paste.app_install]
+    main = pylons.util:PylonsInstaller
     """,
 )

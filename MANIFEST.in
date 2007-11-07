@@ -1,0 +1,2 @@
+recursive-include econ/www/public *
+recursive-include econ/www/templates *

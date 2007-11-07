@@ -1,10 +1,3 @@
-"""
-econ.www
-
-This file loads the finished app from econ.www.config.middleware.
-
-"""
-
 # this leads to an error
 # from econ.www.config.middleware import make_app
 # ...
