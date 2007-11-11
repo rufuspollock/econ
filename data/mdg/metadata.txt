@@ -1,0 +1,9 @@
+[DEFAULT]
+id: d0b2917e-bfb8-40be-8819-5867f155c1a3
+title: Millenium Development Goals
+source: <http://mdgs.un.org/> 
+license: Public Domain. Original material provided by UN with additional work
+  to extract and represent data by Rufus Pollock.
+comments: List of constituent datasets can be found in datasets.csv.
+todo: Download each of these datasets and make into an individual data bundles.
+
