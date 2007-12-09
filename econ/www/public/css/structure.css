@@ -1,4 +1,6 @@
-/** WiTbD CSS - Licensed under a Creative Commons License **/
+/**  Licensed under a Creative Commons Attribution License
+ *   Adapted from css for http://www.witbd.org/
+ * **/
 
 body {
     background: #a84542;
@@ -6,11 +8,11 @@ body {
     padding: 10px 0 10px 0;
 }
 
-#main {
+#airlock {
     background: #fff url( "../images/page-bg.gif" ) top left repeat-y;
-    width: 85%;
+    width: 90%;
+    /*max-width: 750px; */
     min-width: 650px;
-    max-width: 750px;
     margin: 0px auto;
     border: 1px solid #444;
 }
@@ -21,12 +23,12 @@ body {
 // ============================================================================
 */
 
-#logo_banner h1 {
-    background: #eee url( "../images/logo.png" ) top no-repeat;
-    font-size: 20px;
-    padding: 0 0 3px 0;
+#header h1 {
+    background-color: #eee;
+    font-size: 2em;
+    text-align: center;
+    padding: 0.5em;
     margin: 0px auto;
-    height: 170px;
     border-bottom: 1px solid #ddd;
 }
 
@@ -55,12 +57,11 @@ body {
     float: left; /* This controls which order they are in 
                     i.e. float: right; will order them r-l */
     display: block;
-    width: 80px;
     height: 14px; /* 14 = 20 - (2*3) */
-    padding: 3px 1px;
+    padding: 3px 6px;
     margin: 0;
     background: #eee;
-    border-right: solid 1px #ddd;
+    border-right: solid 2px #ddd;
     
     color: #000;
     font-weight: bold;
@@ -85,12 +86,7 @@ body {
 // ===================================================================
 */
 
-/* would like to have more padding on the central content section but no joy with IE */
-/* left need margin out around floated menu + the actual margin we want */
-/* have to be careful here due to different rendering by (bad) IE and mozilla */
-/* nothing works. constantly pushed out in IE due to faulty box model. */
 #content {
-    margin: 2px 5px 50px 160px;
     padding: 10px;
 }
 
@@ -146,6 +142,7 @@ body {
 	font-family: "lucida grande", verdana, arial, geneva, sans-serif;
 	color: #333;
 	font-size: 0.8em;
+  text-align: center;
 }
 
 #footer a

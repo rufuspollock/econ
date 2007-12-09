@@ -4,43 +4,8 @@
   <head>
 		<title>Open Economics - ${page_title}</title>
 
-    <style type="text/css">
-      body
-      {
-        font-family: Georgia, "Hoefler Text", Times, "Times New Roman", Serif;
-        background: #a84542;
-        margin: 0 0 0 0; /* must be explicitly set at 0 0 0 0, NOT 0, as opera misbehaves */
-        padding: 10px 0 10px 0;
-      }
-      
-      div#airlock
-      {
-        padding: 20px;
-        margin-top: 50px;
-        width: 600px;
-        margin-left: auto;
-        margin-right: auto;
-        background-color: white;
-        border-top: solid 2px #a2a2a2;
-        border-left: solid 2px #a2a2a2;
-      }
-      
-      #header h1
-      {
-        text-align: center;
-      }
-      
-      #footer
-      {
-        text-align: center;
-        font-size: 0.8em;
-			}
-
-			table, table td, table th
-			{
-				border: solid 2px;
-			}
-		</style>
+		<link rel="stylesheet" href="/css/master.css" title="full master" type="text/css" media="screen, projection" />
+		<link rel="alternative stylesheet" href="/styles/text_only.css" title="text only" type="text/css" media="print, screen, projection" />
     <!-- just so it can work locally too ... -->
 		<script type="text/javascript" src="/m.okfn.org/ext/mochikit-1.3.1/MochiKit.js">//pointless jscript comment</script>
 		<script type="text/javascript"
@@ -59,6 +24,12 @@
         <h1>
 					${page_title}
         </h1>
+				<ul id="menu">
+					<li><a href="/">Home</a></li>
+					<li><a href="/store/">Data Store</a></li>
+					<li><a href="/current_value/" title="Current Value Calculator">Current Value</a></li>
+					<li><a href="/plot/" title="Plotting Web Service">Plot</a></li>
+				</ul>
       </div>
       
       <div id="content">
@@ -66,7 +37,6 @@
       </div>
       
       <div id="footer">
-        <hr />
         <p>
           <a href="http://www.okfn.org/econ/">Project Home Page</a> &ndash; <a href="mailto:info@okfn.org">Contact Us</a>
         </p>
@@ -76,7 +46,7 @@
         Licensed under a Creative Commons by-sa 2.0 License (US and EW)
         </p>
 				<p>
-					<a href="http://okd.okfn.org/"><img
+					<a href="http://opendefinition.org/"><img
 						src="http://m.okfn.org/images/ok_buttons/ok_90x15_blue.png"
 						alt="This Material is Open Knowledge" border="0" /></a>
 				</p>

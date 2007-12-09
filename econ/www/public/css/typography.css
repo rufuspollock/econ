@@ -117,9 +117,13 @@ q code, q samp, q kbd
 {
 }
 
-#content table
+table, table td, table th
 {
-	padding-bottom: 10px;
+	background-color: white;
+	border: solid gray 1px;
+	border-collapse: collapse;
+	padding: 2px;
+	font-size: 0.9em;
 }
 
 #content td
