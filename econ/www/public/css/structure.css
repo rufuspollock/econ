@@ -1,0 +1,168 @@
+/** WiTbD CSS - Licensed under a Creative Commons License **/
+
+body {
+    background: #a84542;
+    margin: 0 0 0 0; /* must be explicitly set at 0 0 0 0, NOT 0, as opera misbehaves */
+    padding: 10px 0 10px 0;
+}
+
+#main {
+    background: #fff url( "../images/page-bg.gif" ) top left repeat-y;
+    width: 85%;
+    min-width: 650px;
+    max-width: 750px;
+    margin: 0px auto;
+    border: 1px solid #444;
+}
+
+/*
+// ============================================================================
+// LOGO/BANNER
+// ============================================================================
+*/
+
+#logo_banner h1 {
+    background: #eee url( "../images/logo.png" ) top no-repeat;
+    font-size: 20px;
+    padding: 0 0 3px 0;
+    margin: 0px auto;
+    height: 170px;
+    border-bottom: 1px solid #ddd;
+}
+
+/*
+// ============================================================================
+// Top Menu
+// ============================================================================
+*/
+
+#menu {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    height: 20px;
+    background: #eee;
+    border-bottom: solid 1px #ddd;
+}
+
+#menu li {
+    display: inline;
+    padding: 0;
+    margin: 0;
+}
+
+#menu li a:link, #menu li a:visited {
+    float: left; /* This controls which order they are in 
+                    i.e. float: right; will order them r-l */
+    display: block;
+    width: 80px;
+    height: 14px; /* 14 = 20 - (2*3) */
+    padding: 3px 1px;
+    margin: 0;
+    background: #eee;
+    border-right: solid 1px #ddd;
+    
+    color: #000;
+    font-weight: bold;
+    text-decoration: none;
+    text-align: center;
+}
+
+#menu li a:hover {
+    background: #d72b27;
+    color: #fff;
+    border-right: solid 1px #ddd;
+}
+
+#menu li a:active {
+    background: #981e1c;
+    color: #fff;
+}
+
+/*
+// ===================================================================
+// MAIN CONTENT SECTION
+// ===================================================================
+*/
+
+/* would like to have more padding on the central content section but no joy with IE */
+/* left need margin out around floated menu + the actual margin we want */
+/* have to be careful here due to different rendering by (bad) IE and mozilla */
+/* nothing works. constantly pushed out in IE due to faulty box model. */
+#content {
+    margin: 2px 5px 50px 160px;
+    padding: 10px;
+}
+
+/*
+// ===================================================================
+// NEWS
+// ===================================================================
+*/
+
+
+#news {
+    float: left;
+    position: relative; /* This is needed for some non s/c browsers */
+    width:140px;
+	  padding: 10px;
+    background: transparent;
+}
+
+#news h2
+{
+	border-bottom: 2px dotted #d72b27;
+}
+
+#news h3 {
+    border-bottom: 2px dotted #d72b27;
+}
+
+#news ul {
+    list-style-type: none;
+    margin: 0 0 0 0;
+    padding: 0 0 0 0;
+}
+
+#news ul ul
+{
+	margin-left: 8px;
+	color: #d72b27;
+}
+
+/*
+// ===================================================================
+// FOOTER
+// ===================================================================
+*/
+
+#footer
+{
+	clear: both;
+	margin: 0;
+	padding: 5px 10px;
+	background: #eee;
+	border-top: solid 1px #ddd;
+	font-family: "lucida grande", verdana, arial, geneva, sans-serif;
+	color: #333;
+	font-size: 0.8em;
+}
+
+#footer a
+{
+	text-decoration: underline;
+}
+
+/*
+// ===================================================================
+// MISC
+// ===================================================================
+*/
+
+.hide, .section_heading {
+    display: none;
+}
+
+.no_vis {
+    visibility: hidden;
+}

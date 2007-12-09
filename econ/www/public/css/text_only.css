@@ -1,0 +1,10 @@
+/* This enables the JS SetActiveStylesheet() to be used, while still hiding
+ * CSS from incapable browsers (Netscape < 7.x)
+ */
+
+@import url("typography.css");
+
+body
+{
+	font-size: 120%;
+}

@@ -1,0 +1,142 @@
+/* text styling etc. Some text styling specific to template will go in  */
+
+body
+{
+	font-family: Arial, Georgia, "Hoefler Text", Times, "Times New Roman", Serif;
+	font-size: 80%;
+}
+
+a
+{
+	color: #d72b27;
+	font-size: 1em;
+	text-decoration: none;
+}
+    
+a:link
+{
+	color: #d72b27;
+}
+
+a:visited
+{
+	color:#981e1c;
+}
+
+a:hover
+{
+	color: #d72b27;
+	text-decoration: underline;
+}
+
+/*
+// ===================================================================
+// NEWS
+// ===================================================================
+*/
+
+#news
+{
+	font-size: 0.9em;
+}
+
+#news h3, #news h2
+{
+	font-size: 1.25em;
+	color: #433;
+}
+
+/*
+// ===================================================================
+// MAIN CONTENT SECTION
+// ===================================================================
+*/
+
+#content
+{
+	color: #222;
+	font-size: 1em;
+	line-height: 1.6;
+}
+
+#content h1, #content h2, #content h3, #content h4
+{
+	display: block;
+	font-weight: bold;
+	margin: 0.7em 0;
+}
+
+#content h1
+{
+	font-size: 20pt;
+	text-align: center;
+}
+
+#content h2
+{
+	font-size: 1.5em;
+	color: #d72b27;
+}
+
+#content h3
+{
+	font-size: 1.3em;
+}
+
+#content h4
+{
+	font-size: 1.1em;
+}
+
+#content dt
+{
+	font-weight: bold;
+	font-size: 1.1em;
+}
+
+code, pre, samp, kbd
+{
+	font-family: "Bitstream Vera Sans Mono", monaco, "Courier New", courier, monospace;
+	font-size: 1em;
+	background: inherit;
+	color: #333;
+}
+
+q
+{
+  quotes: '"' '"' "'" "'";
+  font-style: italic;
+}
+
+q code, q samp, q kbd
+{
+	font-style: normal;
+}
+
+#content p
+{
+}
+
+#content table
+{
+	padding-bottom: 10px;
+}
+
+#content td
+{
+	vertical-align: top;
+}
+
+#content blockquote
+{
+	background: #eee;
+	margin: 0 4em;
+	padding: 3px 5px 3px 10px;
+	border-left: 2px dotted #d72b27;
+	border-right: 2px dotted #d72b27;
+}
+
+#content sup
+{
+	font-size: 0.9em;
+}
