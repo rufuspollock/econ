@@ -17,8 +17,16 @@ MochiKit.DOM.addLoadEvent(drawPlot);
 	</script>
 
 	<div py:match="content">
-		<div style="margin: 2em;"><canvas id="plot" height="500" width="500"></canvas></div>
-		${c.html_table}
+		<h2>The Graph</h2>
+		<p>NB: if no graph is displayed this is because there was an error processing the data (shown in <a href="#table_1">table below</a>). For example, there might have been a missing data value, or a value that was not recognizable as a number.
+		</p>
+		<div style="margin: 2em;">
+			<canvas id="plot" height="500" width="500"></canvas>
+		</div>
+		<h2>The Data</h2>
+		<div style="margin: 2em;">
+			${c.html_table}
+		</div>
 	</div>
 
   <xi:include href="../layout.html" />
