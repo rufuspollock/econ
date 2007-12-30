@@ -1,3 +1,13 @@
+v0.5dev
+*******
+
+  * Upgrade to use pylons 0.9.6.1 (2007-11)
+  * Overhaul site theme + layout to be more usable and look better (2007-12)
+  * Many new datasets in store
+  * Refactor basic modelling classes to be PEP8 compliant and to use py.test format
+  * Rework and improve Producer modelling code (2007-09)
+  * Add ploticus support to econ.plot module (2007-10)
+
 v0.4 2007-04
 ************
 
