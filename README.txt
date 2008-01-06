@@ -25,18 +25,19 @@ Contributors to the project are listed in AUTHORS.
 
 1. Either: Grab the source code and then run:
 
-  $ sudo python setup.py install
+   $ sudo python setup.py install
 
 2. OR: use easy_install: $ easy_install econ
 
 ### Create Confirguation File
 
-Copy the file etc/econ.ini.new to development.ini and edit to reflect your
-setup.
+Run the following command (where <ini_file> is the name of the configuration
+file to be generated):
 
-Finally for convenience you may want to set the ECONCONF environment variable to point to the
-location of this file.
+    $ paster make-config econ <ini_file>
 
+Finally for convenience you may want to set the ECONCONF environment variable
+to point to the location of this file.
 
 ### Test Installation
 
@@ -55,5 +56,5 @@ Then follow the instructions to get help
 
 ## For Developers
 
-Running tests: we use py.test for running test.
+Running tests: we use py.test for running tests.
 

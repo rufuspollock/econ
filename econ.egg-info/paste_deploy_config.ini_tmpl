@@ -1,5 +1,5 @@
 #
-# blah - Pylons configuration
+# econ - Pylons configuration
 #
 # The %(here)s variable will be replaced with the parent directory of this file
 #
@@ -8,6 +8,9 @@ debug = true
 email_to = you@yourdomain.com
 smtp_server = localhost
 error_email_from = paste@localhost
+# path to data store (see econ.store module)
+# this is only required if you want data store related code to work
+data_store_path = ./data
 
 [server:main]
 use = egg:Paste#http
@@ -15,9 +18,9 @@ host = 0.0.0.0
 port = 5000
 
 [app:main]
-use = egg:blah
+use = egg:econ
 full_stack = true
-cache_dir = %(here)s/data
+cache_dir = %(here)s/cachedata
 beaker.session.key = econ.www
 beaker.session.secret = ${app_instance_secret}
 app_instance_uuid = ${app_instance_uuid}

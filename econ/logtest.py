@@ -1,12 +1,11 @@
-import unittest
 import econ.log
 
-class LogTest(unittest.TestCase):
+class TestLog(object):
 
     log = econ.log.get_logger()
 
     def testExists(self):
-        self.failUnless(self.log, "Logger isn't there!")
+        assert self.log, "Logger isn't there!"
     
     def testLogDebug(self):
         self.log.debug('Debug logging test. Please ignore this message.')

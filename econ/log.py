@@ -3,14 +3,13 @@ Econ logger
 """
 
 import logging
+import logging.config
 import logging.handlers
 import os
 
 import econ
 
 cfg = econ.get_config()
-logging_level = cfg['log.level']
-logging_log_file_path = cfg['log.file_path']
 application_name = econ.__application_name__
 
 def get_logger():
@@ -20,14 +19,18 @@ def get_logger():
     """
     return logging.getLogger(application_name)
  
-def init_logging():
+def init_logging_in_code():
     """
     Configure the logger system in code.
     Two loggers: root + application
     Two output sources: file + stderr
     Only log level at ERROR or above go to stderr
     Log level for output to file is configurable via logging.level
+
+    REQUIRES: config variable log.level and log.file_path in config file.
     """
+    logging_level = cfg['log.level']
+    logging_log_file_path = cfg['log.file_path']
     logLevel = None 
     logLevels = {
         'DEBUG'    : logging.DEBUG,
@@ -69,8 +72,12 @@ def init_logging():
     # rootLogger.setLevel(logging.ERROR)
     # still need to set this or we don't get anything below warning
     applicationLogger.setLevel(logLevel)
+
+def init_logging_from_file():
+    logging_config_file = cfg['__file__']
+    logging.config.fileConfig(logging_config_file)
     
-init_logging()
+init_logging_from_file()
 log = get_logger()
 log.warning('Logging initialised.')
 
