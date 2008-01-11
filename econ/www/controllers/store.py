@@ -44,8 +44,11 @@ class StoreController(BaseController):
 
     def data(self, id):
         bundle = self._get_bundle(id)
-        fileobj = file(bundle.data_path)
-        result = fileobj.read()
+        try:
+            fileobj = file(bundle.data_path)
+            result = fileobj.read()
+        except:
+            result = 'It looks like there is no data file for this dataset'
         response.headers['Content-Type'] = 'text/plain'
         return result
 
