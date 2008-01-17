@@ -5,11 +5,14 @@ Tools for dealing with tabular data
 class TabularData(object):
     """Holder for tabular data
 
-    Assume data organized in rows
-    No type conversion so all data will be strings
+    NB:
+      * Assume data organized in rows.
+      * No type conversion so all data will be as entered.
+
     Properties:
-        data: data itself provided as array of arrays
-        header: associated header columns (if they exist)
+      * data: data itself provided as array of arrays
+      * header: associated header columns (if they exist)
+
     TODO: handling of large datasets (iterators?)
     """
 
@@ -47,27 +50,69 @@ def transpose(data):
     return out
 
 
-
 import csv
+import codecs
+class UTF8Recoder:
+    """
+    Iterator that reads an encoded stream and reencodes the input to UTF-8
+
+    From: <http://docs.python.org/lib/csv-examples.html>
+    """
+    def __init__(self, f, encoding=None):
+        if encoding:
+            self.reader = codecs.getreader(encoding)(f)
+        else: # already unicode so just return f
+            self.reader = f
+
+    def __iter__(self):
+        return self
+
+    def next(self):
+        return self.reader.next().encode('utf-8')
+
 class ReaderCsv(object):
     """Read data from a csv file into a TabularData structure
+
+    Note that the csv module does *not* support unicode:
+    
+    > This version of the csv module doesn't support Unicode input. Also, there
+    > are currently some issues regarding ASCII NUL characters. Accordingly,
+    > all input should be UTF-8 or printable ASCII to be safe; see the examples
+    > in section 9.1.5. These restrictions will be removed in the future.
+    > <http://docs.python.org/lib/module-csv.html>
+
+    Thus L{read} method requires uses an encoding.
     """
 
-    def read(self, fileobj):
+    def read(self, fileobj, encoding='utf-8'):
         """Read in a csv file and return a TabularData object
-        @param: fileobj: file like object
+
+        @param fileobj: file like object.
+        @param encoding: the encoding of the file like object. NB: will check
+        if fileobj already in unicode in which case this is ignored.
+        @return tabular data object (all values encoded as utf-8).
         """
         tabData = TabularData()
+
         sample = fileobj.read()
+        # first do a simple test -- maybe sample is already unicode
+        if type(sample) == unicode:
+            encoded_fo = UTF8Recoder(fileobj, None)
+        else:
+            sample = sample.decode(encoding)
+            encoded_fo = UTF8Recoder(fileobj, encoding)
+        sample = sample.encode('utf-8')
         sniffer = csv.Sniffer()
         hasHeader = sniffer.has_header(sample)
+
         fileobj.seek(0)
-        reader = csv.reader(fileobj, skipinitialspace=True)
+        reader = csv.reader(encoded_fo, skipinitialspace=True)
         if hasHeader:
             tabData.header = reader.next()
         for row in reader:
             tabData.data.append(row)
         return tabData
+
 
 from HTMLParser import HTMLParser
 class HtmlReader(HTMLParser):

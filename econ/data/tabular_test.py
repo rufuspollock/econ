@@ -43,6 +43,26 @@ class TestReaderCsv(object):
     def test_data(self):
         assert self.data == self.tab.data
 
+
+class TestReaderCsvUnicode(TestReaderCsv):
+    csvdata = \
+u'''"headi\xf1g", "header 2"
+1, 2'''
+    header = [ u'headi\xf1g'.encode('utf-8'), 'header 2' ]
+    data = [ ['1', '2'] ]
+
+
+class TestReaderCsvEncoded(TestReaderCsvUnicode):
+    encoding = 'utf-16'
+    csvdata = \
+u'''"headi\xf1g", "header 2"
+1, 2'''.encode(encoding)
+
+    def setup_method(self, name=''):
+        reader = econ.data.tabular.ReaderCsv()
+        fileobj = StringIO(self.csvdata)
+        self.tab = reader.read(fileobj, encoding=self.encoding)
+
 class TestHtmlReader:
 
     inraw1 = '''
