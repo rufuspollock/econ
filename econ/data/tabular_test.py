@@ -24,7 +24,7 @@ class TestTranspose:
         out = econ.data.tabular.transpose(inlist)
         assert out == exp
 
-class TestReaderCsv:
+class TestReaderCsv(object):
     
     csvdata = \
 '''"header1", "header 2"
@@ -42,6 +42,30 @@ class TestReaderCsv:
 
     def test_data(self):
         assert self.data == self.tab.data
+
+class TestHtmlReader:
+
+    inraw1 = '''
+<table>
+    <tr>
+        <td>1</td><td>2</td>
+    </tr>
+    <tr>
+        <td>3</td><td>4</td>
+    </tr>
+</table>
+    '''
+    in1 = StringIO(inraw1)
+    
+    exp1 = [ ['1', '2'],
+            ['3', '4'],
+            ]
+    
+    def test_1(self):
+        reader = econ.data.tabular.HtmlReader()
+        tab = reader.read(self.in1)
+        assert tab.data == self.exp1
+
 
 class TestWriterHtml:
 

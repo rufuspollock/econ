@@ -68,6 +68,53 @@ class ReaderCsv(object):
         for row in reader:
             tabData.data.append(row)
         return tabData
+
+from HTMLParser import HTMLParser
+class HtmlReader(HTMLParser):
+    '''Read data from HTML table into L{TabularData}.
+
+    # TODO: tbody, thead etc
+    # TODO: nested tables
+
+    # TODO: will barf on bad html so may need to run tidy first ...
+    # tidy -w 0 -b -omit -asxml -ascii
+    '''
+    def read(self, fileobj):
+        '''Read data from fileobj.
+
+        @return: L{TabularData} object (all content in the data part, i.e. no
+        header).
+        '''
+        self.reset()
+        self.feed(fileobj.read())
+        tab = TabularData()
+        tab.data = self._rows
+        return tab
+
+    def reset(self):
+        HTMLParser.reset(self)
+        self._rows = []
+        self._row = []
+        self._text = ''
+
+    def handle_starttag(self, tag, attrs):
+        if tag == 'tr':
+            self._row = []
+            print tag
+        elif tag == 'td':
+            self._text = ''
+        elif tag == 'br':
+            self._text += '\n'
+
+    def handle_endtag(self, tag):
+        if tag == 'tr':
+            self._rows.append(self._row)
+        if tag == 'td':
+            self._row.append(self._text)
+
+    def handle_data(self, data):
+        self._text += data.strip()
+
     
 import re
 class WriterHtml:
