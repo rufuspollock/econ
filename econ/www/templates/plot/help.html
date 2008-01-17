@@ -15,7 +15,7 @@
     Javascript plotting library. The plot service is located at:</p>
     <p>
     ${XML(
-    h.link_to(h.url_for(action='index'), h.url_for(action='index'))
+    h.link_to(h.url_for(action='chart'), h.url_for(action='chart'))
     )}
     </p>
 
@@ -38,12 +38,12 @@
 
     <h3>Examples</h3>
     <p>
-    <a href="${h.url_for(action='index')}/?data_url=http://p.knowledgeforge.net/econ/svn/trunk/data/uk_price_index_1850-2002_annual/data.csv">
-      ${h.url_for(action='index')}/?data_url=http://p.knowledgeforge.net/econ/svn/trunk/data/uk_price_index_1850-2002_annual/data.csv</a>
+    <a href="${h.url_for(action='chart')}/?data_url=http://p.knowledgeforge.net/econ/svn/trunk/data/uk_price_index_1850-2002_annual/data.csv">
+      ${h.url_for(action='chart')}/?data_url=http://p.knowledgeforge.net/econ/svn/trunk/data/uk_price_index_1850-2002_annual/data.csv</a>
     </p>
     <p>
-    <a href="${h.url_for(action='index')}/?data_url=http://p.knowledgeforge.net/econ/svn/trunk/data/world_population_historical/data.csv&amp;limit=[8:]">
-      ${h.url_for(action='index')}/?data_url=http://p.knowledgeforge.net/econ/svn/trunk/data/world_population_historical/data.csv&amp;limit=[8:]</a>
+    <a href="${h.url_for(action='chart')}/?data_url=http://p.knowledgeforge.net/econ/svn/trunk/data/world_population_historical/data.csv&amp;limit=[8:]">
+      ${h.url_for(action='chart')}/?data_url=http://p.knowledgeforge.net/econ/svn/trunk/data/world_population_historical/data.csv&amp;limit=[8:]</a>
 
     <br /><br />
     Note that without the limit here the graph would not render because of the

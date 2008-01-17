@@ -37,9 +37,12 @@ class StoreController(BaseController):
         bundle = self._get_bundle(id)
         c.title = bundle.metadata.get('title', 'No Title Provided')
         c.metadata = bundle.metadata
+        # limit to a maximum of first 100 rows
+        data_limit = 100
         c.data_url = h.url_for(controller='store', action='data', id=id,
                 qualified=True)
-        c.plot_data_url = h.url_for(controller='plot', data_url=c.data_url)
+        c.plot_data_url = h.url_for(controller='plot', action='chart', data_url=c.data_url,
+                limit='[:100]')
         return render('store/view')
 
     def data(self, id):

@@ -28,6 +28,7 @@ setup(
     # package (this functionality is disabled in normal used) 
     extras_require = {
         'www': ["Pylons>=0.9.6.1"],
+        'test' : ['wsgi_intercept>=0.1'],
         },
     #message_extractors = {'econ.www': [
     #        ('**.py', 'python', None),

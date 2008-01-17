@@ -1,5 +1,5 @@
 import StringIO
-import urllib
+import urllib2
 import genshi
 
 from econ.www.lib.base import *
@@ -12,6 +12,9 @@ from econ.www.lib.base import *
 
 class PlotController(BaseController):
 
+    def index(self):
+        return self.help()
+
     def help(self):
         return render('plot/help')
 
@@ -19,6 +22,7 @@ class PlotController(BaseController):
         limit = request.params.get('limit', '[:]')
         if request.params.has_key('data'):
             data = request.params.get('data')
+            fileobj = StringIO.StringIO(data)
         elif request.params.has_key('data_url'):
             data_url = request.params.get('data_url')
             # TODO: is this dangerous to allow any url to passed
@@ -26,15 +30,15 @@ class PlotController(BaseController):
             # if not data_url.endswith('.csv'):
             #    msg = 'At present only the viewing of csv format files is supported.'
             #    raise Exception(msg)
-            data = urllib.urlopen(data_url).read()
+            # important to use fileobj to support large files
+            fileobj = urllib2.urlopen(data_url)
         else:
             msg = 'No data source provided'
             raise Exception(msg)
-        fileobj = StringIO.StringIO(data)
         fileobj = limit_fileobj(fileobj, limit)
         return fileobj
     
-    def index(self):
+    def chart(self):
         fileobj = None
         try:
             fileobj = self._get_data()
@@ -97,7 +101,7 @@ def get_html_table(fileobj):
 
 def parse_limit(instr):
     # if a bad string just return None, None
-    default = (None,None)
+    default = (0,None)
     if not (instr.startswith('[') and instr.endswith(']')):
         # log something?
         return default
@@ -116,11 +120,27 @@ def parse_limit(instr):
     else:
         second = int(second)
     return (first, second)
-    
+
+# TODO: move this elsewhere (it should not be in the controller file ...
 def limit_fileobj(fo, limit_str):
+    # limit maximum files we will deal with to avoid barfing ...
+    MAX_LINES = 10000
     start, end = parse_limit(limit_str)
-    lines = fo.readlines()
-    outlines = lines[start:end]
+    # be efficient
+    # lines = fo.readlines()
+    # outlines = lines[start:end]
+    count = 0
+    outlines = []
+    for line in fo:
+        if count >= start:
+            outlines.append(line)
+        if count == end:
+            break
+        if len(outlines) > MAX_LINES:
+            msg = 'Requested %s lines of file but only allow max of %s' % \
+                    ((start-end), MAX_LINES)
+            raise Exception(msg) 
+        count += 1
     outstr = ''.join(outlines)
     outfo = StringIO.StringIO(outstr)
     return outfo
