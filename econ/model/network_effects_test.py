@@ -3,7 +3,6 @@
 # See the LICENSE file in the root of the distribution for details
 
 import random
-import unittest
 
 from network_effects import *
 

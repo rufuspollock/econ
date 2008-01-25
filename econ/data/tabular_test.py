@@ -1,4 +1,3 @@
-import unittest
 from StringIO import StringIO
 
 import econ.data.tabular

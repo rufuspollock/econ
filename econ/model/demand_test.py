@@ -2,7 +2,6 @@
 # Licensed under the GNU Public License (GPL) v2.0
 # See the LICENSE file in the root of the distribution for details
 
-import unittest
 import random
 
 from econ.model.demand import *

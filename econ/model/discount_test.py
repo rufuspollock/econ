@@ -2,8 +2,6 @@
 # Licensed under the GNU Public License (GPL) v2.0
 # See the LICENSE file in the root of the distribution for details
 
-import unittest
-
 from econ.model.discount import *
 import econ.data
 

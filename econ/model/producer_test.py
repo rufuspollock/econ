@@ -1,4 +1,3 @@
-import unittest
 import random
 
 import econ.model.demand
