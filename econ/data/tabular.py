@@ -113,6 +113,49 @@ class ReaderCsv(object):
             tabData.data.append(row)
         return tabData
 
+class XlsReader(object):
+    '''Read Excel (xls) files.
+
+    '''
+
+    def read(self, fileobj, sheet_index=0):
+        tab = TabularData()
+        import xlrd
+        book = xlrd.open_workbook(file_contents=fileobj.read())
+        booksheet = book.sheet_by_index(sheet_index)
+        data = self.extract_sheet(booksheet, book)
+        tab.data = data
+        return tab
+
+    def extract_sheet(self, sheet, book):
+        import xlrd
+        matrix = []
+        nrows = sheet.nrows
+        ncols = sheet.ncols
+        for rx in range(nrows):
+            outrow = []
+            for cx in range(ncols):
+                cell = sheet.cell(rowx=rx, colx=cx)
+                val = self.cell_to_python(cell, book)
+                outrow.append(val)
+            matrix.append(outrow)
+        return matrix
+
+    def cell_to_python(self, cell, book):
+        import xlrd
+        # annoying need book argument for datemode
+        # info on types: http://www.lexicon.net/sjmachin/xlrd.html#xlrd.Cell-class
+        if cell.ctype == xlrd.XL_CELL_NUMBER: 
+            return float(cell.value)
+        elif cell.ctype == xlrd.XL_CELL_DATE:
+            # TODO: distinguish date and datetime
+            args = xlrd.xldate_as_tuple(cell.value, book.datemode)
+            return date(args[0], args[1], args[2])
+        elif cell.ctype == xlrd.XL_CELL_BOOLEAN:
+            return bool(cell.value)
+        else:
+            return cell.value
+
 
 from HTMLParser import HTMLParser
 class HtmlReader(HTMLParser):

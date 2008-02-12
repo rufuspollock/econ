@@ -1,3 +1,4 @@
+import os
 from StringIO import StringIO
 
 import econ.data.tabular
@@ -61,6 +62,18 @@ u'''"headi\xf1g", "header 2"
         reader = econ.data.tabular.ReaderCsv()
         fileobj = StringIO(self.csvdata)
         self.tab = reader.read(fileobj, encoding=self.encoding)
+
+class TestXlsReader:
+
+    def test_stuff(self):
+        fp = os.path.dirname(__file__)
+        fp = os.path.join(fp, 'xls_reader_test.xls')
+        fo = open(fp)
+        reader = econ.data.tabular.XlsReader()
+        tab = reader.read(fo)
+        assert tab.data[0][0] == 1850
+        assert tab.data[19][1] == 12.3
+
 
 class TestHtmlReader:
 
