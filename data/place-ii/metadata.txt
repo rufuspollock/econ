@@ -1,0 +1,10 @@
+[DEFAULT]
+id: 99fc7389-8d19-4581-b96f-9ae66e1e1007
+name: place-ii
+title: Population, Landscape and Climate Estimates
+source: http://sedac.ciesin.columbia.edu/place/datasets.jsp
+requires-compilation: y
+extra-metadata: National_Aggregates_of_Geospatial_Data_Collection_ PLACE-II.html 
+description: "As in PLACE I, PLACE II data represent numerical estimates of population and land area dynamics for each of the world's nations, presented in spreadsheet format. The PLACE II data consist of geospatially calculated values of population and land area in specific zones of population density, coastal proximity, climate, elevation and biomes. For example, elevation zone classes are used to calculate the land area (sq. km.) of a country where the height above mean sea level is either <5 meters, 5-10 meters, 10-25 meters, 25-50 meters, 50-100 meters, 100-200 meters, 200-400 meters, 400-800 meters, 800-1500 meters, 1500-3000 meters, 3000-5000 meters, and >5000 meters. The same elevation classes are also used to tabulate the population values and percentages within the same country.
+  
+  PLACE II adds a demographic time-series component by providing estimates of a decadal span, for the years 1990 and 2000. Graphical and spatial data examples are included via a map collection to allow a better understanding of the data themselves, the spatial patterns involved, as well as, initially, the dynamics and processes observed within each country and region. Codebooks describing each variable used are provided as are a methodology paper, provided in PDF and ASCII rich-text format."
