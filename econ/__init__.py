@@ -1,5 +1,5 @@
 __application_name__ = 'econ'
-__version__ = '0.4'
+__version__ = '0.5a'
 __description__ = 'An open set of economics related tools, data and services.'
 __long_description__ = \
 '''

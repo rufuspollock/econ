@@ -21,6 +21,7 @@ setup(
     install_requires=[],
     packages=find_packages(exclude=['docs']),
     include_package_data=True,
+    scripts=['bin/econ-admin'],
     test_suite='nose.collector',
     package_data={'econ.www': ['i18n/*/LC_MESSAGES/*.mo']},
     # mx.Tidy (optional)
