@@ -321,3 +321,70 @@ class WriterHtml:
                 return roundedResult
         else:
             return str(tagValue)
+
+
+## ---------------------------------------------------------
+## General Helper methods 
+
+def select_columns(matrix, cols):
+    out = [ col_from_row(row, cols) for row in matrix ]
+    return out
+
+def format_cols_as_ints(matrix, cols):
+    for ii in range(len(matrix)):
+        for col in cols:
+            try: # ignore errors (dangerous maybe)
+                matrix[ii][col] = '%d' % matrix[ii][col]
+            except:
+                pass
+    return matrix
+
+## --------------------------------
+## Converting to Latex
+
+class LatexWriter(object):
+
+    def process_row(self, row, heading=False):
+        if len(row) == 0: return
+        out = '%s' % self.process_cell(row[0], heading or self.has_column_headings)
+        for cell in row[1:]:
+            out += ' & %s' % self.process_cell(cell, heading)
+        out += ' \\\\\n\hline\n'
+        return out
+
+    def process_cell(self, cell, heading=False):
+        cell_text = self.escape(str(cell))
+        if heading:
+            return '\\textbf{%s}' % cell_text
+        else:
+            return cell_text
+
+    def escape(self, text):
+        escape_chars = [ '&', '%' ]
+        out = text
+        for ch in escape_chars:
+            out = out.replace(ch, '\\%s' % ch)
+        return out
+    
+    def write(self, tabular_data, has_column_headings=False):
+        matrix = tabular_data.data
+        has_header = len(tabular_data.header) > 0
+        if has_header: 
+            matrix.insert(0, tabular_data.header)
+        return self._write(matrix, has_header, has_column_headings)
+    
+    def _write(self, matrix, has_header=True, has_column_headings=False):
+        self.has_column_headings = has_column_headings
+        if len(matrix) == 0: return
+        # no hline on first row as this seems to mess up latex \input
+        # http://groups.google.com/group/comp.text.tex/browse_thread/thread/1e1db553a958ebd8/0e590a22cb59f43d
+        out = '%s' % self.process_row(matrix[0], has_header)
+        for row in matrix[1:]:
+            out += self.process_row(row) 
+        return out
+
+def table2latex(matrix, has_header=True, has_column_headings=False):
+    m2l = LatexWriter()
+    return m2l._write(matrix, has_header, has_column_headings)
+
+

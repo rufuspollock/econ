@@ -139,3 +139,48 @@ class TestWriterHtml:
 #        in1 = '<table><tr><th>x</th><th>y</th></tr>' + \
 #            '<tr><td>0</td><td>1</td></tr></table>'
 #        print self.writer1.prettyPrint(in1)
+
+
+class TestLatexWriter:
+
+    matrix = [[ 'H1', 'H2'],
+           [1,'2%'],
+           [3,4],
+           ]
+
+    exp = \
+r'''\textbf{H1} & \textbf{H2} \\
+\hline
+1 & 2\% \\
+\hline
+3 & 4 \\
+\hline
+'''
+    m2l = econ.data.tabular.LatexWriter()
+
+    def test_escape(self):
+        in1 = '& % $ something'
+        exp1 = r'\& \% $ something'
+        assert self.m2l.escape(in1) == exp1
+
+    def test_table2latex(self):
+        out = econ.data.tabular.table2latex(self.matrix)
+        self.diff(self.exp, out)
+        assert out == self.exp
+
+    def test_write(self):
+        td = econ.data.tabular.TabularData(data=self.matrix[1:], header=self.matrix[0])
+        out = self.m2l.write(td)
+        self.diff(self.exp, out)
+        assert out == self.exp
+
+    def diff(self, str1, str2):
+        import difflib
+        differ = difflib.Differ()
+        text1 = str1.splitlines(1)
+        text2 = str2.splitlines(1)
+        result = list(differ.compare(text1, text2))
+        from pprint import pprint
+        pprint(result)
+
+
