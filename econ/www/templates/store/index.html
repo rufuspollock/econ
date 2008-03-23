@@ -4,6 +4,15 @@
   <py:def function="page_title">Store - Index</py:def>
 
   <div py:match="content">
+    <h2>Add a Dataset</h2>
+    <p>
+      The procedure for adding a dataset to the data store is described on this
+      <a
+        href="http://knowledgeforge.net/econ/trac/wiki/#UploadingDatasetstotheDataStore">page
+        of the project wiki</a>.
+    </p>
+
+    <h2>Current Datasets</h2>
     <p py:for="item in c.store_index">
       <a href="${item[0]}">${item[1]}</a>
     </p>
