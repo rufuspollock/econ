@@ -2,7 +2,7 @@
   xmlns:py="http://genshi.edgewall.org/" 
   xmlns:xi="http://www.w3.org/2001/XInclude">
   <head>
-		<title>Open Economics - ${page_title}</title>
+		<title>Open Economics - ${page_title()}</title>
 
 		<link rel="stylesheet" href="/css/master.css" title="full master" type="text/css" media="screen, projection" />
 		<link rel="alternative stylesheet" href="/styles/text_only.css" title="text only" type="text/css" media="print, screen, projection" />
@@ -15,14 +15,18 @@
 		<script type="text/javascript"
 			src="http://m.okfn.org/ext/plotkit/PlotKit_Packed.js"> //pointless jscript comment</script>
 		<script type="text/javascript" src="http://m.okfn.org/ext/plotkit/excanvas.js">//pointless jscript comment</script>
-		${page_specific_css}
-		${page_specific_scripts}
+    <py:if test="page_specific_css">
+    ${page_specific_css()}
+    </py:if>
+    <py:if test="page_specific_scripts">
+    ${page_specific_scripts()}
+    </py:if>
   </head>
   <body>
     <div id="airlock">
       <div id="header">
         <h1>
-					${page_title}
+					${page_title()}
         </h1>
 				<ul id="menu">
 					<li><a href="/">Home</a></li>
@@ -39,18 +43,22 @@
       
       <div id="footer">
         <p>
-          <a href="http://www.okfn.org/econ/">Project Home Page</a> &ndash; <a href="mailto:info@okfn.org">Contact Us</a>
+          <a href="http://validator.w3.org/check/referer" title="Valid XHTML 1.1">XHTML</a>
+          | <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a>
+          | <a href="http://www.okfn.org/econ/">Project Home Page</a>
+          | <a href="mailto:info@okfn.org">Contact Us</a>
         </p>
         <p>
-        Copyright (c) Open Knowledge Foundation 2005-7.
-        <br />
-        Licensed under a Creative Commons by-sa 2.0 License (US and EW)
+          <img style="margin-bottom: -5px;" src="http://m.okfn.org/images/logo/okf_logo_white_and_green_tiny.png" /> An <a href="http://www.okfn.org/">Open Knowledge Foundation</a> Project
         </p>
-				<p>
-					<a href="http://opendefinition.org/"><img
-						src="http://m.okfn.org/images/ok_buttons/ok_90x15_blue.png"
-						alt="This Material is Open Knowledge" border="0" /></a>
-				</p>
+        <p>
+          (c) Open Knowledge Foundation
+          | <a href="http://creativecommons.org/licenses/by-sa/3.0/">Licensed under CC by-sa 3.0 (all)</a>
+          | <a href="http://www.opendefinition.org/1.0/"><img
+              style="border: none; margin-bottom: -4px;"
+              src="http://m.okfn.org/images/ok_buttons/ok_90x15_blue.png"
+              alt="This Material is Open Knowledge" /></a>
+        </p>
       </div>
     </div>
   </body>
