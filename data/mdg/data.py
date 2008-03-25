@@ -1,8 +1,13 @@
-# Download and manipulate data from Millenium Development Goals Project
-# http://mdgs.un.org/unsd/mdg/
+'''Download and manipulate data from Millenium Development Goals Project
+
+http://mdgs.un.org/unsd/mdg/
+'''
 import urllib
 import zipfile
 from StringIO import StringIO
+import csv
+
+original_fn = 'data_original.csv'
 
 def all_data():
     '''
@@ -35,88 +40,158 @@ def download_data(series_id, format='csv'):
     out = zipfo.read(name)
     return out
 
-def parse_data_file(csv_fo):
-    # TODO: leave this to parse all data.
-    pass
+class DataParser(object):
+    def __init__(self):
+        pass
+        # self.fileobj = fileobj
 
-def norm_all_data(csv_fo, out_fo):
-    '''Normalizes the standard csv file to have year/value information as
-    columns rather than going across horizontally.
+    def norm_all_data(self, csv_fo, out_fo, footnotes_fo):
+        '''Normalizes the standard csv file to have year/value information as
+        columns rather than going across horizontally.
 
-    TODO:? do we delete footnote rows at end of file or ...?
-    '''
-    import csv
-    reader = csv.reader(csv_fo)
-    writer = csv.writer(out_fo)
-    for row in reader:
-        # hit a blank line means footnotes are to begin so halt ...
-        if len(row) == 0:
-            break
-        # TODO: finish this off (and write test)
+        @csv_fo: the csv fileobject to parse.
+        @out_fo: fileobject to write to.
+        @footnotes_fo: fileobject in which to store footnotes.
+        '''
+        reader = csv.reader(csv_fo)
+        writer = csv.writer(out_fo)
+        footnote_matrix = []
+        # headings in first row
+        headings = reader.next()
+        headings = headings[:6] + ['Year', 'Value', 'Footnotes', 'Type']
+        writer.writerow(headings)
 
-def parse_all_data(csv_fo):
-    '''Parses the csv file containing all data.
-    
-    TODO: normalize data.
+        footnotes_started = False
+        count = -1
+        for line in reader:
+            count += 1
+            # blank line with nothing in separates footnotes
+            if len(line) == 0 or footnotes_started:
+                footnotes_started = True
+                footnote_matrix.append(line)
+            else:
+                try:
+                    newrows = self.norm_row(line)
+                    writer.writerows(newrows)
+                except:
+                    print count
+                    print line
+        footnote_matrix = footnote_matrix[1:-10]
+        # discard type info as now in metadata.txt
+        # type_info = footnote_matrix[-9:-1]
+        footnote_matrix = footnote_matrix[1:-10]
+        fnwriter = csv.writer(footnotes_fo)
+        fnwriter.writerows(footnote_matrix)
 
-    @csv_fo: the csv fileobject to parse.
-    @return: a tuple (countries, series, rows, footnotes) where:
-        countries: a dictionary of country code (key) country name (value)
-            pairs
-        series: a dictionary keyed by series code and values consisting of
-            tuple series title and a boolean indicating whether a MDG or not.
-        rows: a list of rows each row being an object with country_code,
-            series_code and list of values where each value is an object with
-            attributes value, type and footnotes (list).
-        footnotes: dictionary keyed by id with value the footnote text.
-    '''
-    import csv
-    reader = csv.reader(csv_fo)
-    matrix = []
-    footnote_matrix = []
-    # headings in first row
-    headings = reader.next()
-    footnotes_started = False
-    count = -1
-    for line in reader:
-        count += 1
-        if footnotes_started:
-            footnote_matrix.append(line)
-        else:
-            matrix.append(line)
-        # blank line with nothing in separates footnotes
-        if len(line) == 0:
-            footnotes_started = True
-    # throw out blank and footnote heading line
-    matrix = matrix[:-1]
-    type_info = footnote_matrix[-9:-1]
-    # TODO: print type_info
-    footnote_matrix = footnote_matrix[1:-10]
-    countries = {}
-    for row in matrix:
-        code = row[0]
-        name = row[1]
-        countries[code] = name
-    footnotes = {}
-    for row in footnote_matrix:
-        footnotes[row[0]] = row[1]
-    series = {}
-    for row in matrix:
-        code = row[2]
-        name = row[4]
-        is_mdg = True
-        if row[3] == 'N': is_mdg = False
-        series[code] = (name, is_mdg)
+    def norm_row(self, row):
+        '''Normalize rows.
 
-    class Value:
-        def __init__(self, value, type, footnotes):
-            self.__dict__.update(locals())
+        Take in data in form 
+
+        ['CountryCode', 'Country', 'SeriesCode', 'MDG', 'Series',
+            '1990', 'Footnotes', 'Type', '1991', 'Footnotes', 'Type',
+            ...
+
+        And return in form:
+
+        ['CountryCode', 'Country', 'SeriesCode', 'MDG', 'Series', 'Year', 'Value',
+        'Footnotes', 'Type' ]
+
+        NB: if no value that year is omitted.
+        '''
+        results = []
+        start_year = 1990
+        end_year = 2008
+        for year in range(start_year, end_year):
+            newrow = row[:5]
+            newrow.append(year)
+            start = 5 + 3 * (year-start_year)
+            newrow += row[start:start+3]
+            value = newrow[6].strip()
+            if value:
+                results.append(newrow)
+        return results
+
+    def parse_all_data(self, csv_fo):
+        '''Parses the original csv file containing all data.
         
-    class Row:
-        def __init__(self, country_code, series_code, values):
-            self.__dict__.update(locals())
+        @csv_fo: the csv fileobject to parse.
+        @return: a tuple (countries, series, rows, footnotes) where:
+            countries: a dictionary of country code (key) country name (value)
+                pairs
+            series: a dictionary keyed by series code and values consisting of
+                tuple series title and a boolean indicating whether a MDG or not.
+            rows: a list of rows each row being an object with country_code,
+                series_code and list of values where each value is an object with
+                attributes value, type and footnotes (list).
+            footnotes: dictionary keyed by id with value the footnote text.
+        '''
+        import csv
+        reader = csv.reader(csv_fo)
+        matrix = []
+        footnote_matrix = []
+        # headings in first row
+        headings = reader.next()
+        footnotes_started = False
+        count = -1
+        for line in reader:
+            count += 1
+            if footnotes_started:
+                footnote_matrix.append(line)
+            else:
+                matrix.append(line)
+            # blank line with nothing in separates footnotes
+            if len(line) == 0:
+                footnotes_started = True
+        type_info = footnote_matrix[-9:-1]
+        # TODO: print type_info
+        footnotes = self.parse_footnotes(footnote_matrix)
+        countries, series, rows = self.parse_data_matrix(matrix)
 
-    def parse_values(vlist):
+        return countries, series, rows, footnotes
+
+    def parse_footnotes(self, footnote_matrix):
+        footnote_matrix = footnote_matrix[1:-10]
+        footnotes = {}
+        for row in footnote_matrix:
+            footnotes[row[0]] = row[1]
+        return footnotes
+
+    def parse_data_matrix(self, matrix):
+        # throw out blank and footnote heading line
+        matrix = matrix[:-1]
+        countries = {}
+        for row in matrix:
+            code = row[0]
+            name = row[1]
+            countries[code] = name
+        series = {}
+        for row in matrix:
+            code = row[2]
+            name = row[4]
+            is_mdg = True
+            if row[3] == 'N': is_mdg = False
+            series[code] = (name, is_mdg)
+
+        class Row:
+            def __init__(self, country_code, series_code, values):
+                self.__dict__.update(locals())
+
+        rows = []
+        for row in matrix:
+            ccode = row[0]
+            scode = row[2]
+            row = row[5:]
+            values =  self.parse_values(row)
+            rows.append(Row(ccode, scode, values))
+        return countries, series, rows
+
+
+    def parse_values(self, vlist):
+        class Value:
+            def __init__(self, value, type, footnotes):
+                self.__dict__.update(locals())
+            
         values = {}
         # groups of 3
         for ii in range(len(vlist)/3):
@@ -137,15 +212,6 @@ def parse_all_data(csv_fo):
             values[1990 + ii] = Value(value, type, footnotes)
         return values
 
-    rows = []
-    for row in matrix:
-        ccode = row[0]
-        scode = row[2]
-        row = row[5:]
-        values =  parse_values(row)
-        rows.append(Row(ccode, scode, values))
-
-    return countries, series, rows, footnotes
 
 class SqlalchemyWrapper:
     '''Use SQLAlchemy to load data into sql db and provide a pythonic
@@ -179,6 +245,7 @@ class SqlalchemyWrapper:
 
 
 class MdgMetadata(object):
+    '''TODO.'''
 
     def __init__(self):
         metadata_csv = self._load_cached_metadata()
@@ -214,31 +281,60 @@ class MdgMetadata(object):
         # TODO: extract option list and then clean up
         return out
 
-def do_everything():
-    out = all_data()
-    ff = file('all_in_one.csv', 'w')
-    ff.write(out)
-    ff.close()
-
 # ---------------------------------------------------------
 # TESTS
 
-def test_parse():
-    ff = file('all_in_one.csv')
-    countries, series, rows, footnotes = parse_all_data(ff)
-    ff.close()
-    assert len(countries) == 231
-    assert len(series) == 128
-    lr = len(rows)
-    assert lr == 29568
-    row = rows[27649]
-    uk_ppp = row.values[1990].value
-    print row.series_code
-    print row.country_code
-    print uk_ppp
-    assert uk_ppp == 0.5491460491
+class TestDataParser:
+    parser = DataParser()
+
+    def test_parse(self):
+        ff = file(original_fn)
+        countries, series, rows, footnotes = self.parser.parse_all_data(ff)
+        ff.close()
+        assert len(countries) == 231
+        assert len(series) == 141
+        lr = len(rows)
+        assert lr == 32571
+        # this is not robust to updates of the material ...
+        # row = rows[27649]
+        # uk_ppp = row.values[1990].value
+        # print row.series_code
+        # print row.country_code
+        # print uk_ppp
+        # assert uk_ppp == 0.5491460491
+
+    def test_norm_row(self):
+        row = ['4', 'Afghanistan', '563', 'Y', 'against measles, percentage', '20',
+                '', 'E', '19', '', 'E', '22', '', 'E', '25', '', 'E', '40', '',
+                'E', '41', '', 'E', '42', '', 'E', '48', '', 'E', '40', '', 'E',
+                '40', '', 'E', '35', '', 'E', '46', '', 'E', '44', '', 'E', '50',
+                '', 'E', '61', '', 'E', '64', '', 'E', ' ', ' ', ' ', ' ', ' ', ' ']
+        out = self.parser.norm_row(row)
+        assert len(out) == 16
+        exp = ['4', 'Afghanistan', '563', 'Y', 'against measles, percentage',
+                1991, '19', '', 'E' ]
+        assert len(out[0]) == 9
+        print out[1]
+        assert out[1] == exp
+
                 
+def download_data():
+    out = all_data()
+    fo = file(original_fn, 'w')
+    fo.write(out)
+    fo.close()
+ 
+def norm_data():
+    parser = DataParser()
+    fo = file(original_fn)
+    fo2 = file('data.csv', 'w')
+    fo3 = file('footnotes.csv', 'w')
+    parser.norm_all_data(fo, fo2, fo3)
+
+def main():
+    download_data()
+    norm_data()
+
 if __name__ == '__main__':
-    # out = download_data(580, 'csv')
-    # print out
-    pass
+    main()
+

@@ -6,4 +6,48 @@ license: Public Domain. Original material provided by UN with additional work
   to extract and represent data by Rufus Pollock.
 comments: List of constituent datasets can be found in datasets.csv.
 todo: Download each of these datasets and make into an individual data bundles.
+license: PD. (UN dataset should be PD).
+creator: rgrp.
+requires-compilation: yes.
 
+[file::datasets.csv]
+title = List of datasets
+comments: Type code information is as follows (in Type, Name, Description
+tuples):
+   
+  > C,Country Data,"The figure is the one produced and disseminated by the country
+  > (including data adjusted BY THE COUNTRY to meet international standards)"
+  > 
+  > CA,Country Adjusted,"The figure is the one produced and provided by the
+  > country, but adjusted by the international agency for international
+  > comparability -- that is to comply with internationally agreed standards,
+  > definitions and classifications (age group, ISCED, etc)"
+  > 
+  > E,Estimated,"The figure is estimated by the international agency, when
+  > corresponding country data on a specific year or set of years are not
+  > available, or when multiple sources exist, or there are issues of data quality.
+  > Estimates are based on national data, such as surveys or administrative
+  > records, or other sources but on the same variable being estimated."
+  > 
+  > M,Modeled,"The figure is modeled by the agency when there is a complete lack of
+  > data on the variable being estimated. The model is based on a set of
+  > covariates -- other variables for which data are available and that can
+  > explain the phenomenon."
+  > 
+  > G,Global monitoring data,"The figure is regularly produced by the designated
+  > agency for the global monitoring, based on country data. However, there is no
+  > corresponding figure at the country level, because the indicator is defined for
+  > international monitoring only (example: population below 1$ a day)"
+  > 
+  > N,Not Relevant,"The figure is not available because the indicator-as defined
+  > for the global monitoring-does not apply to the circumstances of the specific
+  > country, and therefore is not reported"
+  > 
+  > NA,Not Available,"A figure was not provided, or the "nature of data" - see
+  > other colors for the definition of "nature of data" - is unknown"
+
+[file::data_original.csv]
+title = Original Data from the MDG Website
+
+[file::data.csv]
+title = MDG Data in Normalized Form
