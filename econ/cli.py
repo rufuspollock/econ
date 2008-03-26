@@ -71,12 +71,13 @@ supplied then use data_store_path specified in config.'''
 
     def help_runserver(self, line=None):
         usage = \
-'''To run a web server to provide a web user interface to the econ package use:
+'''To run a web server to provide a web user interface to the econ package use::
 
-  paster serve development.ini
+  paster serve <config-file-name>
 
-If you have generated your own configuration file replace development.ini with
-your own file name.
+To generate a configuration file do::
+
+  paster make-config <config-file-name>
 '''
         print usage
 
@@ -106,20 +107,38 @@ your own file name.
 
     def help_bundle(self, line=None):
         usage = \
-'''bundle make [path]
+'''Do things with data bundles.
 
-make: create a new data empty data bundle at path. If path not provided create
-the bundle in the default data store (as specified in the config file).
+  1. bundle make [path]
+
+     make: create a new data empty data bundle at path. If path not provided
+     create the bundle in the default data store (as specified in the config
+     file).
+
+  2. bundle show id
+
+     Show information on bundle with 'id' id. The bundle will be located in the
+     data store specified in the configuration file.
 '''
         print usage
 
 
+def main():
+    import optparse
+    usage = \
+'''%prog [options] <command>
 
-if __name__ == '__main__':
-    import sys
-    adminCmd = EconAdmin()
-    if len(sys.argv) < 2:
-        adminCmd.run_interactive()
+Run about or help for details.'''
+    parser = optparse.OptionParser(usage)
+    parser.add_option('-v', '--verbose', dest='verbose', help='Be verbose',
+            action='store_true', default=False) 
+    options, args = parser.parse_args()
+    
+    if len(args) == 0:
+        parser.print_help()
+        return 1
     else:
-        args = ' '.join(sys.argv[1:])
-        adminCmd.onecmd(args)
+        cmd = EconAdmin()
+        args = ' '.join(args)
+        cmd.onecmd(args)
+
