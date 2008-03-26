@@ -52,7 +52,11 @@ Open Econ is open-knowledge and open-source. See LICENSE.txt for details.
             basePath = econ.get_config()['data_store_path']
         indexList = econ.store.make_index(basePath)
         for key, item in indexList.items():
-            print str(item) + '\n'
+            print key
+            print '  Title: ', item.metadata['title']
+            print
+        # for key, item in indexList.items():
+        #    print str(item) + '\n'
 
     def help_store_index(self, line=None):
         usage = \
@@ -62,27 +66,17 @@ Print an index of the data store located at <store-path>. If <store-path> not
 supplied then use data_store_path specified in config.'''
         print usage
 
-    def _runserver_paste_plain(self):
-        import econ.www.plainwsgi
-        import paste.httpserver
-        app = econ.www.plainwsgi.EconWebInterface()
-        paste.httpserver.serve(app)
-
     def do_runserver(self, line=None):
-        if not line: # default
-            self._runserver_paste_plain()
-        else:
-            print 'Unknown argument: %s' % line
-            self.help_runserver()
+        self.help_runserver()
 
     def help_runserver(self, line=None):
         usage = \
-'''runserver
+'''To run a web server to provide a web user interface to the econ package use:
 
-Start a webserver (of optional type) to provide a web user interface to the
-econ package.
+  paster serve development.ini
 
-The resulting website should be availabe at http://localhost:8080
+If you have generated your own configuration file replace development.ini with
+your own file name.
 '''
         print usage
 
@@ -90,8 +84,8 @@ The resulting website should be availabe at http://localhost:8080
         args = []
         if line:
             args = line.split()
+        import econ
         if args and args[0] == 'make': # default
-            import econ
             args = line.split() 
             if len(args) > 1:
                 path = args[1]
@@ -101,6 +95,11 @@ The resulting website should be availabe at http://localhost:8080
             import econ.store.bundle
             bndl = econ.store.bundle.create(path)
             print 'Created new data bundle %s at %s' % (bndl.id, bndl.path)
+        elif args and args[0] == 'show':
+            id = args[1]
+            import econ.store
+            index = econ.store.index()
+            print index[id]
         else:
             print 'Unknown argument: %s' % line
             self.help_bundle()
