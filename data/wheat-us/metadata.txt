@@ -1,0 +1,9 @@
+[DEFAULT]
+id: 517d7c4e-3cb7-4e8f-aaa1-745dd665ad1f
+title: US Wheat Production and Prices
+source: US Department of Agricultural. <http://www.ers.usda.gov/data/wheat/yearbook/WheatYearbookTables-Full.xls>
+requires-compilation: yes.
+tags: wheat agricultural size-medium
+creator: rgrp
+license: mit. (Source is US Govt so original is PD).
+
