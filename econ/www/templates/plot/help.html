@@ -41,6 +41,9 @@
       standard python list slicing syntax, e.g. limit=[2:] (all rows from 2
       onwards), limit=[:-4] (all rows from the start to the 4th before the end)
       etc.</li>
+      <li>xcol: the index of the column to use for x values (NB: first column is index 0, second is 1 etc).</li>
+      <li>ycol0,ycol1,ycol2,ycol3: the indices of y columns to use for plotting (up to 4). Follow same conventions as xcol. NB: because of PlotKit's colouring in conventions some series may not appear if prior series is larger (and therefore 'overwrites' it).</li>
+      <li>chart_type: one of PlotKit chart types (line (default), bar, pie).</li>
     </ul>
 
     <h3>Examples</h3>
@@ -58,8 +61,10 @@
       massive span and uneven spacing of the X-axis values.
       </li>
       <li>
-        <a href="${h.url_for(action='source')}/?data_url=http://p.knowledgeforge.net/econ/svn/trunk/data/uk_price_index_1850-2002_annual/data.csv">
-      ${h.url_for(action='source')}/?data_url=http://p.knowledgeforge.net/econ/svn/trunk/data/uk_price_index_1850-2002_annual/data.csv</a>
+        <a href="${h.url_for(action='source')}/?data_url=http://p.knowledgeforge.net/econ/svn/trunk/data/uk_price_index_1850-2002_annual/data.csv&amp;format=plain">
+      ${h.url_for(action='source')}/?data_url=http://p.knowledgeforge.net/econ/svn/trunk/data/uk_price_index_1850-2002_annual/data.csv&amp;format=plain</a>
+        <br />
+        This is a 'source' version.
       </li>
     </ol>
 	</div>

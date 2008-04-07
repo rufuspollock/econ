@@ -24,34 +24,47 @@ class PlotController(BaseController):
 
     def _get_data(self):
         limit = request.params.get('limit', '[:]')
-        if request.params.has_key('data'):
-            data = request.params.get('data')
-            fileobj = StringIO.StringIO(data)
-        elif request.params.has_key('data_url'):
-            data_url = request.params.get('data_url')
-            # TODO: is this dangerous to allow any url to passed
-            # what about ../../../ type urls?
-            # if not data_url.endswith('.csv'):
-            #    msg = 'At present only the viewing of csv format files is supported.'
-            #    raise Exception(msg)
-            # important to use fileobj to support large files
-            fileobj = urllib2.urlopen(data_url)
-        else:
-            msg = 'No data source provided'
-            raise Exception(msg)
-        fileobj = limit_fileobj(fileobj, limit)
-        return fileobj
-    
-    def chart(self):
-        fileobj = None
         try:
-            fileobj = self._get_data()
+            if request.params.has_key('data'):
+                data = request.params.get('data')
+                fileobj = StringIO.StringIO(data)
+            elif request.params.has_key('data_url'):
+                data_url = request.params.get('data_url')
+                # TODO: is this dangerous to allow any url to passed
+                # what about ../../../ type urls?
+                # if not data_url.endswith('.csv'):
+                #    msg = 'At present only the viewing of csv format files is supported.'
+                #    raise Exception(msg)
+                # important to use fileobj to support large files
+                fileobj = urllib2.urlopen(data_url)
+            else:
+                msg = 'No data source provided'
+                raise Exception(msg)
+            self.fileobj = limit_fileobj(fileobj, limit)
         except Exception, inst:
             msg = 'Error: %s' % inst
             c.error = msg
+
+    def _set_format(self):
+        format = request.params.get('format', 'html')
+        if format == 'plain':
+            response.headers['Content-Type'] = 'text/plain'
+
+    def chart(self):
+        self._get_data()
+        if c.error:
             return self.help()
-        c.html_table = genshi.XML(self.get_html_table(fileobj))
+        c.html_table = genshi.XML(self.get_html_table(self.fileobj))
+        self.fileobj.seek(0)
+        c.chart_code = genshi.HTML(self._get_chart_code(self.fileobj))
         return render('plot/chart', strip_whitespace=False)
+
+    def table(self):
+        self._get_data()
+        if not c.error:
+            c.html_table = genshi.XML(self.get_html_table(self.fileobj))
+        self._set_format()
+        return render('plot/table', strip_whitespace=False)
     
     def source(self):
         '''Get a chart in html/js source form.
@@ -59,21 +72,13 @@ class PlotController(BaseController):
         @arg format: if set to plain return result in text/plain.
         @arg xcol: the index of the data column to use for x values.
         '''
-        format = request.params.get('format', 'html')
-        fileobj = None
-        try:
-            fileobj = self._get_data()
-        except Exception, inst:
-            msg = 'Error: %s' % inst
-            c.error = msg
-        tabdata = self._get_tabular_data(fileobj)
-        data_series = self._make_series(tabdata.data)
-        chart_code = self._get_chart_code(data_series)
-        if format == 'plain':
-            response.headers['Content-Type'] = 'text/plain'
+        self._get_data()
+        if not c.error:
+            chart_code = self._get_chart_code(self.fileobj)
+        self._set_format()
         return chart_code 
 
-    def _make_series(self, matrix, xcol=0, ycols=None):
+    def _make_series(self, matrix, xcol, ycols_indices):
         # rows to columns
         cols = econ.data.tabular.transpose(matrix)
         cols = econ.data.misc.floatify_matrix(cols)
@@ -86,13 +91,25 @@ class PlotController(BaseController):
             return True
         def is_good_tuple(tuple):
             return is_good(tuple[0]) and is_good(tuple[1])
-        series = [ filter(is_good_tuple, zip(cols[xcol], col)) for col in cols ]
-        # will not want xcol against itself
-        del series[0]
+        
+        # ycols = [ cols[idx] for idx in ycols_indices ]
+        ycols = cols
+        series = [ filter(is_good_tuple, zip(cols[xcol], col)) for col in ycols ]
         return series
 
-    def _get_chart_code(self, cols):
-        c.name = 'data0'
+    def _get_chart_code(self, fileobj):
+        tabdata = self._get_tabular_data(fileobj)
+        xcol = request.params.get('xcol', 0)
+        ycols = [ request.params.get('ycol0', 1) ]
+        for ii in range(1,4):
+            yvar_name = 'ycol%s' % ii
+            try:
+                idx = request.params.get(yvar_name, None)
+                ycols.append(int(idx))
+            except:
+                pass
+        cols = self._make_series(tabdata.data, xcol, ycols)
+        c.names = [ 'data%s' % idx for idx in ycols ]
         c.datasets = []
         for ii in range(len(cols)):
             name = 'data%s' % ii
@@ -100,6 +117,7 @@ class PlotController(BaseController):
             c.datasets.append(
                     (name, simplejson.dumps(cols[ii]))
                     )
+        c.chart_type = request.params.get('chart_type', 'line')
         result = render('plot/chart_code')
         return result
 

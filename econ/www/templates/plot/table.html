@@ -1,13 +1,11 @@
 <html xmlns:py="http://genshi.edgewall.org/"
   xmlns:xi="http://www.w3.org/2001/XInclude">
   
-  <py:def function="page_title">Plot - Chart</py:def>
+  <py:def function="page_title">Plot - Table</py:def>
+
+  <p py:if="c.error">${c.error}</p>
 
 	<div py:match="content">
-		<h2>The Graph</h2>
-
-    ${c.chart_code}
-
 		<h2>The Data</h2>
 		<div style="margin: 2em;">
 			${c.html_table}

@@ -1,26 +1,8 @@
-p:refactor 2007-08-21 Convert unittest to py.test style in econ.model
+p:thoughts 2007-12-19 we should be clear that the data store and the data listing are separate. Not every item in the store need be in the listing and vice versa.
 
 p:code/plot/security 2007-06-01 data_url can be any url that urllib.urlopen will parse. Does this allow people to get access to any file on disk?
 
-p:code/www/graph support for missing values (graphing does not barf on missing values in a table ...)
-
-p:code/etc integrate old etc/econ.conf config into new paste based config 
-
-p:code/www/graph support for multiple columns
-        layout.addDatasetFromTable("dataset2", $("values"), xcol = 0, ycol = 2);        
-        layout.addDatasetFromTable("dataset1", $("values"), xcol = 0, ycol = 1);
-        see also http://imagine-it.org/google/spreadsheets/makechart.htm
-
-p:doc Documentation for the system, particularly for the web interface.
-
-p:code/www/graph: multiple columns. 2007-04-19.
-
-p:code/www/graph: select which columns to plot (using js perhaps) . 2007-04-19.
-
 p:code/www/store Change view store item to be simpler (just link to the source file and metadata ...) 2007-04-20
-
-p:data mdg code and interface. 2007-04-19.
-
 
 x 2007-04-29 (wontfix: ploticus seems a bit cumbersome from python for this to currently be worth it.) p:code/www/graph: switch to ploticus/matplotlib. 2007-04-19.
 
@@ -31,4 +13,23 @@ x 20070407 p:code/www switch to pylons ...
 x 2007-04-30 p:code/www Web service for graphing independent of source. 2007-04-20
 
 x 20070502 p:code/www limit on datasets visualization and other graphing options
+
+x 2008-09-30 (finished 2008-01-25) p:refactor 2007-08-21 Convert unittest to py.test style in econ.model
+
+x 2007-11 (?) p:code/etc integrate old etc/econ.conf config into new paste based config 
+
+x 2008-01 (sort of: still no particular interface -- see email to list) p:data mdg code and interface. 2007-04-19.
+
+x 2008-04-07 p:code/www/graph support for missing values (graphing does not barf on missing values in a table ...)
+
+x 2008-04-07 p:doc Documentation for the system, particularly for the web interface.
+
+x 2008-04-07 p:code/www/graph: multiple columns. 2007-04-19.
+
+x 2008-04-07 p:code/www/graph: select which columns to plot (using js perhaps) . 2007-04-19.  xcol=int, ycol=int
+
+x 2008-04-07 p:code/www/graph support for multiple columns
+        layout.addDatasetFromTable("dataset2", $("values"), xcol = 0, ycol = 2);        
+        layout.addDatasetFromTable("dataset1", $("values"), xcol = 0, ycol = 1);
+        see also http://imagine-it.org/google/spreadsheets/makechart.htm
 

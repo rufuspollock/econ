@@ -21,7 +21,7 @@ class TestStore(TestController2):
         assert 'Store - View' in res
         assert 'UK Price Index' in res
         assert 'Raw Data' in res
-        assert 'Plot This Dataset' in res
+        assert 'View This Dataset' in res
 
     def test_data(self):
         id = 'uk_price_index_1850-2002_annual'

@@ -32,11 +32,13 @@ class TestPlot(TestController2):
                 [ '1981', '101', '51' ],
                 [ '1982', '102', '' ],
                 ]
-        exp = [ [ (1980.0, 100.0), (1981.0, 101.0), (1982.0, 102.0) ],
-            [ (1980.0, 50.0), (1981.0, 51.0) ]
+        exp = [
+                [ (1980.0, 1980.0), (1981.0, 1981.0), (1982.0, 1982.0) ],
+                [ (1980.0, 100.0), (1981.0, 101.0), (1982.0, 102.0) ],
+                [ (1980.0, 50.0), (1981.0, 51.0) ]
             ]
         ctr = econ.www.controllers.plot.PlotController()
-        out = ctr._make_series(indata)
+        out = ctr._make_series(indata, xcol=0, ycols_indices=[1,2])
         assert out == exp
 
     def test_chart_data_url(self):
