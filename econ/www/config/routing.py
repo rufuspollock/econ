@@ -19,7 +19,7 @@ def make_map():
     # CUSTOM ROUTES HERE
 
     map.connect('', controller='root', action='index')
-    map.connect('plot', controller='plot')
+    map.connect('plot/:action', controller='plot', action='index')
     map.connect('store/:action/:id', controller='store', action='index',
             requirements=dict(action='index|list|search|view|create')
             )
