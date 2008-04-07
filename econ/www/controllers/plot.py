@@ -4,6 +4,10 @@ import genshi
 
 from econ.www.lib.base import *
 
+import econ.data.misc
+import econ.data.tabular
+import simplejson
+
 # Several steps:
 # 1. generate plot
 # 2. convert data to suitable format to use ...
@@ -46,39 +50,70 @@ class PlotController(BaseController):
             msg = 'Error: %s' % inst
             c.error = msg
             return self.help()
-        import genshi
-        c.html_table = genshi.XML(get_html_table(fileobj))
+        c.html_table = genshi.XML(self.get_html_table(fileobj))
         return render('plot/chart', strip_whitespace=False)
     
     def source(self):
+        '''Get a chart in html/js source form.
+
+        @arg format: if set to plain return result in text/plain.
+        @arg xcol: the index of the data column to use for x values.
+        '''
+        format = request.params.get('format', 'html')
         fileobj = None
         try:
             fileobj = self._get_data()
         except Exception, inst:
             msg = 'Error: %s' % inst
             c.error = msg
-            return self.help()
-        chart_code = self._get_chart_code(fileobj)
-        response.headers['Content-Type'] = 'text/plain'
+        tabdata = self._get_tabular_data(fileobj)
+        data_series = self._make_series(tabdata.data)
+        chart_code = self._get_chart_code(data_series)
+        if format == 'plain':
+            response.headers['Content-Type'] = 'text/plain'
         return chart_code 
 
-    def _get_chart_code(self, fileobj):
-        fileobj.seek(0)
-        import econ.data.tabular
-        reader = econ.data.tabular.ReaderCsv()
-        tabdata = reader.read(fileobj)
+    def _make_series(self, matrix, xcol=0, ycols=None):
         # rows to columns
-        cols = econ.data.tabular.transpose(tabdata.data)
+        cols = econ.data.tabular.transpose(matrix)
+        cols = econ.data.misc.floatify_matrix(cols)
+        def is_good(value):
+            if value is None: return False
+            tv = str(value)
+            stopchars = [ '', '-' ]
+            if tv in stopchars:
+                return False
+            return True
+        def is_good_tuple(tuple):
+            return is_good(tuple[0]) and is_good(tuple[1])
+        series = [ filter(is_good_tuple, zip(cols[xcol], col)) for col in cols ]
+        # will not want xcol against itself
+        del series[0]
+        return series
+
+    def _get_chart_code(self, cols):
+        c.name = 'data0'
         c.datasets = []
         for ii in range(len(cols)):
             name = 'data%s' % ii
-            c.datasets.append((name, str(cols[ii])))
+            # use simplejson to ensure formatting is correct for js
+            c.datasets.append(
+                    (name, simplejson.dumps(cols[ii]))
+                    )
         result = render('plot/chart_code')
         return result
-         
 
+    def _get_tabular_data(self, fileobj): 
+        reader = econ.data.tabular.ReaderCsv()
+        tabdata = reader.read(fileobj)
+        return tabdata
 
-    
+    def get_html_table(self, fileobj):
+        tabdata = self._get_tabular_data(fileobj)
+        writer = econ.data.tabular.WriterHtml({'id' : 'table_1'})
+        html = writer.write(tabdata)
+        return html
+
     def test(self):
         c.html_table = '''<table>
     <tr>
@@ -90,14 +125,6 @@ class PlotController(BaseController):
     '''
         return render('plot/chart')
 
-
-def get_html_table(fileobj):
-    import econ.data.tabular
-    reader = econ.data.tabular.ReaderCsv()
-    writer = econ.data.tabular.WriterHtml({'id' : 'table_1'})
-    tabdata = reader.read(fileobj)
-    html = writer.write(tabdata)
-    return html
 
 def parse_limit(instr):
     # if a bad string just return None, None

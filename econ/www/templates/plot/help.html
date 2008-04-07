@@ -18,6 +18,13 @@
     h.link_to(h.url_for(action='chart'), h.url_for(action='chart'))
     )}
     </p>
+    <p>You can also obtain 'source' code so that you can insert a chart into
+    your own html:</p>
+    <p>
+    ${XML(
+    h.link_to(h.url_for(action='source'), h.url_for(action='source'))
+    )}
+    </p>
 
     <p>You send data to the service either by POSTing it or by providing the
     url at which the data is located (in which case you can use a POST or a
@@ -37,18 +44,24 @@
     </ul>
 
     <h3>Examples</h3>
-    <p>
-    <a href="${h.url_for(action='chart')}/?data_url=http://p.knowledgeforge.net/econ/svn/trunk/data/uk_price_index_1850-2002_annual/data.csv">
+    <ol>
+      <li>
+        <a href="${h.url_for(action='chart')}/?data_url=http://p.knowledgeforge.net/econ/svn/trunk/data/uk_price_index_1850-2002_annual/data.csv">
       ${h.url_for(action='chart')}/?data_url=http://p.knowledgeforge.net/econ/svn/trunk/data/uk_price_index_1850-2002_annual/data.csv</a>
-    </p>
-    <p>
-    <a href="${h.url_for(action='chart')}/?data_url=http://p.knowledgeforge.net/econ/svn/trunk/data/world_population_historical/data.csv&amp;limit=[8:]">
+      </li>
+      <li>
+        <a href="${h.url_for(action='chart')}/?data_url=http://p.knowledgeforge.net/econ/svn/trunk/data/world_population_historical/data.csv&amp;limit=[8:]">
       ${h.url_for(action='chart')}/?data_url=http://p.knowledgeforge.net/econ/svn/trunk/data/world_population_historical/data.csv&amp;limit=[8:]</a>
 
-    <br /><br />
-    Note that without the limit here the graph would not render because of the
-    massive span and uneven spacing of the X-axis values.
-    </p>
+      <br />
+      Note that without the limit here the graph would not render because of the
+      massive span and uneven spacing of the X-axis values.
+      </li>
+      <li>
+        <a href="${h.url_for(action='source')}/?data_url=http://p.knowledgeforge.net/econ/svn/trunk/data/uk_price_index_1850-2002_annual/data.csv">
+      ${h.url_for(action='source')}/?data_url=http://p.knowledgeforge.net/econ/svn/trunk/data/uk_price_index_1850-2002_annual/data.csv</a>
+      </li>
+    </ol>
 	</div>
 
   <xi:include href="../layout.html" />

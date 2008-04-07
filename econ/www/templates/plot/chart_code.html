@@ -1,4 +1,12 @@
-<div xmlns:py="http://genshi.edgewall.org/">
+<div xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:py="http://genshi.edgewall.org/" 
+  xmlns:xi="http://www.w3.org/2001/XInclude"
+  py:strip="True">
+
+  <xi:include href="../plotkit.html" />
+  
+  <p py:if="c.error">${c.error}</p>
+
   <div style="margin: 2em;">
     <canvas id="plot" height="500" width="500"></canvas>
   </div>
@@ -8,9 +16,11 @@
       var options = { "xOriginIsZero" : false}
       var layout = new PlotKit.Layout("line", options);
       // layout.addDatasetFromTable("datatable", $("table_1"));
+      datasets = {};
       <py:for each="name, dataset in c.datasets">
-        layout.addDataset(${name}, ${dataset})
+      datasets["${name}"] = ${dataset};
       </py:for>
+      layout.addDataset("${c.name}", datasets["${c.name}"]);
       layout.evaluate();
       var canvas = MochiKit.DOM.getElement("plot");
       var plotter = new PlotKit.SweetCanvasRenderer(canvas, layout, {});

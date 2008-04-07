@@ -17,16 +17,38 @@ class TestPlot(TestController2):
     
     def test_source(self):
         offset = url_for(controller='plot', action='source')
-        url = offset
-        res = self.app.get(url)
-        print str(res)
-        assert '<script' in res
+        print offset
+        table = \
+'''0,1
+1,0'''
+        values = { 'data' : table }
+        res = self.app.post(offset, values)
+        print res
+        assert '[0.0, 1.0], [1.0, 0.0]' in res
+
+    def test__make_series(self):
+        import econ.www.controllers.plot
+        indata = [ [ '1980', '100', '50' ],
+                [ '1981', '101', '51' ],
+                [ '1982', '102', '' ],
+                ]
+        exp = [ [ (1980.0, 100.0), (1981.0, 101.0), (1982.0, 102.0) ],
+            [ (1980.0, 50.0), (1981.0, 51.0) ]
+            ]
+        ctr = econ.www.controllers.plot.PlotController()
+        out = ctr._make_series(indata)
+        assert out == exp
 
     def test_chart_data_url(self):
         # you might think you could just use self.app for the wsgiapp (or even
         # self.app.app -- the original unwrapped wsgi app) but oh no something
         # weird is going on with the environ and all hell breaks loose
         # add_urllib2_intercept(appfunc=lambda: self.app.app)
+        try:
+            import wsgi_intercept
+        except:
+            msg = 'WARNING: not running test_chart_data_url as wsgi_intercept not installed.'
+            raise Exception(msg)
         add_urllib2_intercept(appfunc=lambda: proxy_csv_app)
         offset = url_for(controller='plot', action='chart')
         # the url here does not matter because we have inserted a proxy which
