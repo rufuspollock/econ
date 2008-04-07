@@ -34,7 +34,7 @@ class TabularData(object):
             self.header = header
 
 def transpose(data):
-    # transpose a list of lists
+    '''Transpose a list of lists.'''
     out = []
     numrows = len(data)
     if numrows == 0:
