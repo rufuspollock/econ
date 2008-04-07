@@ -1,4 +1,6 @@
-# Tools for downloading and extracting data
+'''A "swiss army" knife toolset for downloading, extracting and investigating
+data.
+'''
 
 import pprint
 def xls_info(fn):
