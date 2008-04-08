@@ -1,6 +1,7 @@
 import os
 import tempfile
 import shutil
+from StringIO import StringIO
 
 import econ.store
 from bundle import DataBundle
@@ -51,6 +52,25 @@ class TestDataBundle:
         bndl = econ.store.bundle.create(self.tmpDir)
         assert os.path.exists(bndl.path)
         assert len(bndl.id) == 36
+
+    full_meta = \
+'''[DEFAULT]
+id : abc
+title: mytitle
+
+[data.csv]
+title: ...
+
+[xyz.png]
+title: my graph
+'''
+
+    def test_read_metadata(self):
+        bndl = econ.store.bundle.DataBundle()
+        bndl.read_metadata(StringIO(self.full_meta))
+        assert bndl.metadata['title'] == 'mytitle'
+        assert len(bndl.data_files) == 2
+        assert bndl.data_files['data.csv']['title'] == '...'
         
 
 class TestMakeIndex:
