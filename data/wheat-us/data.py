@@ -18,7 +18,7 @@ def download():
     urllib.urlretrieve(all_data_url, all_fn)
 
 def info():
-    import econ.data.tools as tl
+    import econ.data.swiss as tl
     print tl.xls_info(all_fn)
     print tl.xls_sheet_info(all_fn, 1)
 

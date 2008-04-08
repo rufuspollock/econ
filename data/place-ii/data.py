@@ -2,19 +2,17 @@ from StringIO import StringIO
 import zipfile
 import urllib
 
-import econ.data.tools as tl
 
 # approx 656k
 url = 'http://sedac.ciesin.columbia.edu/place/downloads/data/PLACEII_data_CIESIN_may07.zip'
 # cache = os.path.abspath('./cache')
+FN = 'PLACEII_data_CIESIN_may07.zip'
 
 def download():
-    fn = tl.url_basename(url) 
-    urllib.urlretrieve(url, fn)
+    urllib.urlretrieve(url, FN)
 
 def unzip(): 
-    fn = tl.url_basename(url) 
-    zipfo = zipfile.ZipFile(file(fn))
+    zipfo = zipfile.ZipFile(file(FN))
     for name in zipfo.namelist():
         file(name, 'w').write(zipfo.read(name))
 
