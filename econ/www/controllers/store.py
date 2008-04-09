@@ -18,6 +18,9 @@ class StoreController(BaseController):
             title = bundle.metadata.get('title', 'No title available')
             storeIndex.append((h.url_for(bundle.id), title))
         c.store_index = storeIndex
+        def mycmp(x,y):
+            return cmp(x[1], y[1])
+        c.store_index.sort(mycmp)
         return render('store/index')
 
     def _get_bundle(self, id):
