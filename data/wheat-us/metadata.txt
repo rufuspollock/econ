@@ -1,9 +1,32 @@
 [DEFAULT]
 id: 517d7c4e-3cb7-4e8f-aaa1-745dd665ad1f
 title: US Wheat Production and Prices
-source: US Department of Agricultural. <http://www.ers.usda.gov/data/wheat/yearbook/WheatYearbookTables-Full.xls>
+source: US Department of Agricultural. <http://www.ers.usda.gov/data/wheat/yearbook/WheatYearbookTables-Full.xls>. General page containing updates: <http://www.ers.usda.gov/data/wheat/>
 requires-compilation: yes.
 tags: wheat agricultural size-medium
 creator: rgrp
 license: mit. (Source is US Govt so original is PD).
+comments: In original all market years are of form 1867/68 (i.e. run over the
+  two calendar years). In data this is normalized to always be the a single
+  calendar year corresponding to the first year mentioned.
 
+[data_original.xls]
+title: Original Data As Downloaded from Website.
+
+[table_1_durum.csv]
+title: Table 1--Wheat: Planted acreage, harvested acreage, production, yield, and farm price (Durum)
+
+[table_1_hard_red_spring.csv]
+title: Table 1--Wheat: Planted acreage, harvested acreage, production, yield, and farm price (Hard red spring)
+
+[table_1_soft_red_winter.csv]
+title: Table 1--Wheat: Planted acreage, harvested acreage, production, yield, and farm price (Soft red winter)
+
+[table_1_all_wheat.csv]
+title: Table 1--Wheat: Planted acreage, harvested acreage, production, yield, and farm price (All wheat)
+
+[table_1_hard_red_winter.csv]
+title: Table 1--Wheat: Planted acreage, harvested acreage, production, yield, and farm price (Hard red winter)
+
+[table_1_white.csv]
+title: Table 1--Wheat: Planted acreage, harvested acreage, production, yield, and farm price (White)
