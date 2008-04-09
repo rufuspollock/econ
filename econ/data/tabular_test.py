@@ -63,6 +63,23 @@ u'''"headi\xf1g", "header 2"
         fileobj = StringIO(self.csvdata)
         self.tab = reader.read(fileobj, encoding=self.encoding)
 
+
+class TestCsvWriter:
+    def test_writer(self):
+        writer = econ.data.tabular.CsvWriter()
+        fo = StringIO()
+        td = econ.data.tabular.TabularData([[1,2],[3,4]], header=['one',
+            'two'])
+        writer.write(fo, td)
+        fo.seek(0)
+        out = fo.read()
+        exp = \
+'''one,two\r
+1,2\r
+3,4\r\n'''
+        assert out == exp
+
+
 class TestXlsReader:
 
     def test_stuff(self):

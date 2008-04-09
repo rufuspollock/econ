@@ -4,6 +4,9 @@ class DataSniffer:
     pass
 
 def floatify(value):
+    # often numbers have commas in them like 1,030
+    if isinstance(value, basestring):
+        value = value.replace(',', '')
     try:
         newval = float(value)
         return newval

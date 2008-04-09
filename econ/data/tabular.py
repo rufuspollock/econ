@@ -32,6 +32,15 @@ class TabularData(object):
             self.data = data
         if header is not None:
             self.header = header
+    
+    def __repr__(self):
+        out = []
+        if self.header:
+            out.append(self.header)
+        # limit to 10 items
+        out += self.data[0:10]
+        return repr(out)
+
 
 def transpose(data):
     '''Transpose a list of lists.'''
@@ -70,7 +79,7 @@ class UTF8Recoder:
     def next(self):
         return self.reader.next().encode('utf-8')
 
-class ReaderCsv(object):
+class CsvReader(object):
     """Read data from a csv file into a TabularData structure
 
     Note that the csv module does *not* support unicode:
@@ -112,6 +121,20 @@ class ReaderCsv(object):
         for row in reader:
             tabData.data.append(row)
         return tabData
+
+# for backwards compatibility
+ReaderCsv = CsvReader
+
+class CsvWriter(object):
+    # TODO: unicode support a la CsvReader
+    def write(self, fileobj, tabular_data, encoding='utf-8'):
+        writer = csv.writer(fileobj)
+        if tabular_data.header:
+            writer.writerow(tabular_data.header)
+        for row in tabular_data.data:
+            writer.writerow(row)
+        fileobj.flush()
+
 
 class XlsReader(object):
     '''Read Excel (xls) files.
