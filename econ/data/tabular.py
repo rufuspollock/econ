@@ -233,7 +233,7 @@ class HtmlReader(HTMLParser):
 
     
 import re
-class WriterHtml:
+class HtmlWriter(object):
     """
     Write tabular data to xhtml
     """
@@ -350,6 +350,9 @@ class WriterHtml:
         else:
             return str(tagValue)
 
+# for backwards compatibility
+# 2008-05-30
+WriterHtml = HtmlWriter
 
 ## ---------------------------------------------------------
 ## General Helper methods 
