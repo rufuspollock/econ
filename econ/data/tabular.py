@@ -138,10 +138,14 @@ class CsvWriter(object):
 
 class XlsReader(object):
     '''Read Excel (xls) files.
-
     '''
 
     def read(self, fileobj, sheet_index=0):
+        '''Read an excel file (provide as fileobj) and return the specified
+        sheet as a L{TabularData} object.
+        
+        @return L{TabularData} object.
+        '''
         tab = TabularData()
         import xlrd
         book = xlrd.open_workbook(file_contents=fileobj.read())
@@ -171,6 +175,7 @@ class XlsReader(object):
         if cell.ctype == xlrd.XL_CELL_NUMBER: 
             return float(cell.value)
         elif cell.ctype == xlrd.XL_CELL_DATE:
+            from datetime import date
             # TODO: distinguish date and datetime
             args = xlrd.xldate_as_tuple(cell.value, book.datemode)
             return date(args[0], args[1], args[2])
@@ -192,6 +197,8 @@ class HtmlReader(HTMLParser):
     '''
     def read(self, fileobj, table_index=0):
         '''Read data from fileobj.
+
+        NB: post read all tables extracted are in attribute named 'tables'.
 
         @arg table_index: if multiple tables in the html return table at this
             index.
