@@ -1,0 +1,19 @@
+[DEFAULT]
+id: penn_world_table
+
+title: Penn World Table of PPP and National Income Accounts
+
+description: From source site: "The Penn World Table provides purchasing power parity and national income accounts converted to international prices for 188 countries for some or all of the years 1950-2004. The European Union or the OECD provide more detailed purchasing power and real product estimates for their countries and the World Bank makes current price estimates for most PWT countries at the GDP level."
+
+source: <http://pwt.econ.upenn.edu/php_site/pwt_index.php>. Cite as "Alan Heston, Robert Summers and Bettina Aten, Penn World Table Version 6.2, Center for International Comparisons of Production, Income and Prices at the University of Pennsylvania, September 2006."
+
+version: 6.2
+
+requires-compilation: no.
+
+tags: economics gdp ppp size-medium
+
+creator: rgrp
+
+license: MIT. (Source appears to allow free redistribution with appropriate citation).
+
