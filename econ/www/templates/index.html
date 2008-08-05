@@ -1,13 +1,25 @@
 <html xmlns:py="http://genshi.edgewall.org/"
   xmlns:xi="http://www.w3.org/2001/XInclude">
   
-  <py:def function="page_title">Open Economics Index</py:def>
+  <py:def function="page_title">Open Economics - Home</py:def>
 
 	<div py:match="content">
-		<h2><a href="store/">Data Store</a></h2>
-		<h2><a href="current_value/">Current Value Calculator</a></h2>
-		<h2><a href="plot/">Plot</a></h2>
-		<h2><a href="http://atlas.openeconomics.net/">Atlas of Economic Models (external)</a></h2>
+		<h2>About</h2>
+		<p>The <a href="http://www.okfn.org/">Open Economics project</a> provides <a href="http://www.opendefinition.org/">open</a> content, data and code related to Economics. This site itself provides interfaces to some (though not all) of the Open Economics datasets and models. Below you can find a link to the main repository containing all our code and data (including that used to run this site), as well as to the main services provided by the project both here and externally.
+		</p>
+
+		<h2>Local Material and Services</h2>
+		<ul>
+			<li><a href="store/">Data Store</a></li>
+			<li><a href="current_value/">Current Value Calculator</a></li>
+			<li><a href="plot/">Plot</a></li>
+		</ul>
+
+		<h2>External Material and Services</h2>
+		<ul>
+			<li><a href="http://knowledgeforge.net/econ/trac/wiki/">Open Economics Repository</a> - includes all code and data</li>
+			<li><a href="http://atlas.openeconomics.net/">Atlas of Economic Models</a> - wiki for documenting the main models in the literature</li>
+		</ul>
 	</div>
 
   <xi:include href="layout.html" />
