@@ -14,7 +14,7 @@ setup(
     version=econ.__version__,
     description=econ.__description__,
     long_description=econ.__long_description__,
-    license='GPL',
+    license='MIT',
     author='Rufus Pollock',
     author_email='rufus [at] rufuspollock [dot] org',
     url='http://www.knowledgeforge.net/project/econ/',
