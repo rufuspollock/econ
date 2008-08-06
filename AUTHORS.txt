@@ -1,3 +1,4 @@
 This file lists contributors to the project.
 
-  Rufus Pollock
+  * Rufus Pollock
+

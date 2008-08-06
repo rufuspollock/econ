@@ -3,14 +3,41 @@
 This project contains economics-related open source and open data material.
 
 
-## Copyright and License
+## Contributors, Copyright and License
 
-Copyright (c) 2004-2007 Open Knowledge Foundation. All rights reserved.
+Contributors to the project are listed in AUTHORS. All code, content and data in Open Economics is open and can be freely used, reused and redistributed. Details of the exact licensing are provided below.
 
-All material is available under and open license see the file "LICENSE.txt" for
-details.
+### Code
 
-Contributors to the project are listed in AUTHORS.
+All code is available under the MIT License:
+
+Copyright (c) 2005-08, Open Knowledge Foundation
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of
+this software and associated documentation files (the "Software"), to deal in
+the Software without restriction, including without limitation the rights to
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+of the Software, and to permit persons to whom the Software is furnished to do
+so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+## Content and Data
+
+Unless otherwise stated all content and data is licensed under a Creative Commons Attribution license v3.0 (unported + all jurisdictions) with the additional provision that this license should be read broadly to cover not only copyright but also all other IP rights present in this material including, for example, any database rights.
+
+The full text of this license may be found via the following url:
+
+<http://creativecommons.org/licenses/by-sa/3.0/legalcode>
 
 
 ## Installation
