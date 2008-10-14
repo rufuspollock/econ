@@ -9,10 +9,10 @@
 
     <xi:include href="plotkit.html" />
 
-    <py:if test="page_specific_css">
+    <py:if test="defined('page_specific_css')">
     ${page_specific_css()}
     </py:if>
-    <py:if test="page_specific_scripts">
+    <py:if test="defined('page_specific_scripts')">
     ${page_specific_scripts()}
     </py:if>
   </head>

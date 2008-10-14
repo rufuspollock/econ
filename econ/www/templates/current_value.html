@@ -8,7 +8,7 @@
     There was an error. Details: ${c.error_message}
   </p>
   <form action="${c.ownPath}" method="GET">
-		Year: <input name="year" value="${year}" />
+		Year: <input name="year" value="${value_of('year')}" />
 		<br />
 		<input type="submit" value="Get Current Value" />
 	</form>
