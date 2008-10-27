@@ -190,3 +190,11 @@ class Ploticus(object):
             print cstderr.read()
         return data
 
+
+class Diagram(object):
+
+    def arrow(self, start, end):
+        '''Wrap matplotlib stuff to make things simpler.'''
+        # cannot get arrow to use a headwidth ...
+        # pylab.annotate('', start, end, headwidth=
+        pass

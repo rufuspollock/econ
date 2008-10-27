@@ -43,20 +43,11 @@ class TabularData(object):
 
 
 def transpose(data):
-    '''Transpose a list of lists.'''
-    out = []
-    numrows = len(data)
-    if numrows == 0:
-        return out
-    numcols = len(data[0])
-    if numcols == 0:
-        return out
-    for jj in range(numcols):
-        newrow = []
-        for ii in range(numrows):
-            newrow.append(data[ii][jj])
-        out.append(newrow)
-    return out
+    '''Transpose a list of lists.
+    
+    Or do it directy: data = zip(*data)
+    '''
+    return zip(*data)
 
 
 import csv
@@ -365,8 +356,13 @@ WriterHtml = HtmlWriter
 ## General Helper methods 
 
 def select_columns(matrix, cols):
-    out = [ col_from_row(row, cols) for row in matrix ]
-    return out
+    '''Return a matrix with only those column indexes in cols.'''
+    tsp = transpose(matrix)
+    out = []
+    cols.sort()
+    for c in cols:
+        out.append(tsp[c])
+    return transpose(out)
 
 def format_cols_as_ints(matrix, cols):
     for ii in range(len(matrix)):
@@ -391,7 +387,7 @@ class LatexWriter(object):
         return out
 
     def process_cell(self, cell, heading=False):
-        cell_text = self.escape(str(cell))
+        cell_text = self.escape(unicode(cell))
         if heading:
             return '\\textbf{%s}' % cell_text
         else:
