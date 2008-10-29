@@ -9,7 +9,15 @@
     <h3>Metadata</h3>
     <ul>
       <li py:for="key, value in c.metadata.items()">
-      <strong>${key}: </strong> ${value}
+      <strong>${key}: </strong>
+      <py:choose>
+      <py:when test="key in ['description', 'notes', 'comment']">
+        ${HTML(h.markdown(value.replace('\n', '\n\n')))}
+      </py:when>
+      <py:otherwise>
+        ${value}
+      </py:otherwise>
+      </py:choose>
       </li>
     </ul>
 
