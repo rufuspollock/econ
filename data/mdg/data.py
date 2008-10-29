@@ -9,7 +9,7 @@ import csv
 
 original_fn = 'data_original.csv'
 
-def all_data():
+def download_all_data():
     '''
     Now (2007-12) seems you can get all datasets in one big csv file.
 
@@ -22,9 +22,12 @@ def all_data():
     # there is just one item in the zip archive
     name = zipfo.namelist()[0]
     out = zipfo.read(name)
-    return out
 
-def download_data(series_id, format='csv'):
+    fo = file(original_fn, 'w')
+    fo.write(out)
+    fo.close()
+
+def download_single_series(series_id, format='csv'):
     """Download a given data series.
 
     @format: csv, xml, xls (excel)
@@ -213,37 +216,6 @@ class DataParser(object):
         return values
 
 
-class SqlalchemyWrapper:
-    '''Use SQLAlchemy to load data into sql db and provide a pythonic
-    interface.
-
-    # TODO: complete this.
-    '''
-
-    def __init__(self):
-        from sqlalchemy import create_engine
-        engine = create_engine('sqlite:///:memory:', echo=True)
-
-    def map(self):
-        class Country:
-            name = String()
-            code = Int()
-
-        class Series: # not always a goal ...
-            code = Int()
-            name = String()
-            is_goal = Boolean()
-
-        class Value:
-            value = Blah()
-            type = String()
-            footnote = ForeignKey() 
-
-    class Footnote:
-        id = None
-        text = None
-
-
 class MdgMetadata(object):
     '''TODO.'''
 
@@ -280,50 +252,15 @@ class MdgMetadata(object):
         out = br.response().read()
         # TODO: extract option list and then clean up
         return out
-
-# ---------------------------------------------------------
-# TESTS
-
-class TestDataParser:
-    parser = DataParser()
-
-    def test_parse(self):
-        ff = file(original_fn)
-        countries, series, rows, footnotes = self.parser.parse_all_data(ff)
-        ff.close()
-        assert len(countries) == 231
-        assert len(series) == 141
-        lr = len(rows)
-        assert lr == 32571
-        # this is not robust to updates of the material ...
-        # row = rows[27649]
-        # uk_ppp = row.values[1990].value
-        # print row.series_code
-        # print row.country_code
-        # print uk_ppp
-        # assert uk_ppp == 0.5491460491
-
-    def test_norm_row(self):
-        row = ['4', 'Afghanistan', '563', 'Y', 'against measles, percentage', '20',
-                '', 'E', '19', '', 'E', '22', '', 'E', '25', '', 'E', '40', '',
-                'E', '41', '', 'E', '42', '', 'E', '48', '', 'E', '40', '', 'E',
-                '40', '', 'E', '35', '', 'E', '46', '', 'E', '44', '', 'E', '50',
-                '', 'E', '61', '', 'E', '64', '', 'E', ' ', ' ', ' ', ' ', ' ', ' ']
-        out = self.parser.norm_row(row)
-        assert len(out) == 16
-        exp = ['4', 'Afghanistan', '563', 'Y', 'against measles, percentage',
-                1991, '19', '', 'E' ]
-        assert len(out[0]) == 9
-        print out[1]
-        assert out[1] == exp
-
                 
-def download_data():
-    out = all_data()
-    fo = file(original_fn, 'w')
-    fo.write(out)
-    fo.close()
- 
+
+dburi = 'sqlite:///%s' % 'sqlite_mdg.db'
+def load_normed_data_into_db():
+    fn = 'data.csv'
+    import db
+    repo = db.Repository(dburi)
+    repo.load_normed_data(fn)
+
 def norm_data():
     parser = DataParser()
     fo = file(original_fn)
@@ -332,9 +269,11 @@ def norm_data():
     parser.norm_all_data(fo, fo2, fo3)
 
 def main():
-    download_data()
+    download_all_data()
     norm_data()
 
 if __name__ == '__main__':
-    main()
+    # main()
+    load_normed_data_into_db()
+
 
