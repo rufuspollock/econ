@@ -1,12 +1,15 @@
 import StringIO
 import urllib2
 import genshi
+import datetime
+
+import dateutil.parser
+import simplejson
 
 from econ.www.lib.base import *
 
 import econ.data.misc
 import econ.data.tabular
-import simplejson
 
 # Several steps:
 # 1. generate plot
@@ -22,14 +25,20 @@ class PlotController(BaseController):
     def help(self):
         return render('plot/help')
 
-    def _get_data(self):
+    def _get_data(self, dataset_id=None):
         limit = request.params.get('limit', '[:]')
+        print request
+        if dataset_id:
+            offset = h.url_for(controller='store', action='data', id=dataset_id)
+            data_url = '%s://%s%s' % (request.scheme, request.host, offset)
+        elif request.params.has_key('data_url'):
+            data_url = request.params.get('data_url')
+        print data_url
         try:
             if request.params.has_key('data'):
                 data = request.params.get('data')
                 fileobj = StringIO.StringIO(data)
-            elif request.params.has_key('data_url'):
-                data_url = request.params.get('data_url')
+            elif data_url:
                 # TODO: is this dangerous to allow any url to passed
                 # what about ../../../ type urls?
                 # if not data_url.endswith('.csv'):
@@ -50,8 +59,8 @@ class PlotController(BaseController):
         if format == 'plain':
             response.headers['Content-Type'] = 'text/plain'
 
-    def chart(self):
-        self._get_data()
+    def chart(self, id):
+        self._get_data(id)
         if c.error:
             return self.help()
         c.html_table = genshi.XML(self.get_html_table(self.fileobj))
@@ -59,20 +68,20 @@ class PlotController(BaseController):
         c.chart_code = genshi.HTML(self._get_chart_code(self.fileobj))
         return render('plot/chart', strip_whitespace=False)
 
-    def table(self):
-        self._get_data()
+    def table(self, id):
+        self._get_data(id)
         if not c.error:
             c.html_table = genshi.XML(self.get_html_table(self.fileobj))
         self._set_format()
         return render('plot/table', strip_whitespace=False)
     
-    def source(self):
+    def source(self, id):
         '''Get a chart in html/js source form.
 
         @arg format: if set to plain return result in text/plain.
         @arg xcol: the index of the data column to use for x values.
         '''
-        self._get_data()
+        self._get_data(id)
         if not c.error:
             chart_code = self._get_chart_code(self.fileobj)
         self._set_format()
@@ -92,9 +101,10 @@ class PlotController(BaseController):
         def is_good_tuple(tuple):
             return is_good(tuple[0]) and is_good(tuple[1])
         
+        xcoldata = cols[xcol]
         # ycols = [ cols[idx] for idx in ycols_indices ]
         ycols = cols
-        series = [ filter(is_good_tuple, zip(cols[xcol], col)) for col in ycols ]
+        series = [ filter(is_good_tuple, zip(xcoldata, col)) for col in ycols ]
         return series
 
     def _get_chart_code(self, fileobj):

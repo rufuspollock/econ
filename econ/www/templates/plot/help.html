@@ -15,14 +15,15 @@
     Javascript plotting library. The plot service is located at:</p>
     <p>
     ${XML(
-    h.link_to(h.url_for(action='chart'), h.url_for(action='chart'))
+    h.link_to(h.url_for(action='chart', id=None), h.url_for(action='chart', id=None))
     )}
     </p>
     <p>You can also obtain 'source' code so that you can insert a chart into
     your own html:</p>
     <p>
     ${XML(
-    h.link_to(h.url_for(action='source'), h.url_for(action='source'))
+    h.link_to(h.url_for(action='source', id=None), h.url_for(action='source',
+    id=None))
     )}
     </p>
 
