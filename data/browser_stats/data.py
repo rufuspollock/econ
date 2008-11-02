@@ -18,7 +18,6 @@ class Parser:
         html = retriever.retrieve(URL, force=False)
         reader = econ.data.tabular.HtmlReader()
         tdata = reader.read(html, table_index=2)
-        print tdata.data
         self.parse(tdata)
         self.dump()
 
