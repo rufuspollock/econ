@@ -1,0 +1,8 @@
+[DEFAULT]
+id = browser_stats
+title: W3Schools Browser Statistics (Monthly)
+source: W3Schools <http://www.w3schools.com/browsers/browsers_stats.asp>
+created: 2008-11-02
+licence: PD. (Source indicates no restrictions on data).
+creator: rgrp
+requires-compilation: True
