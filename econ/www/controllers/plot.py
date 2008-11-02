@@ -59,7 +59,7 @@ class PlotController(BaseController):
         if format == 'plain':
             response.headers['Content-Type'] = 'text/plain'
 
-    def chart(self, id):
+    def chart(self, id=None):
         self._get_data(id)
         if c.error:
             return self.help()
@@ -68,14 +68,14 @@ class PlotController(BaseController):
         c.chart_code = genshi.HTML(self._get_chart_code(self.fileobj))
         return render('plot/chart', strip_whitespace=False)
 
-    def table(self, id):
+    def table(self, id=None):
         self._get_data(id)
         if not c.error:
             c.html_table = genshi.XML(self.get_html_table(self.fileobj))
         self._set_format()
         return render('plot/table', strip_whitespace=False)
     
-    def source(self, id):
+    def source(self, id=None):
         '''Get a chart in html/js source form.
 
         @arg format: if set to plain return result in text/plain.
