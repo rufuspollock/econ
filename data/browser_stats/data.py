@@ -11,10 +11,12 @@ URL = 'http://www.w3schools.com/browsers/browsers_stats.asp'
 retriever = D.Retriever(cache)
 
 class Parser:
-    def execute(self):
+    def __init__(self):
         self.browsers = []
         self.dates = []
         self.results = {}
+
+    def execute(self):
         html = retriever.retrieve(URL, force=False)
         reader = econ.data.tabular.HtmlReader()
         tdata = reader.read(html, table_index=2)
@@ -95,7 +97,33 @@ def test_1():
     assert len(aol) == 6, len(aol)
     assert os.path.exists('data.csv')
 
+import datetime
+def plot():
+    import pylab
+    reader = econ.data.tabular.CsvReader()
+    tdata = reader.read(open('data.csv'))
+    transposed = zip(*tdata.data)
+    dates = transposed[0]
+    transposed = D.floatify_matrix(transposed)
+    dates = [ dateutil.parser.parse(d) for d in dates ]
+    ms = transposed[tdata.header.index('MS (All)')]
+    moz = transposed[tdata.header.index('Moz (All)')]
+    fx = transposed[tdata.header.index('Fx')]
+    pylab.plot_date(dates, ms, fmt='k-.', label='IE (All)')
+    pylab.plot_date(dates, moz, fmt='b-', label='Moz (All)')
+    pylab.plot_date(dates, fx, fmt='r--', label='Fx')
+    ayear = datetime.timedelta(days=365)
+    xmax = dates[-1] + ayear
+    xmin = dates[0] - ayear
+    pylab.xlim(xmax=xmax, xmin=xmin)
+    pylab.ylim(ymax=100)
+    pylab.ylabel('Market Share')
+    pylab.xlabel('Date')
+    pylab.legend()
+    pylab.savefig('browser_stats_ms_moz.png')
+
 if __name__ == '__main__':
     p = Parser()
     p.execute()
+    plot()
 
