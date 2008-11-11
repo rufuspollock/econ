@@ -27,13 +27,11 @@ class PlotController(BaseController):
 
     def _get_data(self, dataset_id=None):
         limit = request.params.get('limit', '[:]')
-        print request
         if dataset_id:
             offset = h.url_for(controller='store', action='data', id=dataset_id)
             data_url = '%s://%s%s' % (request.scheme, request.host, offset)
         elif request.params.has_key('data_url'):
             data_url = request.params.get('data_url')
-        print data_url
         try:
             if request.params.has_key('data'):
                 data = request.params.get('data')

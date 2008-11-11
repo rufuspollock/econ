@@ -44,6 +44,7 @@ class StoreController(BaseController):
         data_limit = 100
         c.plot_data_url = h.url_for(controller='plot', action='chart', id=id,
                 limit='[:100]')
+        c.data_url = h.url_for(controller='store', action='data', id=id)
         return render('store/view')
 
     def data(self, id):
