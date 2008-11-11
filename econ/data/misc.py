@@ -5,6 +5,8 @@ class DataSniffer:
 
 def floatify(value):
     # often numbers have commas in them like 1,030
+    if value is None or not value.strip() or value.strip() == '-':
+        return None
     if isinstance(value, basestring):
         v = value.replace(',', '')
     try:
@@ -71,6 +73,9 @@ def date_to_float(date):
             val = dateutil.parser.parse(date, default=datetime.date(1,1,1))
         except:
             return date
+    else:
+        val = date
+
     if isinstance(val, datetime.date):
         fval = val.year + val.month / 12.0 + val.day / 365.0
         return round(fval, 3)

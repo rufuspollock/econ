@@ -9,6 +9,10 @@ class TestFloatify:
         x = '1,030'
         assert floatify(x) == 1030.0
 
+    def test_floatify_2(self):
+        x = ''
+        assert floatify(x) == None, floatify(x)
+
     def test_floatify_matrix(self):
         x = [ 
                 ['1', '2'],
