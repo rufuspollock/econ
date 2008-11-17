@@ -33,11 +33,15 @@ class Retriever(object):
             os.makedirs(cache)
 
     def retrieve(self, url, force=False):
-        name = self.basename(url)
-        dest = os.path.join(self.cache, name)
+        dest = self.filepath(url)
         if not os.path.exists(dest) or force:
             urllib.urlretrieve(url, dest)
         return file(dest) 
+
+    def filepath(self, url):
+        name = self.basename(url)
+        dest = os.path.join(self.cache, name)
+        return dest
 
     @classmethod
     def basename(self, url):
