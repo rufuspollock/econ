@@ -32,6 +32,7 @@ def retrieve():
 retrieve()
 
 import econ.data.tabular as T
+import pylab
 class Analyzer():
 
     def extract_simple(self):
@@ -57,19 +58,30 @@ class Analyzer():
         title = cells[0][0]
         # delete last row and column as totals
         headings = cells[3][1:-1] 
+        data = {}
         for row in cells[4:-1]:
-            data[row[0]] = row[1:-1]
+            data[row[0]] = row[-1]
+            # TODO: could do by function and dept
+        return data
 
     def crude_totals(self):
         entries, years = self.extract_simple()
         expenditure = entries['Public sector current expenditure']
-        import pylab
         pylab.plot(years, expenditure)
         pylab.xlim(xmin=2000)
         pylab.savefig('expenditure.png')
 
     def dept_spend(self):
         out = self.extract_dept_spend()
+        # delete very small items 
+        for k in out.keys():
+            if out[k] < 2000: # anything less than 2 billion
+                del out[k]
+        labels = out.keys()
+        # labels = [ l.replace(' ', '\n') for l in labels ]
+        pylab.figure(figsize=(12,12))
+        pylab.pie(out.values(), labels=labels, labeldistance=1.3)
+        pylab.savefig('dept_expenditure.png')
 
 if __name__ == '__main__':
     a = Analyzer()
