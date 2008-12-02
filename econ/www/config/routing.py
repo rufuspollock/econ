@@ -24,8 +24,8 @@ def make_map():
             requirements=dict(action='index|list|search|view|create')
             )
     map.connect('store/:id/:action', controller='store', action='view')
-    map.connect(':action', controller='root')
     map.connect(':controller/:action/:id')
+    map.connect(':action', controller='root')
     map.connect('*url', controller='template', action='view')
 
     return map

@@ -7,7 +7,11 @@
 		<link rel="stylesheet" href="/css/master.css" title="full master" type="text/css" media="screen, projection" />
 		<link rel="alternative stylesheet" href="/styles/text_only.css" title="text only" type="text/css" media="print, screen, projection" />
 
-    <xi:include href="plotkit.html" />
+    <!--[if IE]><script language="javascript" type="text/javascript" src="/bvr/flot-0.5/excanvas.pack.js"></script><![endif]-->
+    <script type="text/javascript" src="/bvr/jquery-1.2.6.min.js">//pointless jscript comment</script>
+    <script type="text/javascript" src="/bvr/flot-0.5/jquery.flot.pack.js">//pointless jscript comment</script>
+
+    <!-- <xi:include href="plotkit.html" /> -->
 
     <py:if test="defined('page_specific_css')">
     ${page_specific_css()}
@@ -27,6 +31,7 @@
 					<li><a href="/store/">Data Store</a></li>
 					<li><a href="/current_value/" title="Current Value Calculator">Current Value</a></li>
 					<li><a href="/plot/" title="Plotting Web Service">Plot</a></li>
+					<li><a href="/wdmmg/" title="Where Does My Money Go?">WDMMG</a></li>
 				</ul>
       </div>
       
