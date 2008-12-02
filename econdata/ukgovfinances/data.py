@@ -2,18 +2,20 @@ import os
 import re
 import urllib
 
+import BeautifulSoup as bs
+import simplejson as sj
+
 from econ.data import Retriever
 
-import BeautifulSoup as bs
-
-cache = os.path.abspath('./cache')
+cache = os.path.join(os.path.dirname(__file__), 'cache')
 baseurl = 'http://www.hm-treasury.gov.uk'
 url = 'http://www.hm-treasury.gov.uk/pespub_pesa08.htm'
 retriever = Retriever(cache)
+infopath = os.path.join(cache, 'info.js')
 
-xls_urls = []
 
 def retrieve():
+    xls_urls = []
     doc = retriever.retrieve(url).read()
     soup = bs.BeautifulSoup(doc)
 
@@ -28,15 +30,16 @@ def retrieve():
         # print 'Retrieving %s' % durl
         xls_urls.append(durl)
         retriever.retrieve(durl)
-
-retrieve()
+    sj.dump(xls_urls, open(infopath, 'w'))
 
 import econ.data.tabular as T
 import pylab
 class Analyzer():
+    def __init__(self):
+        self.xls_urls = sj.load(open(infopath))
 
     def extract_simple(self):
-        fp = retriever.filepath(xls_urls[0])
+        fp = retriever.filepath(self.xls_urls[0])
         r = T.XlsReader()
         sheet_index = 2
         td = r.read(open(fp), sheet_index)
@@ -50,7 +53,7 @@ class Analyzer():
         return entries, years
     
     def extract_dept_spend(self):
-        fp = retriever.filepath(xls_urls[4])
+        fp = retriever.filepath(self.xls_urls[4])
         r = T.XlsReader()
         sheet_index = 1
         td = r.read(open(fp), sheet_index)
@@ -84,6 +87,7 @@ class Analyzer():
         pylab.savefig('dept_expenditure.png')
 
 if __name__ == '__main__':
+    retrieve()
     a = Analyzer()
     # a.crude_totals()
     a.dept_spend()
