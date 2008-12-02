@@ -5,7 +5,7 @@ class TestRoot(TestController2):
     def test_index(self):
         res = self.app.get('/')
         print str(res)
-        assert 'Open Economics Index' in res
+        assert 'Open Economics - Home' in res
 
     def test_current_value(self):
         offset = '/current_value/?year=1900'
