@@ -8,9 +8,6 @@ debug = true
 email_to = you@yourdomain.com
 smtp_server = localhost
 error_email_from = paste@localhost
-# path to data store (see econ.store module)
-# this is only required if you want data store related code to work
-data_store_path = ./data
 
 [server:main]
 use = egg:Paste#http
@@ -24,6 +21,13 @@ cache_dir = %(here)s/cachedata
 beaker.session.key = econ.www
 beaker.session.secret = ${app_instance_secret}
 app_instance_uuid = ${app_instance_uuid}
+
+# path to data store (see econ.store module)
+# this is only required if you want data store related code to work
+# WARNING: cannot use %(here)s in DEFAULT section
+data_store_path = %(here)s/econdata
+# path for databases (such  as MDG)
+db_store_path = %(here)s/econdb
 
 # If you'd like to fine-tune the individual locations of the cache data dirs
 # for the Cache data, or the Session saves, un-comment the desired settings

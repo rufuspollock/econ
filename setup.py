@@ -17,11 +17,12 @@ setup(
     license='MIT',
     author='Rufus Pollock',
     author_email='rufus [at] rufuspollock [dot] org',
-    url='http://www.knowledgeforge.net/project/econ/',
+    url='http://www.openeconomics.net/',
     install_requires=[],
     packages=find_packages(exclude=['docs']),
     include_package_data=True,
     test_suite='nose.collector',
+    zip_safe=False,
     package_data={'econ.www': ['i18n/*/LC_MESSAGES/*.mo']},
     # mx.Tidy (optional)
     # econ.data.tabular.HtmlWriter prettyPrint functionality depends on mx.Tidy
