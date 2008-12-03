@@ -3,6 +3,45 @@
   xmlns:xi="http://www.w3.org/2001/XInclude"
   py:strip="True">
 
+  <p py:if="c.error">${c.error}</p>
+
+  <py:if test="not c.plotkit">
+  <div style="margin: 2em;">
+    <div id="placeholder" style="width:640px;height:400px;"></div>
+  </div>
+
+  <script type="text/javascript">
+  function drawPlot() {
+    // selecting datasets code based on
+    // http://people.iola.dk/olau/flot/examples/turning-series.html
+    all_datasets = {};
+    <py:for each="name, dataset in c.datasets">
+      all_datasets["${name}"] = {
+        "label": "${name}",
+        "data": ${dataset}
+      }
+    </py:for>
+
+    datasets_to_plot = []
+    $.each(all_datasets, function(key,val) {
+      datasets_to_plot.push(val);
+    });
+
+    var options = {
+      <py:if test="c.xmin">
+        xaxis: { min: ${c.xmin}},
+      </py:if>
+    };
+
+    $.plot($("#placeholder"), datasets_to_plot, options);
+  }
+  $(document).ready(drawPlot);
+  </script>
+
+  </py:if>
+
+  <py:if test="c.plotkit">
+
   <xi:include href="../plotkit.html" />
   
   <script type="text/javascript">
@@ -18,8 +57,8 @@
       datasets["${name}"] = ${dataset};
       </py:for>
 
-      <py:for each="name in c.names">
-      layout.addDataset("${name}", datasets["${name}"]);
+      <py:for each="name, dataset in c.datasets">
+      layout.addDataset("${name}", ${dataset});
       </py:for>
 
       layout.evaluate();
@@ -31,9 +70,10 @@
   MochiKit.DOM.addLoadEvent(drawPlot);
   </script>
 
-  <p py:if="c.error">${c.error}</p>
-
   <div style="margin: 2em;">
     <canvas id="plot" height="400" width="640"></canvas>
   </div>
+
+  </py:if><!-- / if c.plotkit -->
+
 </div>

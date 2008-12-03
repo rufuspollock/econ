@@ -18,6 +18,7 @@ import econ.data.tabular
 #   html 
 
 class PlotController(BaseController):
+    plotkit = False
 
     def index(self):
         return self.help()
@@ -111,16 +112,16 @@ class PlotController(BaseController):
         ycols = [ request.params.get('ycol0', 1) ]
         for ii in range(1,4):
             yvar_name = 'ycol%s' % ii
-            try:
-                idx = request.params.get(yvar_name, None)
+            idx = request.params.get(yvar_name, None)
+            if idx:
                 ycols.append(int(idx))
-            except:
-                pass
-        cols = self._make_series(tabdata.data, xcol, ycols)
-        c.names = [ 'data%s' % idx for idx in ycols ]
+        cols = econ.data.misc.make_series(tabdata.data, xcol, ycols)
         c.datasets = []
         for ii in range(len(cols)):
-            name = 'data%s' % ii
+            if tabdata.header:
+                name = tabdata.header[ycols[ii]]
+            else:
+                name = 'data%s' % ii
             # use simplejson to ensure formatting is correct for js
             c.datasets.append(
                     (name, simplejson.dumps(cols[ii]))

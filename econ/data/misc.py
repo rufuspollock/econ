@@ -85,3 +85,27 @@ def date_to_float(date):
         return round(fval, 3)
     else:
         return val
+
+def make_series(matrix, xcol, ycols_indices):
+    '''Take a matrix and return series (i.e. list of tuples) correspond to
+    specified column indices.
+    '''
+    # transpose
+    cols = zip(*matrix)
+    cols = floatify_matrix(cols)
+    def is_good(value):
+        if value is None: return False
+        tv = str(value)
+        stopchars = [ '', '-' ]
+        if tv in stopchars:
+            return False
+        return True
+    def is_good_tuple(tuple):
+        return is_good(tuple[0]) and is_good(tuple[1])
+    
+    xcoldata = cols[xcol]
+    # ycols = [ cols[idx] for idx in ycols_indices ]
+    ycols = [ cols[ii] for ii in ycols_indices ]
+    series = [ filter(is_good_tuple, zip(xcoldata, col)) for col in ycols ]
+    return series
+
