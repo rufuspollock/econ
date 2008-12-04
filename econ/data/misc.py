@@ -26,8 +26,10 @@ import urllib
 import os
 
 class Retriever(object):
-
-    def __init__(self, cache=None):
+    def __init__(self, cache=''):
+        '''
+        @param cache: path to cache (if any)
+        '''
         self.cache = cache
         if cache and not os.path.exists(cache):
             os.makedirs(cache)
@@ -45,8 +47,11 @@ class Retriever(object):
 
     @classmethod
     def basename(self, url):
-        path = urlparse.urlparse(url)[2]
-        return path.split('/')[-1]
+        scheme, netloc, path, query, fragment = urlparse.urlsplit(url)
+        result = path.split('/')[-1]
+        if query:
+            result += '?' + query
+        return result
 
     @classmethod
     def dl(self, url, dest=None):

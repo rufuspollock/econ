@@ -45,9 +45,21 @@ class TestRetriever:
         in1 = base + 'xyz'
         out = Retriever.basename(in1)
         assert out == 'xyz'
+
         in2 = base + 'xyz/abc.txt'
         out = Retriever.basename(in2)
         assert out == 'abc.txt'
+
+        in3 = base + 'membersDo?body=ABC'
+        out = Retriever.basename(in3)
+        assert out == 'membersDo?body=ABC', out
+
+    def test_filepath(self):
+        r = Retriever()
+        base = 'http://www.abc.org/'
+        in1 = base + 'xyz'
+        out = r.filepath(in1)
+        assert out == 'xyz'
 
     def test_dl(self):
         dest = os.path.join(self.tmp, 'out.txt')
