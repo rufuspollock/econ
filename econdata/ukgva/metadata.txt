@@ -1,0 +1,7 @@
+[DEFAULT]
+id: uk-gva
+tags: uk gdp time-series
+title: Gross value added at basic prices: Output Index: CVM SA
+notes: Seasonally adjusted, Constant 2003 prices, 2003 = 100.
+updated: 26/11/2008
+source: National Statistics (series id: 2800947)
