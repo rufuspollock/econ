@@ -30,16 +30,17 @@ def retrieve():
         # print 'Retrieving %s' % durl
         xls_urls.append(durl)
         retriever.retrieve(durl)
-    sj.dump(xls_urls, open(infopath, 'w'))
+    sj.dump(xls_urls, open(infopath, 'w'), indent=4)
 
 import econ.data.tabular as T
-import pylab
 class Analyzer():
     def __init__(self):
         self.xls_urls = sj.load(open(infopath))
 
     def extract_simple(self):
-        fp = retriever.filepath(self.xls_urls[0])
+        # fp = retriever.filepath(self.xls_urls[2])
+        fp = retriever.filepath('pesa0809chapter1.xls')
+        print fp
         r = T.XlsReader()
         sheet_index = 2
         td = r.read(open(fp), sheet_index)
@@ -53,7 +54,9 @@ class Analyzer():
         return entries, years
     
     def extract_dept_spend(self):
-        fp = retriever.filepath(self.xls_urls[4])
+        # fp = retriever.filepath(self.xls_urls[6])
+        fp = retriever.filepath('pesa_2008_chapter5_tables.xls')
+        print fp
         r = T.XlsReader()
         sheet_index = 1
         td = r.read(open(fp), sheet_index)
@@ -67,28 +70,9 @@ class Analyzer():
             # TODO: could do by function and dept
         return data
 
-    def crude_totals(self):
-        entries, years = self.extract_simple()
-        expenditure = entries['Public sector current expenditure']
-        pylab.plot(years, expenditure)
-        pylab.xlim(xmin=2000)
-        pylab.savefig('expenditure.png')
-
-    def dept_spend(self):
-        out = self.extract_dept_spend()
-        # delete very small items 
-        for k in out.keys():
-            if out[k] < 2000: # anything less than 2 billion
-                del out[k]
-        labels = out.keys()
-        # labels = [ l.replace(' ', '\n') for l in labels ]
-        pylab.figure(figsize=(12,12))
-        pylab.pie(out.values(), labels=labels, labeldistance=1.3)
-        pylab.savefig('dept_expenditure.png')
-
 if __name__ == '__main__':
     retrieve()
     a = Analyzer()
-    # a.crude_totals()
-    a.dept_spend()
+    print a.extract_simple()[0].keys()
+    print a.extract_dept_spend()
 
