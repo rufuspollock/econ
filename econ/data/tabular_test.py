@@ -18,11 +18,11 @@ class TestTranspose:
                 [ 1, 0 ],
                 ]
         exp = [
-                [ 0, 1 ],
-                [ 1, 0 ],
+                ( 0, 1 ),
+                ( 1, 0 ),
                 ]
         out = econ.data.tabular.transpose(inlist)
-        assert out == exp
+        assert out == exp, out
 
 class TestReaderCsv(object):
     
@@ -32,7 +32,7 @@ class TestReaderCsv(object):
     header = [ 'header1', 'header 2' ]
     data = [ ['1', '2'] ]
   
-    def setup_method(self, name=''):
+    def setUp(self):
         reader = econ.data.tabular.ReaderCsv()
         fileobj = StringIO(self.csvdata)
         self.tab = reader.read(fileobj)
@@ -58,7 +58,7 @@ class TestReaderCsvEncoded(TestReaderCsvUnicode):
 u'''"headi\xf1g", "header 2"
 1, 2'''.encode(encoding)
 
-    def setup_method(self, name=''):
+    def setUp(self):
         reader = econ.data.tabular.ReaderCsv()
         fileobj = StringIO(self.csvdata)
         self.tab = reader.read(fileobj, encoding=self.encoding)
@@ -118,7 +118,7 @@ class TestHtmlReader:
 
 class TestWriterHtml:
 
-    def setup_method(self, name=''):
+    def setUp(self):
         rawData = [[1,1], [0,1]]
         self.indata1 = econ.data.tabular.TabularData(data=rawData)
         self.writer1 = econ.data.tabular.WriterHtml({'id':1, 'class': 'data'})
@@ -200,4 +200,28 @@ r'''\textbf{H1} & \textbf{H2} \\
         from pprint import pprint
         pprint(result)
 
+
+class TestPivot:
+    td = econ.data.tabular.TabularData(
+            header=['Name','Year','Value'],
+            data=[
+                ['x',2004,1],
+                ['y',2004,2],
+                ['y',2005,4],
+                ['x',2005,3],
+            ],
+        )
+
+    def test_pivot_with_tabular(self):
+        out = econ.data.tabular.pivot(self.td, 1, 0, 2)
+        assert out.data[0] == [2004, 1, 2]
+        assert out.data[-1] == [2005, 3, 4]
+
+    def test_pivot_with_tabular_2(self):
+        out = econ.data.tabular.pivot(self.td, 'Year', 'Name', 'Value')
+        assert out.data[0] == [2004, 1, 2]
+
+    def test_pivot_simple_list(self):
+        out = econ.data.tabular.pivot(self.td.data, 1, 0, 2)
+        assert out.data[0] == [2004, 1, 2]
 

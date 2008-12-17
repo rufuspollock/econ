@@ -8,8 +8,6 @@ class WdmmgController(BaseController):
         return render('wdmmg/index')
 
     def spend(self):
-        a = d.Analyzer()
-        data = a.extract_dept_spend()
         entries, years = a.extract_simple()
         expenditure = entries['Public sector current expenditure']
         d1 = [ map(lambda x: [x[0], x[1]], zip(years, expenditure)) ]
@@ -18,5 +16,11 @@ class WdmmgController(BaseController):
         return render('wdmmg/spend')
 
     def dept(self):
-        pass
+        a = d.Analyzer()
+        data = a.extract_dept_spend()
+        d1 = [ data[k] for k in data ]
+        c.datasets = [ [d1] ]
+        c.type = 'pie'
+        c.fig_title = 'UK Government Spending by Dept (2007)'
+        return render('wdmmg/dept')
 

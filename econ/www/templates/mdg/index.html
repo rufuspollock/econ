@@ -1,0 +1,18 @@
+<html xmlns:py="http://genshi.edgewall.org/"
+  xmlns:xi="http://www.w3.org/2001/XInclude">
+  
+  <py:def function="page_title">Millenium Development Goals - Index</py:def>
+
+  <div py:match="content">
+    <p>This section provides more granular access to the Millenium Development Goals dataset than is available from the <a href="${h.url_for(controller='store', action='view', id='d0b2917e-bfb8-40be-8819-5867f155c1a3')}">basic package MDG package</a>.</p>
+
+    <h2>Datasets</h2>
+    <ul>
+      <li py:for="item in c.series">
+      <a href="${h.url_for(action='series', id=item.code)}">${item.name}</a>
+      </li>
+    </ul>
+  </div>
+
+  <xi:include href="../layout.html" />
+</html>

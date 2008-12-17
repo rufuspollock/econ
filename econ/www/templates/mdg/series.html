@@ -1,0 +1,21 @@
+<html xmlns:py="http://genshi.edgewall.org/"
+  xmlns:xi="http://www.w3.org/2001/XInclude">
+  
+  <py:def function="page_title">Millenium Development Goals - Series -
+  ${c.series.code} - ${c.series.name}</py:def>
+
+  <div py:match="content">
+    <h2>Series: ${c.series.name}</h2>
+    <p>${len(c.countries)} countries have at least one entry for this
+    series.</p>
+    <form method="post" action="${h.url_for(action='view', id=None,
+      series=c.series.code)}">
+      ${XML(h.submit(value="View Selected Countries' Values"))}<br />
+      <input type="checkbox" name="country" value="${ctry.code}" py:for="ctry in c.countries">
+      <a href="${h.url_for(action='country', id=ctry.code)}">${ctry.name}</a>
+      </input>
+    </form>
+  </div>
+
+  <xi:include href="../layout.html" />
+</html>

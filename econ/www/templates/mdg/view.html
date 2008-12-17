@@ -1,0 +1,19 @@
+<html xmlns:py="http://genshi.edgewall.org/"
+  xmlns:xi="http://www.w3.org/2001/XInclude">
+  
+  <py:def function="page_title">Millenium Development Goals - Index</py:def>
+
+  <div py:match="content">
+    <h2>Viewing: ${c.country.name} - ${c.series.name}</h2>
+
+		<h2>Graph</h2>
+    ${c.chart_code}
+
+		<h2>Data</h2>
+		<div style="margin: 2em;">
+			${c.html_table}
+		</div>
+  </div>
+
+  <xi:include href="../layout.html" />
+</html>

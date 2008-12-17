@@ -1,4 +1,5 @@
 from misc import *
+from tabular import *
 
 class TimeSeries(object):
     def __init__(self, dataPoints):
