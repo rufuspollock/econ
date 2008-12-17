@@ -47,7 +47,7 @@ class Retriever(object):
 
     @classmethod
     def basename(self, url):
-        scheme, netloc, path, query, fragment = urlparse.urlsplit(url)
+        scheme, netloc, path, params, query, fragment = urlparse.urlparse(url)
         result = path.split('/')[-1]
         if query:
             result += '?' + query
