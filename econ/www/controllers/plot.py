@@ -48,10 +48,16 @@ class PlotController(BaseController):
             else:
                 msg = 'No data source provided'
                 raise Exception(msg)
-            self.fileobj = limit_fileobj(fileobj, limit)
+            fileobj = limit_fileobj(fileobj, limit)
+            self.tabular = self._tabular_data(fileobj)
         except Exception, inst:
             msg = 'Error: %s' % inst
             c.error = msg
+
+    def _tabular_data(self, fileobj): 
+        reader = econ.data.tabular.ReaderCsv()
+        tabdata = reader.read(fileobj)
+        return tabdata
 
     def _set_format(self):
         format = request.params.get('format', 'html')
@@ -62,15 +68,14 @@ class PlotController(BaseController):
         self._get_data(id)
         if c.error:
             return self.help()
-        c.html_table = genshi.XML(self.get_html_table(self.fileobj))
-        self.fileobj.seek(0)
-        c.chart_code = genshi.HTML(self._get_chart_code(self.fileobj))
+        c.html_table = genshi.XML(self.get_html_table(self.tabular))
+        c.chart_code = genshi.HTML(self._get_chart_code(self.tabular))
         return render('plot/chart', strip_whitespace=False)
 
     def table(self, id=None):
         self._get_data(id)
         if not c.error:
-            c.html_table = genshi.XML(self.get_html_table(self.fileobj))
+            c.html_table = genshi.XML(self.get_html_table(self.tabular))
         self._set_format()
         return render('plot/table', strip_whitespace=False)
     
@@ -82,39 +87,24 @@ class PlotController(BaseController):
         '''
         self._get_data(id)
         if not c.error:
-            chart_code = self._get_chart_code(self.fileobj)
+            chart_code = self._get_chart_code(self.tabular)
         self._set_format()
         return chart_code 
 
-    def _make_series(self, matrix, xcol, ycols_indices):
-        # rows to columns
-        cols = econ.data.tabular.transpose(matrix)
-        cols = econ.data.misc.floatify_matrix(cols)
-        def is_good(value):
-            if value is None: return False
-            tv = str(value)
-            stopchars = [ '', '-' ]
-            if tv in stopchars:
-                return False
-            return True
-        def is_good_tuple(tuple):
-            return is_good(tuple[0]) and is_good(tuple[1])
-        
-        xcoldata = cols[xcol]
-        # ycols = [ cols[idx] for idx in ycols_indices ]
-        ycols = cols
-        series = [ filter(is_good_tuple, zip(xcoldata, col)) for col in ycols ]
-        return series
-
-    def _get_chart_code(self, fileobj):
-        tabdata = self._get_tabular_data(fileobj)
+    def _get_chart_code(self, tabdata):
         xcol = request.params.get('xcol', 0)
-        ycols = [ request.params.get('ycol0', 1) ]
-        for ii in range(1,4):
-            yvar_name = 'ycol%s' % ii
-            idx = request.params.get(yvar_name, None)
-            if idx:
-                ycols.append(int(idx))
+        # create series for all columns (other than x)
+        if not tabdata.data:
+            return ''
+
+        ycols = range(len(tabdata.data[0]))
+        del ycols[xcol]
+#         ycols = [ request.params.get('ycol0', 1) ]
+#         for ii in range(1,4):
+#             yvar_name = 'ycol%s' % ii
+#             idx = request.params.get(yvar_name, None)
+#             if idx:
+#                 ycols.append(int(idx))
         cols = econ.data.misc.make_series(tabdata.data, xcol, ycols)
         c.datasets = []
         for ii in range(len(cols)):
@@ -126,17 +116,12 @@ class PlotController(BaseController):
             c.datasets.append(
                     (name, simplejson.dumps(cols[ii]))
                     )
+        c.selected_series = []
         c.chart_type = request.params.get('chart_type', 'line')
         result = render('plot/chart_code')
         return result
 
-    def _get_tabular_data(self, fileobj): 
-        reader = econ.data.tabular.ReaderCsv()
-        tabdata = reader.read(fileobj)
-        return tabdata
-
-    def get_html_table(self, fileobj):
-        tabdata = self._get_tabular_data(fileobj)
+    def get_html_table(self, tabdata):
         writer = econ.data.tabular.WriterHtml({'id' : 'table_1'})
         html = writer.write(tabdata)
         return html

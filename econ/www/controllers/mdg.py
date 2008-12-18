@@ -1,5 +1,4 @@
 import os
-from StringIO import StringIO
 
 import genshi
 
@@ -20,11 +19,16 @@ class MdgController(BaseController):
         db.Session.remove()
 
     def index(self):
-        c.series = db.Series.query.all()
+        c.num_series = db.Series.query.count()
+        c.num_countries = db.Country.query.count()
         return render('mdg/index')
 
-    def series(self, id):
+    def series(self, id=None):
+        if id is None:
+            return self.series_list()
         c.series = db.Series.query.get(id)
+        if not c.series:
+            abort(404)
         c.countries = sorted(list(set(
             [x.country for x in c.series.values]
             )),
@@ -32,8 +36,16 @@ class MdgController(BaseController):
             )
         return render('mdg/series')
 
+    def series_list(self):
+            c.items = db.Series.query.all()
+            return render('mdg/series_list')
+
     def country(self, id):
+        if id is None:
+            return self.country_list()
         c.country = db.Country.query.get(id)
+        if not c.country:
+            abort(404)
         c.series = sorted(list(set(
             [x.series for x in c.country.values]
             )),
@@ -41,30 +53,31 @@ class MdgController(BaseController):
             )
         return render('mdg/country')
 
-    def _cvt_values_to_csv(self, values):
+    def country_list(self):
+            c.items = db.Country.query.all()
+            return render('mdg/country_list')
+
+    def _cvt_values_to_tabular(self, values):
         td = econ.data.tabular.TabularData()
         td.header = ['Year', 'Country', 'Value']
         td.data = [ [v.year, v.country.name, v.value] for v in values ]
-        tdout = econ.data.pivot(td, 0,1,2)
+        tdout = econ.data.pivot(td,0,1,2)
         return tdout
 
     def view(self, id=None):
-        country = request.params.getall('country')
+        countries = request.params.getall('countries')
         series = request.params.get('series')
         c.values = db.Value.query.filter(
-                db.Value.country_code.in_(country)).filter_by(
+                db.Value.country_code.in_(countries)).filter_by(
                         series_code=series).all()
-        c.country = db.Country.query.get(country[0])
+        c.countries = [ db.Country.query.get(ctry) for ctry in countries ]
         c.series = db.Series.query.get(series)
-        td = self._cvt_values_to_csv(c.values)
+        td = self._cvt_values_to_tabular(c.values)
+
         import econ.www.controllers.plot
-        fileobj = StringIO()
-        econ.data.tabular.CsvWriter().write(fileobj, td)
-        fileobj.seek(0)
         plotctr = econ.www.controllers.plot.PlotController()
-        c.html_table = genshi.XML(plotctr.get_html_table(fileobj))
-        fileobj.seek(0)
-        c.chart_code = genshi.HTML(plotctr._get_chart_code(fileobj))
+        c.html_table = genshi.XML(plotctr.get_html_table(td))
+        c.chart_code = genshi.HTML(plotctr._get_chart_code(td))
         # return render('plot/chart', strip_whitespace=False)
         return render('mdg/view')
 

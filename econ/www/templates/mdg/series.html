@@ -6,12 +6,12 @@
 
   <div py:match="content">
     <h2>Series: ${c.series.name}</h2>
-    <p>${len(c.countries)} countries have at least one entry for this
-    series.</p>
-    <form method="post" action="${h.url_for(action='view', id=None,
-      series=c.series.code)}">
-      ${XML(h.submit(value="View Selected Countries' Values"))}<br />
-      <input type="checkbox" name="country" value="${ctry.code}" py:for="ctry in c.countries">
+    <p>This series has at least one entry for <strong>${len(c.countries)}
+      countries</strong>:</p>
+    <form method="get" action="${h.url_for(action='view', id=None)}">
+      ${XML(h.submit(value="Show Values"))}<br />
+      <input type="hidden" name="series" value="${c.series.code}" />
+      <input type="checkbox" name="countries" value="${ctry.code}" py:for="ctry in c.countries">
       <a href="${h.url_for(action='country', id=ctry.code)}">${ctry.name}</a>
       </input>
     </form>

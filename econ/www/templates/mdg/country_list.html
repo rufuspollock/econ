@@ -1,0 +1,16 @@
+<html xmlns:py="http://genshi.edgewall.org/"
+  xmlns:xi="http://www.w3.org/2001/XInclude">
+  
+  <py:def function="page_title">Millenium Development Goals - Country - List</py:def>
+
+  <div py:match="content">
+    <h2>Country</h2>
+    <ul>
+      <li py:for="item in c.items">
+      <a href="${h.url_for(action='country', id=item.code)}">${item.name}</a>
+      </li>
+    </ul>
+  </div>
+
+  <xi:include href="../layout.html" />
+</html>

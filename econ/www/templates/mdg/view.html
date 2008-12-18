@@ -1,10 +1,11 @@
 <html xmlns:py="http://genshi.edgewall.org/"
   xmlns:xi="http://www.w3.org/2001/XInclude">
   
-  <py:def function="page_title">Millenium Development Goals - Index</py:def>
+  <py:def function="page_title">Millenium Development Goals - View</py:def>
 
   <div py:match="content">
-    <h2>Viewing: ${c.country.name} - ${c.series.name}</h2>
+    <h2>Viewing: ${c.series.name} for: <span py:strip="" py:for="c in
+        c.countries">${c.name}, </span></h2>
 
 		<h2>Graph</h2>
     ${c.chart_code}

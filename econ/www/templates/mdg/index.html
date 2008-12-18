@@ -4,14 +4,24 @@
   <py:def function="page_title">Millenium Development Goals - Index</py:def>
 
   <div py:match="content">
-    <p>This section provides more granular access to the Millenium Development Goals dataset than is available from the <a href="${h.url_for(controller='store', action='view', id='d0b2917e-bfb8-40be-8819-5867f155c1a3')}">basic package MDG package</a>.</p>
+    <p>This section provides more granular access to the Millenium
+    Development Goals dataset than is available from the <a
+      href="${h.url_for(controller='store', action='view',
+      id='d0b2917e-bfb8-40be-8819-5867f155c1a3')}">basic package MDG
+      package</a>.</p>
 
-    <h2>Datasets</h2>
-    <ul>
-      <li py:for="item in c.series">
-      <a href="${h.url_for(action='series', id=item.code)}">${item.name}</a>
-      </li>
-    </ul>
+    <p>Use the links below to browse by series and country. You can view the
+    resulting data in a chart or table. For example, <a
+      href="${h.url_for(action='view', id=None, series=755,
+      countries=[4,276,376,578,704,840])}">this chart shows Telephone lines
+      per 100 population for Afghanistan, Germany, Israel, Norway, Viet Nam
+      and the United States.</a></p>
+
+
+    <h3><a href="${h.url_for(action='series', id=None)}">List of Series</a>
+      (${c.num_series} in total)</h3>
+    <h3><a href="${h.url_for(action='country', id=None)}">List of
+        Countries</a> (${c.num_countries} in total)</h3>
   </div>
 
   <xi:include href="../layout.html" />
