@@ -16,6 +16,9 @@
         </py:for>
       </div>
       <div class="select-series">
+        <a href="#" class="select-all">Select All</a>
+        <a href="#" class="select-none">Select None</a>
+        <br />
         <py:for each="name, d in c.datasets">
         <input type="checkbox" name="${name}" checked="checked">
         ${name}
@@ -37,7 +40,7 @@
     </py:for>
 
     // hard-code color indices to prevent them from shifting as
-    // countries are turned on/off
+    // series are turned on/off
     var i = 0;
     $.each(all_datasets, function(key, val) {
         val.color = i;
@@ -47,6 +50,18 @@
     // setup checkboxes 
     var choiceContainer = $("#chart-controls");
     choiceContainer.find("input").click(doPlot);
+
+    var selectall = $(choiceContainer.find("a.select-all")[0]);
+    selectall.click(function() {
+        $($(".select-series")[0]).find("input:checkbox").attr('checked',
+          'checked');
+        doPlot();
+    });
+    var selectnone = $(choiceContainer.find("a.select-none")[0]);
+    selectnone.click(function() {
+        $($(".select-series")[0]).find("input:checkbox").removeAttr('checked');
+        doPlot();
+    });
 
     // setup charttype
     var chartType = "${c.chart_type}";

@@ -5,8 +5,15 @@
 
 	<div py:match="content">
     <h1>Where Does My Money Go?</h1> 
-    <p>Ever wondered where your money goes when you pay taxes -- what exactly it gets spent on, who exactly receives it?
-    </p>
+    <h3>Ever wondered where your money goes when you pay taxes &ndash; what exactly
+      it gets spent on, who exactly receives it?</h3>
+    <h3>This is the place to find out:</h3>
+    <ul>
+      <li><a href="${h.url_for(action='spend', id=None)}">Total Government
+        Spending</a></li>
+      <li><a href="${h.url_for(action='dept', id=None)}">Spending by Department</a></li>
+    </ul>
+
 	</div>
 
   <xi:include href="../layout.html" />

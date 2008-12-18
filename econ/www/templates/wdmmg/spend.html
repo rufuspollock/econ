@@ -5,13 +5,17 @@
 
 	<div py:match="content">
     <h2>${c.fig_title}</h2>
-    <div id="placeholder" style="width:600px;height:300px;"></div>
-<script id="source" language="javascript" type="text/javascript">
-$(function () {
-    var datasets = ${c.datasets};
-    $.plot($("#placeholder"), datasets);
-});
-</script>
+
+    <py:if test="c.chart_code">
+		<h2>Graph</h2>
+    ${c.chart_code}
+
+		<h2>Data</h2>
+		<div style="margin: 2em;">
+			${c.html_table}
+		</div>
+    </py:if>
+
 	</div>
 
   <xi:include href="../layout.html" />
