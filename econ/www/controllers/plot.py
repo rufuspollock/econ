@@ -117,8 +117,8 @@ class PlotController(BaseController):
                     (name, simplejson.dumps(cols[ii]))
                     )
         c.selected_series = []
-        c.chart_type = request.params.get('chart_type', 'line')
-        result = render('plot/chart_code')
+        c.chart_type = request.params.get('chart_type', 'lines')
+        result = render('plot/chart_code', fragment=True, format='xml')
         return result
 
     def get_html_table(self, tabdata):

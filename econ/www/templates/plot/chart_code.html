@@ -7,11 +7,25 @@
 
   <py:if test="not c.plotkit">
   <div style="margin: 2em;">
-    <div id="placeholder" style="width:640px;height:400px;"></div>
+    <div id="chart" style="width:640px;height:400px;"></div>
+    <div id="chart-controls">
+      <div class="chart-type">
+        <py:for each="charttype in ['lines', 'bars', 'points']">
+        ${XML(h.check_box('chart_type', charttype))}
+        ${charttype}
+        </py:for>
+      </div>
+      <div class="select-series">
+        <py:for each="name, d in c.datasets">
+        <input type="checkbox" name="${name}" checked="checked">
+        ${name}
+        </input>
+        </py:for>
+      </div>
+    </div>
   </div>
 
   <script type="text/javascript">
-  function drawPlot() {
     // selecting datasets code based on
     // http://people.iola.dk/olau/flot/examples/turning-series.html
     all_datasets = {};
@@ -22,20 +36,48 @@
       }
     </py:for>
 
-    datasets_to_plot = []
-    $.each(all_datasets, function(key,val) {
-      datasets_to_plot.push(val);
+    // hard-code color indices to prevent them from shifting as
+    // countries are turned on/off
+    var i = 0;
+    $.each(all_datasets, function(key, val) {
+        val.color = i;
+        ++i;
     });
+    
+    // setup checkboxes 
+    var choiceContainer = $("#chart-controls");
+    choiceContainer.find("input").click(doPlot);
 
-    var options = {
-      <py:if test="c.xmin">
-        xaxis: { min: ${c.xmin}},
-      </py:if>
-    };
+    // setup charttype
+    var chartType = "${c.chart_type}";
+    var x = choiceContainer.find(".chart-type").find("input[value="+chartType+"]");
+    x.attr("checked", true);
 
-    $.plot($("#placeholder"), datasets_to_plot, options);
-  }
-  $(document).ready(drawPlot);
+    function doPlot() {
+      var datasets_to_plot = []
+      choiceContainer.find(".select-series").find("input:checked").each(function () {
+        var key = $(this).attr("name");
+        if (key) {
+          if (all_datasets[key]) {
+            datasets_to_plot.push(all_datasets[key]);
+          }
+        }
+      });
+      var options = {
+        <py:if test="c.xmin">
+          xaxis: { min: ${c.xmin}},
+        </py:if>
+        somerandomitemtoroundofflist: null
+      };
+
+      choiceContainer.find(".chart-type").find("input:checked").each(function() {
+        var value = $(this).attr("value");
+        options[value] = { show: true };
+      });
+      $.plot($("#chart"), datasets_to_plot, options);
+    }
+
+    $(document).ready(doPlot);
   </script>
 
   </py:if>
