@@ -131,7 +131,7 @@ class TestWriterHtml:
         assert expected == out1
     
     def testColHeadings(self):
-        self.indata1.header = ['x','y']
+        self.indata1.header = [u'x','y']
         caption = ''
         expected = '<table id="1" class="data"><thead><tr><th>x</th><th>y</th></tr>'+\
             '</thead><tbody><tr><td>1</td><td>1</td></tr><tr><td>0</td>' + \

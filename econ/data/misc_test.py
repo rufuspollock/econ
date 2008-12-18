@@ -84,3 +84,18 @@ def test_date_to_float():
     exp = 2003 + 2/12.0
     assert round(out, 2) == round(exp, 2), out
 
+
+class TestMakeSeries:
+
+    def test_make_series(self):
+        indata = [ [ '1980', '100', '50' ],
+                [ '1981', '101', '51' ],
+                [ '1982', '102', '' ],
+                ]
+        exp = [
+                [ (1980.0, 100.0), (1981.0, 101.0), (1982.0, 102.0) ],
+                [ (1980.0, 50.0), (1981.0, 51.0) ]
+            ]
+        out = make_series(indata, xcol=0, ycols=[1,2])
+        assert out == exp, out
+

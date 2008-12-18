@@ -341,7 +341,7 @@ class HtmlWriter(object):
     
     def _processTagValueToText(self, tagValue):
         # if not already text then round
-        if type(tagValue) != type('text'):
+        if not isinstance(tagValue, basestring):
             roundedResult = str(round(tagValue, self.decimal_places))
             if len(str(tagValue)) < len(roundedResult):
                 return str(tagValue)

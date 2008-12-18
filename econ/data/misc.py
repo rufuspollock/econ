@@ -5,7 +5,11 @@ class DataSniffer:
 
 def floatify(value):
     # often numbers have commas in them like 1,030
-    if value is None or not value.strip() or value.strip() == '-':
+    if value is None:
+        return None
+    if isinstance(value, basestring) and (
+            not value.strip() or value.strip() == '-'
+        ):
         return None
     if isinstance(value, basestring):
         v = value.replace(',', '')
@@ -91,12 +95,28 @@ def date_to_float(date):
     else:
         return val
 
-def make_series(matrix, xcol, ycols_indices):
-    '''Take a matrix and return series (i.e. list of tuples) correspond to
+def make_series(matrix, xcol, ycols=None):
+    '''Take a matrix and return series (i.e. list of tuples) corresponding to
     specified column indices.
+
+    E.g. if matrix is:
+        [ [1,2,3,4]
+          [5,6,7,8] ]
+   
+    and xcol = 0, ycols=[1,3] then output is:
+
+    [
+        [ [1,2], [5,6] ],
+        [ [1,4], [5,8] ],
+    ]
+
+    If ycols not defined then return all possible series (excluding xcol
+    with itself.
     '''
-    # transpose
     cols = zip(*matrix)
+    if ycols is None:
+        ycols = range(len(cols))
+        del ycols[xcol]
     cols = floatify_matrix(cols)
     def is_good(value):
         if value is None: return False
@@ -109,8 +129,7 @@ def make_series(matrix, xcol, ycols_indices):
         return is_good(tuple[0]) and is_good(tuple[1])
     
     xcoldata = cols[xcol]
-    # ycols = [ cols[idx] for idx in ycols_indices ]
-    ycols = [ cols[ii] for ii in ycols_indices ]
+    ycols = [ cols[ii] for ii in ycols ]
     series = [ filter(is_good_tuple, zip(xcoldata, col)) for col in ycols ]
     return series
 
