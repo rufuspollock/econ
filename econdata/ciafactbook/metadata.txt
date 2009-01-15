@@ -1,0 +1,16 @@
+[DEFAULT]
+id: ciafactbook
+title: CIA World Factbook Data (Various Years)
+source: See <http://www.ckan.net/package/read/cia-world-factbook>
+requires-compilation: yes.
+tags: world data cia
+creator: rgrp
+license: Public Domain.
+[DEFAULT]
+id: ciafactbook
+title: CIA World Factbook Data (Various Years)
+source: See <http://www.ckan.net/package/read/cia-world-factbook>
+requires-compilation: yes.
+tags: world data cia
+creator: rgrp
+license: Public Domain.

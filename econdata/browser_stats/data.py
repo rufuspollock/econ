@@ -17,7 +17,7 @@ class Parser:
         self.results = {}
 
     def execute(self):
-        html = retriever.retrieve(URL, force=False)
+        html = open(retriever.retrieve(URL, force=False))
         reader = econ.data.tabular.HtmlReader()
         tdata = reader.read(html, table_index=2)
         self.parse(tdata)

@@ -16,7 +16,7 @@ infopath = os.path.join(cache, 'info.js')
 
 def retrieve():
     xls_urls = []
-    doc = retriever.retrieve(url).read()
+    doc = open(retriever.retrieve(url).read())
     soup = bs.BeautifulSoup(doc)
 
     # find all csv

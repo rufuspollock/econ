@@ -4,6 +4,12 @@ class DataSniffer:
     pass
 
 def floatify(value):
+    '''Convert value to a float if possible.
+
+    @return: Floatified value. If value is blank or placeholder ('-') return
+    None. Can deal with ',' in value. Will also floatify dates. If nothing
+    works returns original value. 
+    '''
     # often numbers have commas in them like 1,030
     if value is None:
         return None
@@ -39,12 +45,14 @@ class Retriever(object):
             os.makedirs(cache)
 
     def retrieve(self, url, force=False):
+        '''Retrieve url into cache and return the local path to it.'''
         dest = self.filepath(url)
         if not os.path.exists(dest) or force:
-            urllib.urlretrieve(url, dest)
-        return file(dest) 
+            self.dl(url, dest)
+        return dest
 
     def filepath(self, url):
+        '''Local path for url within cache.'''
         name = self.basename(url)
         dest = os.path.join(self.cache, name)
         return dest
@@ -60,8 +68,6 @@ class Retriever(object):
     @classmethod
     def dl(self, url, dest=None):
         '''Download a file from a url.
-
-        Will use wget if available ...
         '''
         if not dest:
             dest = self.basename(url)
