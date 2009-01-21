@@ -5,6 +5,7 @@
 
 	<div py:match="content">
     <h2>${c.fig_title}</h2>
+		<p><strong>Source:</strong> <a href="http://knowledgeforge.net/econ/svn/trunk/econdata/ukgovfinances/">http://knowledgeforge.net/econ/svn/trunk/econdata/ukgovfinances/</a></p>
 
     <py:if test="c.chart_code">
 		<h2>Graph</h2>
@@ -15,7 +16,6 @@
 			${c.html_table}
 		</div>
     </py:if>
-
 	</div>
 
   <xi:include href="../layout.html" />

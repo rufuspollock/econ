@@ -1,5 +1,5 @@
 [DEFAULT]
-id: d0b2917e-bfb8-40be-8819-5867f155c1a3
+id: mdg
 title: Millenium Development Goals Dataset
 source: <http://mdgs.un.org/> 
 license: Public Domain. Original material provided by UN with additional work
