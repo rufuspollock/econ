@@ -1,0 +1,23 @@
+<html xmlns:py="http://genshi.edgewall.org/"
+  xmlns:xi="http://www.w3.org/2001/XInclude">
+  
+  <py:def function="page_title">Where Does My Money Go?</py:def>
+
+	<div py:match="content">
+    <h2>${c.fig_title}</h2>
+    <div id="placeholder" style="width:600px;height:300px;"></div>
+<script id="source" language="javascript" type="text/javascript">
+$(function () {
+    var datasets = ${c.datasets};
+    $.plot($("#placeholder"), datasets, {
+        // bars: { show: true },
+        points: {show: true},
+        // legend: { show: false },
+      });
+});
+</script>
+	</div>
+
+  <xi:include href="../layout.html" />
+</html>
+
