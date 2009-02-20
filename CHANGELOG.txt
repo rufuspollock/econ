@@ -1,5 +1,12 @@
-v0.5dev
-*******
+v0.6 2009-02
+************
+
+  * Web interface to millenium development goals
+  * Many new datasets including CIA world factbook
+  * Improve javascript charting by moving to flot
+
+v0.5 2008-04
+************
 
   * Upgrade to use pylons 0.9.6.1 (2007-11)
   * Overhaul site theme + layout to be more usable and look better (2007-12)
