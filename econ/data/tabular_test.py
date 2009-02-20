@@ -100,6 +100,9 @@ class TestHtmlReader:
         <td>1</td><td>2</td>
     </tr>
     <tr>
+        <th colspan="2">1983</th>
+    </tr>
+    <tr>
         <td>3</td><td>4</td>
     </tr>
 </table>
@@ -107,6 +110,7 @@ class TestHtmlReader:
     in1 = StringIO(inraw1)
     
     exp1 = [ ['1', '2'],
+            ['1983'],
             ['3', '4'],
             ]
     

@@ -171,7 +171,11 @@ class XlsReader(object):
             from datetime import date
             # TODO: distinguish date and datetime
             args = xlrd.xldate_as_tuple(cell.value, book.datemode)
-            return date(args[0], args[1], args[2])
+            try:
+                return date(args[0], args[1], args[2])
+            except Exception, inst:
+                print 'Error parsing excel date (%s): %s' % (args, inst)
+                return None
         elif cell.ctype == xlrd.XL_CELL_BOOLEAN:
             return bool(cell.value)
         else:
@@ -214,7 +218,7 @@ class HtmlReader(HTMLParser):
     def handle_starttag(self, tag, attrs):
         if tag == 'tr':
             self._row = []
-        elif tag == 'td':
+        elif tag == 'td' or tag == 'th':
             self._text = ''
         elif tag == 'br':
             self._text += '\n'
@@ -222,7 +226,7 @@ class HtmlReader(HTMLParser):
     def handle_endtag(self, tag):
         if tag == 'tr':
             self._rows.append(self._row)
-        if tag == 'td':
+        if tag == 'td' or tag == 'th':
             self._row.append(self._text)
         if tag == 'table':
             self.tables.append(self._rows)
