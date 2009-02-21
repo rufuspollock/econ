@@ -88,6 +88,8 @@ class PlotController(BaseController):
         self._get_data(id)
         if not c.error:
             chart_code = self._get_chart_code(self.tabular)
+        else:
+            chart_code = c.error
         self._set_format()
         return chart_code 
 
