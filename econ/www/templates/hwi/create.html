@@ -23,28 +23,3 @@
   <xi:include href="../layout.html" />
 </html>
 
-<html xmlns:py="http://genshi.edgewall.org/"
-  xmlns:xi="http://www.w3.org/2001/XInclude">
-  
-  <py:def function="page_title">Human Welfare Index - </py:def>
-
-  <div py:match="content">
-    <h2>Create a HWI</h2>
-    <p>Select weightings to create your own HWI</p>
-    <form method="get" action=".">
-      ${XML(h.submit(value="Create HWI"))}<br />
-      <table>
-        <tr><th>Series</th><th>Weighting</th></tr>
-        <tr py:for="s in c.series">
-          <td>${s.name}</td>
-          <td>
-            <input type="text" name="series-${s.code}" value="0" />
-          </td>
-        </tr>
-      </table>
-    </form>
-  </div>
-
-  <xi:include href="../layout.html" />
-</html>
-
