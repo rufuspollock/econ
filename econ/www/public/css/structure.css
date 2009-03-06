@@ -57,8 +57,8 @@ body {
     float: left; /* This controls which order they are in 
                     i.e. float: right; will order them r-l */
     display: block;
-    height: 14px; /* 14 = 20 - (2*3) */
-    padding: 3px 6px;
+    height: 20px; /* 14 = 20 - (2*3) */
+    padding: 0px 6px;
     margin: 0;
     background: #eee;
     border-right: solid 2px #ddd;
@@ -141,7 +141,7 @@ body {
 	border-top: solid 1px #ddd;
 	font-family: "lucida grande", verdana, arial, geneva, sans-serif;
 	color: #333;
-	font-size: 0.8em;
+  font-size: 0.6em;
   text-align: center;
 }
 
