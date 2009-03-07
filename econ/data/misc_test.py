@@ -11,7 +11,11 @@ class TestFloatify:
 
     def test_floatify_2(self):
         x = ''
-        assert floatify(x) == None, floatify(x)
+        out = floatify(x)
+        assert out == None, out
+        x = '#'
+        out = floatify(x)
+        assert out == None, out
 
     def test_floatify_matrix(self):
         x = [ 

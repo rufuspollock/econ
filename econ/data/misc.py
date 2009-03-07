@@ -3,6 +3,9 @@ class DataSniffer:
     # TODO
     pass
 
+# TODO: create a strict option where None is returned on failed convert rather
+# than original value
+placeholders = [ '', '-', '#' ]
 def floatify(value):
     '''Convert value to a float if possible.
 
@@ -10,15 +13,15 @@ def floatify(value):
     None. Can deal with ',' in value. Will also floatify dates. If nothing
     works returns original value. 
     '''
-    # often numbers have commas in them like 1,030
     if value is None:
         return None
-    if isinstance(value, basestring) and (
-            not value.strip() or value.strip() == '-'
-        ):
-        return None
     if isinstance(value, basestring):
-        v = value.replace(',', '')
+        stripped = value.strip()
+        if not stripped or stripped in placeholders:
+            return None
+        else: 
+            # often numbers have commas in them like 1,030
+            v = value.replace(',', '')
     try:
         newval = float(v)
         return newval
