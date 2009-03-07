@@ -1,14 +1,56 @@
+import os
+
 import genshi
 
 from econ.www.lib.base import *
 
 import econdata.ukgovfinances.data as d
 import econ.data
+import econdata.ukgovfinances.db
 
 class WdmmgController(BaseController):
+    dbmod = econdata.ukgovfinances.db
+    dbpath = os.path.join(config['db_store_path'], 'ukgovfinances.db')
+    dburi = 'sqlite:///%s' % dbpath
+
+    def __before__(self):
+        self.dbmod.Session.clear()
+        self.repo = self.dbmod.Repository(self.dburi)
+
+    def __after__(self):
+        self.dbmod.Session.remove()
 
     def index(self):
+        c.tables = self.dbmod.PesaTable.query.all()
         return render('wdmmg/index')
+
+    def table(self, id=None):
+        if id is None:
+            abort(404)
+        c.table = self.dbmod.PesaTable.query.get(int(id))
+        if c.table is None:
+            abort(404)
+        c.expenditures = self.dbmod.Expenditure.query.\
+                filter_by(pesatable=c.table).\
+                order_by(self.dbmod.Expenditure.title).\
+                order_by(self.dbmod.Expenditure.date).all()
+        # from formalchemy import FieldSet, Field, Grid
+        # c.grid = Grid(self.dbmod.Expenditure, c.expenditures).render()
+        # c.grid = genshi.HTML(c.grid)
+        # fs = FieldSet(c.table)
+        import econ.data
+        td = econ.data.TabularData()
+        td.header = ['Year', 'Title', 'Amount']
+        td.data = [ [ e.date, e.title, e.amount] for e in c.expenditures ]
+        tdout = econ.data.pivot(td,'Year','Title','Amount')
+        tdouttable = econ.data.pivot(td,'Title','Year','Amount')
+
+        import econ.www.controllers.plot
+        plotctr = econ.www.controllers.plot.PlotController()
+        c.html_table = genshi.XML(plotctr.get_html_table(tdouttable))
+        c.chart_code = genshi.HTML(plotctr._get_chart_code(tdout))
+
+        return render('wdmmg/table')
 
     def spend(self):
         a = d.Analyzer()
