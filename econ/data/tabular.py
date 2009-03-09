@@ -44,6 +44,26 @@ class TabularData(object):
     def __iter__(self):
         return self.data.__iter__()
 
+class ReaderBase(object):
+    def __init__(self, filepath_or_fileobj=None):
+        self.filepath = None
+        self.fileobj = None
+        self._filepath_or_fileobj(filepath_or_fileobj)
+
+    def _filepath_or_fileobj(self, filepath_or_fileobj):
+        if filepath_or_fileobj is None: # do not overwrite any existing value
+            pass
+        elif isinstance(filepath_or_fileobj, basestring):
+            self.filepath = filepath_or_fileobj
+            self.fileobj = open(self.filepath)
+        else:
+            self.filepath = None
+            self.fileobj = filepath_or_fileobj
+    
+    def read(self, filepath_or_fileobj=None):
+        self._filepath_or_fileobj(filepath_or_fileobj)
+
+
 def transpose(data):
     '''Transpose a list of lists.
     
@@ -129,23 +149,60 @@ class CsvWriter(object):
         fileobj.flush()
 
 
-class XlsReader(object):
+class XlsReader(ReaderBase):
     '''Read Excel (xls) files.
-    '''
 
-    def read(self, fileobj, sheet_index=0):
+    Requires the xlrd package (see pypi).
+    '''
+    def __init__(self, filepath_or_fileobj=None):
+        super(XlsReader, self).__init__(filepath_or_fileobj)
+        ## TODO: fix the rest of this
+
+    def read(self, fileobj=None, sheet_index=0):
         '''Read an excel file (provide as fileobj) and return the specified
         sheet as a L{TabularData} object.
+
+        For convenience also store:
+
+        self.book: xlrd WorkBook object
         
         @return L{TabularData} object.
         '''
-        tab = TabularData()
+        super(XlsReader, self).read(fileobj)
         import xlrd
-        book = xlrd.open_workbook(file_contents=fileobj.read())
-        booksheet = book.sheet_by_index(sheet_index)
-        data = self.extract_sheet(booksheet, book)
+        tab = TabularData()
+        self.book = xlrd.open_workbook(file_contents=self.fileobj.read())
+        booksheet = self.book.sheet_by_index(sheet_index)
+        data = self.extract_sheet(booksheet, self.book)
         tab.data = data
         return tab
+
+    def info(self):
+        '''Return summary info about this Excel Workbook.'''
+        import xlrd
+        info = ''
+        info += 'The number of worksheets is: %s\n' % self.book.nsheets
+        info += 'Worksheet name(s):\n' % self.book.sheet_names()
+        count = -1
+        for sn in self.book.sheet_names():
+            count += 1
+            info += '%s  %s\n' % (count, sn)
+        return info
+
+    def sheet_info(self, sheet_index):
+        '''Summary info about an xls sheet.
+
+        @return: printable string giving info.
+        '''
+        import pprint
+        import xlrd
+        sh = self.book.sheet_by_index(sheet_index)
+        info = sh.name + '\n'
+        info += 'Rows: %s Cols: %s\n\n' % (sh.nrows, sh.ncols)
+        MAX_ROWS = 30
+        for rx in range(min(sh.nrows, MAX_ROWS)):
+            info += str(sh.row(rx)) + '\n'
+        return info
 
     def extract_sheet(self, sheet, book):
         import xlrd
