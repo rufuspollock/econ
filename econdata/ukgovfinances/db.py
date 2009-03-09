@@ -13,6 +13,9 @@ class PesaTable(Base):
     __tablename__ = 'pesatable'
     id = Column('id', Integer, primary_key=True)
     title = Column('title', Unicode(300))
+    tags = Column('tags', UnicodeText)
+    # store using simplejson
+    footnotes = Column('footnotes', UnicodeText)
 
 class Expenditure(Base):
     __tablename__ = 'expenditure'

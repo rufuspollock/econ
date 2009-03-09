@@ -66,13 +66,48 @@ class Analyzer():
         repo = db.Repository('sqlite:///%s' % dbpath)
         fp = retriever.filepath('pesa0809chapter1.xls')
         years = range(2002, 2011)
+        r = T.XlsReader()
         for sheet_index in range(1,16):
             logger.info('Processing sheet: %s' % sheet_index)
-            r = T.XlsReader()
             td = r.read(open(fp), sheet_index)
             cells = td.data
             title = cells[0][0]
             table = db.PesaTable(title=title)
+            entries = {}
+            for row in cells[6:]:
+                if row[1]: # not a subheading or footnote
+                    series_name = row[0]
+                    for (year, cell) in zip(years, row[1:10]):
+                        db.Expenditure(
+                                title=series_name,
+                                date=unicode(year),
+                                amount=econ.data.floatify(cell),
+                                pesatable=table,
+                                )
+            db.Session.flush()
+
+    def pesa_chapter_2(self):
+        import db
+        repo = db.Repository('sqlite:///%s' % dbpath)
+        fp = retriever.filepath('pesa0809chapter2.xls')
+        logger.info('Processing file: %s' % fp)
+        years = range(2002, 2011)
+        r = T.XlsReader()
+        for sheet_index in range(1,5):
+            logger.info('Processing sheet: %s' % sheet_index)
+            td = r.read(open(fp), sheet_index)
+            cells = td.data
+            title = cells[0][0]
+            table = db.PesaTable(title=title)
+            footnotes = []
+            for lastrow in reversed(cells):
+                if len(lastrow) > 2: # into the data
+                    break
+                foot = lastrow[0].strip()
+                if foot:
+                    footnotes.append(foot)
+            import simplejson
+            table.footnotes = simplejson.dumps(footnotes)
             entries = {}
             for row in cells[6:]:
                 if row[1]: # not a subheading or footnote
@@ -103,12 +138,30 @@ class Analyzer():
             # TODO: could do by function and dept
         return data
 
+import optparse
 if __name__ == '__main__':
-    retrieve()
+    usage = '''%prog <action>
+
+retrieve: retrieve files to local cache.
+load <table-name>
+'''
+    parser = optparse.OptionParser(usage) 
+    options, args = parser.parse_args()
+    action = args[0]
     a = Analyzer()
-    # print a.extract_simple()[0].keys()
-    # print a.extract_dept_spend()
-    if os.path.exists(dbpath):
-        os.remove(dbpath)
-    a.pesa_chapter_1()
+    if action == 'retrieve':
+        retrieve()
+    elif action == 'db':
+        action2 = args[1]
+        if action2 == 'clean':
+            if os.path.exists(dbpath):
+                os.remove(dbpath)
+    elif action == 'load':
+        a.pesa_chapter_1()
+        a.pesa_chapter_2()
+    elif action == 'demo':
+        print a.extract_simple()[0].keys()
+        # print a.extract_dept_spend()
+    else:
+        parser.print_help()
 
