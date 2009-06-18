@@ -75,20 +75,8 @@ class WdmmgController(BaseController):
 
     def dept(self):
         a = d.Analyzer()
-        data = a.extract_dept_spend()
-        # create bar positions at 1,2,3,...
-        count = 1
-        c.datasets = []
-        for k in data:
-            c.datasets.append(
-                {'label': k,
-                 'data': [[ count, data[k] ]]
-                 }
-                )
-            count += 1
-        import simplejson as sj
-        # won't plot more than 5 or so items with bars ...
-        c.datasets = sj.dumps(c.datasets[:30])
+        data = a.extract_dept_spend_for_jit()
+        c.json = data
         c.fig_title = 'UK Government Spending by Dept (2007)'
         return render('wdmmg/dept')
 

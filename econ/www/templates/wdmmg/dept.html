@@ -3,17 +3,39 @@
   
   <py:def function="page_title">Where Does My Money Go?</py:def>
 
+  <py:def function="page_specific_css">
+  <!-- CSS Files -->
+  <link type="text/css" href="http://m.okfn.org/ext/Jit/Examples/css/base.css" rel="stylesheet" />
+  <link type="text/css" href="http://m.okfn.org/ext/Jit/Examples/css/Treemap.css" rel="stylesheet" />
+  <link type="text/css" href="/css/master.css" rel="stylesheet" />
+
+  <!-- JIT Library File -->
+  <script language="javascript" type="text/javascript" src="http://m.okfn.org/ext/Jit/jit-yc.js"></script>
+  <script language="javascript" type="text/javascript" src="/bvr/govt.js"></script>
+
+  <style type="text/css">
+    #infovis .leaf {
+      background-color: #A84542;
+    }
+
+  </style>
+  </py:def>
+
 	<div py:match="content">
     <h2>${c.fig_title}</h2>
-    <div id="placeholder" style="width:600px;height:300px;"></div>
+    <h4>Hover to see amount. Left click to zoom in. Right click to zoom out.</h4>
+    <h4>Unfortunately we don't (yet) have information for spending below the
+      departmental level.</h4>
+    <h4>Could you help us fix this? Know where to find the data? Drop a
+      line to info@okfn.org.</h4>
+    <div id="infovis"></div>    
+    <p>Built using <a href="http://thejit.org/">Javascript Infovis
+      Toolkit</a>.</p>
 <script id="source" language="javascript" type="text/javascript">
 $(function () {
-    var datasets = ${c.datasets};
-    $.plot($("#placeholder"), datasets, {
-        // bars: { show: true },
-        points: {show: true},
-        // legend: { show: false },
-      });
+    //init data
+    var json = ${c.json};
+    init(json);
 });
 </script>
 	</div>

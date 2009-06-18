@@ -137,6 +137,22 @@ class Analyzer():
             data[row[0]] = row[-1]
             # TODO: could do by function and dept
         return data
+    
+    def extract_dept_spend_for_jit(self):
+        spend = self.extract_dept_spend()
+        import uuid
+        def makenode(name, value):
+            return {'children': [], 'id': str(uuid.uuid4()), 'name': name,
+                    'data': {
+                        '$area': value,
+                        }
+                    }
+        total = sum([ x for x in spend.values() ])
+        children = [ makenode(k,v) for (k,v) in spend.items() ]
+        jitjs = makenode('root', total)
+        jitjs['children'] = children
+        import simplejson
+        return simplejson.dumps(jitjs, indent=2)
 
 import optparse
 if __name__ == '__main__':
@@ -144,6 +160,9 @@ if __name__ == '__main__':
 
 retrieve: retrieve files to local cache.
 load <table-name>
+db clean
+demo
+dept: dept spend
 '''
     parser = optparse.OptionParser(usage) 
     options, args = parser.parse_args()
@@ -162,6 +181,9 @@ load <table-name>
     elif action == 'demo':
         print a.extract_simple()[0].keys()
         # print a.extract_dept_spend()
+    elif action == 'dept':
+        spend = a.extract_dept_spend_for_jit()
+        print spend
     else:
         parser.print_help()
 
