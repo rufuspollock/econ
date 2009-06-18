@@ -18,7 +18,10 @@ setup(
     author='Rufus Pollock',
     author_email='rufus [at] rufuspollock [dot] org',
     url='http://www.openeconomics.net/',
-    install_requires=[],
+    install_requires=[
+        'Pylons>=0.9.6.1,<0.9.6.99',
+        'Genshi>=0.4',
+        ],
     packages=find_packages(exclude=['docs']),
     include_package_data=True,
     test_suite='nose.collector',
