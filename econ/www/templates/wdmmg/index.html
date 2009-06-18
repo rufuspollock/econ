@@ -1,7 +1,7 @@
 <html xmlns:py="http://genshi.edgewall.org/"
   xmlns:xi="http://www.w3.org/2001/XInclude">
   
-  <py:def function="page_title">Where Does My Money Go? - Home</py:def>
+	<py:def function="page_title">Where Does My Money Go?<sup style="font-size: 0.4em;">(Very Alpha)</sup> - Home</py:def>
 
 	<div py:match="content">
     <h1>Ever wondered where your money goes when you pay taxes &ndash; what exactly
@@ -21,6 +21,10 @@
         <a href="${h.url_for(action='table', id=table.id)}">${table.title}</a>
       </li>
     </ul>
+
+		<h3>A Note on Sources</h3>
+		<p>This data comes from <a href="http://www.hm-treasury.gov.uk/pespub_index.htm">Public Expenditure Statistics Publications</a> published by HM Treasury. Our "packaged" version of the data, which includes all the code to get the data from human readable spreadsheets to something more useful to a computer, can be found at <a href="http://knowledgeforge.net/econ/hg/file/tip/econdata/ukgovfinances">http://knowledgeforge.net/econ/hg/file/tip/econdata/ukgovfinances</a>.
+		</p>
 	</div>
 
   <xi:include href="../layout.html" />
