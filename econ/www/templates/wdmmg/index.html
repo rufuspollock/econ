@@ -10,8 +10,10 @@
 
     <h3>To get started take a look at:</h3>
     <ul>
-      <li><a href="${h.url_for(action='dept', id=None)}">Spending by Department</a></li>
-      <li><a href="${h.url_for(action='spend', id=None)}">Total Government
+      <li><a href="${h.url_for(controller='wdmmg', action='overview',
+        id='department')}">Spending by Department</a></li>
+      <li><a href="${h.url_for(controller='wdmmg', action='dept', id='function')}">Spending by Function</a></li>
+      <li><a href="${h.url_for(controller='wdmmg', action='spend', id=None)}">Total Government
         Spending</a></li>
     </ul>
 

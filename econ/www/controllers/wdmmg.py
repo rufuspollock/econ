@@ -74,9 +74,18 @@ class WdmmgController(BaseController):
         return render('wdmmg/spend')
 
     def dept(self):
+        h.redirect_to(controller='wdmmg', action='overview', id='department')
+
+    def overview(self, id=None):
+        order = id
+        if not order: order='department'
         a = d.Analyzer()
-        data = a.extract_dept_spend_for_jit()
+        # data = a.extract_dept_spend_for_jit()
+        data = a.department_and_function(order)
         c.json = data
-        c.fig_title = 'UK Government Spending by Dept (2007)'
+        if order == 'department':
+            c.fig_title = 'UK Government Spending by Department then Function (2008)'
+        else:
+            c.fig_title = 'UK Government Spending by Function then Department (2008)'
         return render('wdmmg/dept')
 

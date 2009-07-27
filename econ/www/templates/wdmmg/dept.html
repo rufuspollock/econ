@@ -1,5 +1,7 @@
 <html xmlns:py="http://genshi.edgewall.org/"
-  xmlns:xi="http://www.w3.org/2001/XInclude">
+  xmlns:xi="http://www.w3.org/2001/XInclude"
+  py:strip=""
+  >
   
   <py:def function="page_title">Where Does My Money Go?</py:def>
 
@@ -23,12 +25,14 @@
 
 	<div py:match="content">
     <h2>${c.fig_title}</h2>
-    <h4>Hover to see amount. Left click to zoom in. Right click to zoom out.</h4>
-    <h4>Unfortunately we don't (yet) have information for spending below the
-      departmental level.</h4>
-    <h4>Could you help us fix this? Know where to find the data? Drop a
-      line to info@okfn.org.</h4>
+
+    <h3>Instructions: Hover - see amount, Left click - zoom in, Right click - zoom out.</h3>
+    <h4>Got a comment? <a href="http://blog.okfn.org/taxonomy/wdmmg/">Leave it on the blog</a> Want to get involved? <a href="http://www.okfn.org/contact/">Please get in touch</a>
+    </h4>
+
     <div id="infovis"></div>    
+
+    <p>Source: Table 5.1 of PESA. See <a href="${h.url_for(controller='wdmmg', action='index', id=None)}">home page</a> for more information.</p>
     <p>Built using <a href="http://thejit.org/">Javascript Infovis
       Toolkit</a>.</p>
 <script id="source" language="javascript" type="text/javascript">

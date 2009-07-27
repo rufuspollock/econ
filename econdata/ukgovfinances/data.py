@@ -139,7 +139,7 @@ class Analyzer():
         for ii in range(1,5):
             fp = retriever.filepath('pesa0809chapter%s.xls' % ii)
             logger.info('Processing file: %s' % fp)
-            r = T.XlsReader()
+            r = T.XlsReader(open(fp))
             r.read(open(fp), 0)
             num_sheets = r.book.nsheets
             for sheet_index in range(1, num_sheets):
@@ -165,7 +165,6 @@ class Analyzer():
             self._process_sheet(td)
     
     def extract_dept_spend(self):
-        # fp = retriever.filepath(self.xls_urls[6])
         fp = retriever.filepath('pesa_2008_chapter5_tables.xls')
         print fp
         r = T.XlsReader()
@@ -178,24 +177,72 @@ class Analyzer():
         data = {}
         for row in cells[4:-1]:
             data[row[0]] = row[-1]
-            # TODO: could do by function and dept
         return data
     
+    def makenode(self, name, value):
+        import uuid
+        return {
+            'children': [], 'id': str(uuid.uuid4()), 'name': name,
+            'data': {
+                '$area': value,
+                }
+            }
+
     def extract_dept_spend_for_jit(self):
         spend = self.extract_dept_spend()
-        import uuid
-        def makenode(name, value):
-            return {'children': [], 'id': str(uuid.uuid4()), 'name': name,
-                    'data': {
-                        '$area': value,
-                        }
-                    }
         total = sum([ x for x in spend.values() ])
-        children = [ makenode(k,v) for (k,v) in spend.items() ]
-        jitjs = makenode('root', total)
+        children = [ self.makenode(k,v) for (k,v) in spend.items() ]
+        jitjs = self.makenode('Total', total)
         jitjs['children'] = children
         import simplejson
         return simplejson.dumps(jitjs, indent=2)
+
+    def department_and_function(self, order='department'):
+        '''
+        @param order: value is 'department' or 'function' (determines ordering in
+        tree).
+        '''
+        fp = retriever.filepath('pesa_2008_chapter5_tables.xls')
+        r = T.XlsReader(open(fp))
+        td = r.read(sheet_index=1)
+        cells = td.data
+        title = cells[0][0]
+        functions = [ x.strip() for x in cells[3][1:-1] ]
+        depts = [ row[0].strip() for row in cells[4:-1] ]
+        ourdata = [ row[1:-1] for row in cells[4:-1] ]
+        children = []
+        def nodesum(nodes):
+            values = map(lambda x: x['data']['$area'], nodes)
+            return sum(values)
+
+        rootchildren = []
+
+        if order == 'department':
+            labels1 = depts
+            labels2 = functions
+        else:
+            labels1 = functions
+            labels2 = depts 
+            ourdata = list(zip(*ourdata))
+        for label1, row in zip(labels1, ourdata):
+            if label1.startswith('of which'): # skip subfunctions
+                continue
+            children = []
+            for cell,label2 in zip(row, labels2):
+                if label2.startswith('of which'): # skip subfunctions
+                    continue
+                # some have -ve numbers which mess stuff up ...
+                val = max(0, int(cell))
+                nn = self.makenode(label2, val)
+                children.append(nn)
+            deptnode = self.makenode(label1, nodesum(children))
+            deptnode['children'] = children
+            rootchildren.append(deptnode)
+        root = self.makenode('Total', nodesum(rootchildren))
+        root['children'] = rootchildren
+        import simplejson
+        return simplejson.dumps(root, indent=2)
+
 
 import optparse
 if __name__ == '__main__':
@@ -207,6 +254,7 @@ load
 db clean
 demo
 dept: dept spend
+department_and_function: dept spend by function
 '''
     parser = optparse.OptionParser(usage) 
     options, args = parser.parse_args()
@@ -234,6 +282,9 @@ dept: dept spend
         # print a.extract_dept_spend()
     elif action == 'dept':
         spend = a.extract_dept_spend_for_jit()
+        print spend
+    elif action == 'department_and_function':
+        spend = a.department_and_function()
         print spend
     else:
         parser.print_help()
