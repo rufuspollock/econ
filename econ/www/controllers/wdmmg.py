@@ -79,9 +79,13 @@ class WdmmgController(BaseController):
     def overview(self, id=None):
         order = id
         if not order: order='department'
+        try:
+            levels = int(request.params.get('levels', 2))
+        except:
+            levels = 2
         a = d.Analyzer()
         # data = a.extract_dept_spend_for_jit()
-        data = a.department_and_function(order)
+        data = a.department_and_function(order, levels=levels)
         c.json = data
         if order == 'department':
             c.fig_title = 'UK Government Spending by Department then Function (2008)'

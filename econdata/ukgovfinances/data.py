@@ -197,10 +197,11 @@ class Analyzer():
         import simplejson
         return simplejson.dumps(jitjs, indent=2)
 
-    def department_and_function(self, order='department'):
+    def department_and_function(self, order='department', levels=1):
         '''
         @param order: value is 'department' or 'function' (determines ordering in
         tree).
+        @param levels: no of levels to show (1 or 2)
         '''
         fp = retriever.filepath('pesa_2008_chapter5_tables.xls')
         r = T.XlsReader(open(fp))
@@ -236,7 +237,8 @@ class Analyzer():
                 nn = self.makenode(label2, val)
                 children.append(nn)
             deptnode = self.makenode(label1, nodesum(children))
-            deptnode['children'] = children
+            if levels >= 2:
+                deptnode['children'] = children
             rootchildren.append(deptnode)
         root = self.makenode('Total', nodesum(rootchildren))
         root['children'] = rootchildren
