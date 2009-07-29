@@ -43,6 +43,7 @@ def retrieve():
 import swiss.tabular as T
 class Analyzer():
     def __init__(self):
+        retrieve()
         self.info = simplejson.load(open(infopath)) 
         self.xls_urls = self.info['urls']
 
