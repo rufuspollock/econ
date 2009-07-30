@@ -67,11 +67,14 @@ class MdgController(BaseController):
     def view(self, id=None):
         countries = request.params.getall('countries')
         series = request.params.get('series')
+        try:
+            c.series = self.dbmod.Series.query.get(series)
+        except:
+            h.redirect_to(controller='mdg', action='index', id=None)
         c.values = self.dbmod.Value.query.filter(
                 self.dbmod.Value.country_code.in_(countries)).filter_by(
                         series_code=series).all()
         c.countries = [ self.dbmod.Country.query.get(ctry) for ctry in countries ]
-        c.series = self.dbmod.Series.query.get(series)
         td = self._cvt_values_to_tabular(c.values)
 
         import econ.www.controllers.plot
