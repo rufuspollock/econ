@@ -32,6 +32,7 @@ class TestDiscountRate:
 
 class TestDiscountRateHistorical:
     
+    @classmethod
     def setup_class(self):
         dataPoints = [(1850, 10.9), (1990,497.6), (2002, 695.1)]
         ts1 = econ.data.TimeSeries(dataPoints)

@@ -8,7 +8,7 @@
 
 import math
 # optimize etc
-from scipy import *
+from scipy import optimize, integrate
 
 # import econ.log
 # logger = econ.log.get_logger()
