@@ -107,7 +107,7 @@ class Ploticus(object):
     >>> fo.close()
     '''
     out_format = 'png'
-    ploticus = 'pl'
+    ploticus = 'ploticus'
     colors = 'red orange green purple yellow blue magenta tan1 coral tan2 claret pink brightgreen brightblue limegreen yellowgreen lavender powderblue redorange lightorange'.split(' ')
     '''Array with all the colors in it'''
 
@@ -173,15 +173,22 @@ class Ploticus(object):
     def _make_cmd(self):
         options = [ '%s=%s' % (k,v) for k,v in self.kwargs.items() ]
         self.cmd = self.cmd + ' '.join(options)
-        fullcmd = '%s -%s -data=stdin -o stdout %s ' % (self.ploticus, self.out_format,
+        fullcmd = '%s -%s data=- -o stdout %s ' % (self.ploticus, self.out_format,
             self.cmd)
         return fullcmd
 
     def _run(self):
         import popen2
         fullcmd = self._make_cmd()
+        print fullcmd
         if self.verbose:
             print fullcmd
+        # does not work!
+        # import subprocess
+        # import sys
+        # p = subprocess.Popen(fullcmd, shell=True, stdin=sys.stdin,
+        #        stdout=sys.stdout, stderr=sys.stderr, close_fds=True)
+        # (cstdout, cstdin, cstderr) = (p.stdin, p.stdout, p.stderr)
         cstdout, cstdin, cstderr = popen2.popen3(fullcmd)
         cstdin.write(self.input)
         cstdin.close()

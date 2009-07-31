@@ -48,7 +48,7 @@ class TestPloticus:
    
     def test_line(self):
         out = self.plotter.line(self.xdata, self.ydata)
-        assert len(out) > 0
+        assert len(out) > 0, out
 
     def test_pie(self):
         out = self.plotter.pie(self.xdata, self.ydata)
