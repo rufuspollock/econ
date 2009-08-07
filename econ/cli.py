@@ -8,6 +8,9 @@ class EconAdmin(cmd.Cmd):
 
     def __init__(self):
         cmd.Cmd.__init__(self) # cmd.Cmd is not a new style class
+        import econ
+        # TODO: this should be set via a cli option
+        econ.register_config('development.ini')
 
     def run_interactive(self, line=None):
         """Run an interactive session.
@@ -51,8 +54,8 @@ Open Econ is open-knowledge and open-source. See LICENSE.txt for details.
         else:
             basePath = econ.get_config()['data_store_path']
         indexList = econ.store.make_index(basePath)
-        for key, item in indexList.items():
-            print key
+        for item in indexList.list():
+            print item.name
             print '  Title: ', item.metadata['title']
             print
         # for key, item in indexList.items():

@@ -28,7 +28,7 @@ class RootController(BaseController):
 def get_current_value(startYear, endYear=2002):
     import econ.data
     import econ.model.discount
-    databundle = econ.store.index()['uk_price_index_1850-2002_annual']
+    databundle = econ.store.index().get('uk_price_index_1850-2002_annual')
     filePath = databundle.data_path
     ts1 = econ.data.getTimeSeriesFromCsv(file(filePath))
     discounter = econ.model.discount.DiscountRateHistorical(ts1)

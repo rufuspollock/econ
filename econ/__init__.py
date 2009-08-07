@@ -15,7 +15,7 @@ def register_config(config_path):
     config_path = os.path.abspath(config_path)
     import paste.deploy
     pasteconf = paste.deploy.appconfig('config:' + config_path)
-    import econ.config.environment
-    econ.config.environment.load_environment(pasteconf.global_conf,
+    import econ.www.config.environment
+    econ.www.config.environment.load_environment(pasteconf.global_conf,
         pasteconf.local_conf)
 

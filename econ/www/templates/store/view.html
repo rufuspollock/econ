@@ -4,20 +4,31 @@
   <py:def function="page_title">Store - View</py:def>
 
   <div py:match="content">
-    <h2>${c.title}</h2>
+    <h2>${c.pkg.title}</h2>
 
-    <h3>Metadata</h3>
-    <ul>
-      <li py:for="key, value in c.metadata.items()">
+    <py:def function="render_value(key, value)">
       <strong>${key}: </strong>
       <py:choose>
       <py:when test="key in ['description', 'notes', 'comment']">
         ${HTML(h.markdown(value.replace('\n', '\n\n')))}
       </py:when>
+      <py:when test="key == 'extras'">
+        <ul>
+        <li py:for="k,v in value.items()">
+          ${k}: ${v}
+        </li>
+        </ul>
+      </py:when>
       <py:otherwise>
         ${value}
       </py:otherwise>
       </py:choose>
+    </py:def>
+
+    <h3>Metadata</h3>
+    <ul>
+      <li py:for="key in c.pkg.metadata_keys">
+      ${render_value(key, getattr(c.pkg, key))}
       </li>
     </ul>
 

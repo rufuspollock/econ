@@ -1,104 +1,65 @@
-"""
-A DataBundle is a dataset along with its associated metadata
-
-DataBundles are persisted and read from various backends:
-  1. local file
-  2. web
-  3. database
-
-At present only local file is supported.
-
-Local File
-**********
-
-A DataBundle serialized to disk appears consists of:
-  1. data file named data.<ext> where <ext> is the file type
-    * (only ext=csv is presently supported)
-  2. metadata file named metadata.txt
-    * this file should conform to the python ConfigParser format (RFC 822) and 
-    consist of a single section entitle [DEFAULT]
-"""
-
 import os
 import shutil
 import ConfigParser
 import uuid
 
-def create(base_path):
-    bndl = DataBundle()
-    path = os.path.join(base_path, bndl.id)
-    bndl.path = path
-    bndl.write()
-    return bndl
+import datapkg.distribution
+from datapkg.package import Package
 
-class DataBundle(object):
-    """A 'Data Bundle' that is dataset with associated metadata.
-    """
 
-    def _set_path(self, value):
-        self._path = value
-        if self._path:
-            self._meta_path = os.path.join(self._path, 'metadata.txt')
-            self.data_path = os.path.join(self._path, 'data.csv')
-        else:
-            self._meta_path = None
-            self.data_path = None
+class IniBasedDistribution(datapkg.distribution.DistributionBase):
+    keymap = {
+        'id': 'name',
+        'creator': 'author',
+        'description': 'notes',
+        'comments': 'notes',
+        'licence': 'license',
+        'tags': 'keywords',
+        }
 
-    def _get_path(self):
-        return self._path
-    
-    def _del_path(self):
-        del self._path
-
-    def _set_id(self, value):
-        self.metadata['id'] = value
-
-    def _get_id(self):
-        return self.metadata['id']
-
-    def _del_id(self):
-        del self.metadata['id']
-
-    path = property(_get_path, _set_path, _del_path)
-    id = property(_get_id, _set_id, _del_id)
-
-    def __init__(self, id=None, path=None):
-        # must be set first
-        self.metadata = {}
-        if id is None or id == '':
-            self.id = str(uuid.uuid4())
-        self.path = path
-        self.data_files = {}
-
-    def read(self, path):
-        self.path = path
-        # TODO: remove using file names for ids
-        # set id from file name as default but may be overridden in metadata
-        self.id = os.path.basename(path)
+    @classmethod
+    def from_path(self, path):
+        pkg = Package()
+        pkg.installed_path = path 
         fp = os.path.join(path, 'metadata.txt')
-        self.read_metadata(file(fp))
-    
-    def read_metadata(self, fileobj):
-        '''Read metadata from config.ini style fileobj.'''
+        # Read metadata from config.ini style fileobj
         cfp = ConfigParser.SafeConfigParser()
-        cfp.readfp(fileobj)
+        cfp.readfp(open(fp))
         filemeta = cfp.defaults()
-        self.metadata.update(filemeta)
+        if not 'name' in filemeta and 'id' in filemeta:
+            filemeta['name'] = filemeta['id']
+        extras = {}
+        newmeta = dict(filemeta)
+        if not 'extras' in newmeta:
+            newmeta['extras'] = {}
+        for inkey,value in filemeta.items():
+            if inkey in Package.metadata_keys:
+                continue
+            elif inkey in self.keymap:
+                actualkey = self.keymap.get(inkey, inkey)
+                if actualkey == 'notes':
+                    # TODO: do we need to trim leading '\n' that may result?
+                    newmeta[actualkey] = newmeta.get(actualkey, '') + '\n' + value
+                elif not actualkey in newmeta:
+                    newmeta[actualkey] = value
+            else:
+                newmeta['extras'][inkey] = value
+        pkg.update_metadata(newmeta)
+        # TODO: deprecate this in favour of the manifest
+        # TODO: default to 'data.csv' if no sections ...
+        pkg.data_path = os.path.join(pkg.installed_path, 'data.csv')
+        pkg.data_files = {}
         for section in cfp.sections():
-            self.data_files[section] = dict(cfp.items(section))
-    
+            pkg.data_files[section] = dict(cfp.items(section))
+        return self(pkg)
+
     def write(self):
-        if not os.path.exists(self._path):
-            os.makedirs(self._path)
-        cfp = ConfigParser.SafeConfigParser(self.metadata)
-        fo = file(self._meta_path, 'w')
+        destpath = self.package.installed_path
+        if not os.path.exists(destpath):
+            os.makedirs(destpath)
+        meta_path = os.path.join(destpath, 'metadata.txt')
+        cfp = ConfigParser.SafeConfigParser(self.package.metadata)
+        fo = file(meta_path, 'w')
         cfp.write(fo)
         fo.close()
     
-    def __str__(self):
-        repr = 'DataBundle: ' + self.id + '\n'
-        repr += 'Title: ' + self.metadata['title'] + '\n\n'
-        for key, value in self.metadata.items():
-            repr += str(key) + ': ' + str(value) + '\n'
-        return repr
-
