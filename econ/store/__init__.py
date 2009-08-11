@@ -5,9 +5,9 @@ logger = logging.getLogger('econ.store')
 
 import datapkg.index
 from datapkg.package import Package
+from datapkg.distribution import IniBasedDistribution
 
 import econ
-from econ.store.bundle import IniBasedDistribution
 
 def make_index(basePath):
     ourindex = datapkg.index.SimpleIndex()
