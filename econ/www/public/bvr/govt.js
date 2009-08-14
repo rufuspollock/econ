@@ -24,6 +24,7 @@ function init(json){
     var tm = new TM.Squarified({
         //Where to inject the treemap.
         rootId: 'infovis',
+        titleHeight: 17,  
 
         //Add click handlers for
         //zooming the Treemap in and out

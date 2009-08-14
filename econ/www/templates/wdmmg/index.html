@@ -4,9 +4,14 @@
 	<py:def function="page_title">Where Does My Money Go?<sup style="font-size: 0.4em;">(Very Alpha)</sup> - Home</py:def>
 
 	<div py:match="content">
-    <h1>Ever wondered where your money goes when you pay taxes &ndash; what exactly
+		<h1>Ever wondered where your money goes when you pay taxes &ndash;<br />what exactly
       it gets spent on, who exactly receives it?</h1>
-    <h1>We're here to help you find out</h1>
+		<h1>We're here to help you find out</h1>
+		
+		<h3 id="#participate">
+			We need your help!
+		</h3>
+		<p>This is a collaborative effort and we welcome participation. Got suggestions as to what data we should be looking at (and where we can find it)? Want to help us create compelling visualizations and take our findings to citizens and the media? Then get in touch <a href="mailto:info@okfn.org?subject=Where Does My Money Go">by email</a> or <a href="http://www.okfn.org/contact/">otherwise</a>.</p>
 
     <h3>To get started take a look at:</h3>
     <ul>
@@ -17,6 +22,10 @@
         Spending</a></li>
     </ul>
 
+		<h3>A Note on Sources</h3>
+		<p>This data comes from <a href="http://www.hm-treasury.gov.uk/pespub_index.htm">Public Expenditure Statistics Publications</a> published by HM Treasury. Our "packaged" version of the data, which includes all the code to get the data from human readable spreadsheets to something more useful to a computer, can be found at <a href="http://knowledgeforge.net/econ/hg/file/tip/econdata/ukgovfinances">http://knowledgeforge.net/econ/hg/file/tip/econdata/ukgovfinances</a>. We've also uploaded all of PESA (plus summary) to a <a href="http://spreadsheets.google.com/ccc?key=0Aon3JiuouxLUcnpMNTRLQjRLcnNkM1h1NzRQLWxLREE">Google docs spreadsheet</a> for easy viewing and editing.
+		</p>
+
     <h3>Full List of Tables</h3>
     <ul>
       <li py:for="table in c.tables">
@@ -24,9 +33,6 @@
       </li>
     </ul>
 
-		<h3>A Note on Sources</h3>
-		<p>This data comes from <a href="http://www.hm-treasury.gov.uk/pespub_index.htm">Public Expenditure Statistics Publications</a> published by HM Treasury. Our "packaged" version of the data, which includes all the code to get the data from human readable spreadsheets to something more useful to a computer, can be found at <a href="http://knowledgeforge.net/econ/hg/file/tip/econdata/ukgovfinances">http://knowledgeforge.net/econ/hg/file/tip/econdata/ukgovfinances</a>.
-		</p>
 	</div>
 
   <xi:include href="../layout.html" />
