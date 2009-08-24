@@ -1,8 +1,8 @@
 [DEFAULT]
-id = 10864a10-2873-4b4c-bd38-82b9e5297a25
+name = usa_bls_employment
 title = USA Bureau of Labor Statistics: Employment status of the civilian noninstitutional population, 1940 to date 
+license = PD
+description = Public Domain (US Federal Government). Data extraction by rgrp.
 source = USA Bureau of Labor Statistics Employment Related Data: <ftp://ftp.bls.gov/pub/special.requests/lf/aat1.txt>
-license = Public Domain (US Federal Government). Data extraction by rgrp.
 comments = (Numbers in thousands)
-todo = Headings for dataset.
 
