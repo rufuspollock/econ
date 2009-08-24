@@ -4,7 +4,7 @@ import econ.model.demand
 import econ.model.producer
 
 class TestProducer:
-    def setup_method(self, name=''):
+    def setup(self):
         self.dfConstant = 5.0
         self.dfSlope = -1.0
         self.df = econ.model.demand.get_linear_demand_function(self.dfConstant,

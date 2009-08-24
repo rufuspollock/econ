@@ -1,3 +1,10 @@
 syntax: glob
 *.pyc
 sandbox/*
+*.zip
+todelete/*
+to-process/*
+econ/www/public/bvr/flot-0.5*
+
+syntax: regexp
+^econdata/.*/cache/.*

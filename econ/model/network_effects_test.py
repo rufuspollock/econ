@@ -12,7 +12,7 @@ class TestNetworkEffectsModel(object):
         Need this so that we can instantiate the class outside of test
         framework for use in graphing etc
         """
-        super(TestNetworkEffectsModel, self).__init__(methodName)
+        super(TestNetworkEffectsModel, self).__init__()
     
     ## ********************************************************************
     ## Network Effect Models
@@ -81,7 +81,7 @@ class TestNetworkEffectsModel(object):
     ## Tests
     ## ********************************************************************
     
-    def setup_method(self, name=''):
+    def setup(self):
         self._neModel1 = self.locationalINESymmetric(1, 5, 7)
         self._aa = 1.0
         self._bb1 = 2.0

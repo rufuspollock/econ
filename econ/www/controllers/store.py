@@ -12,34 +12,33 @@ class StoreController(BaseController):
     def index(self):
         import econ.store
         index = econ.store.index()
-        bundles = index.values()
+        packages = [ pkg for pkg in index.list() ]
         storeIndex = []
-        for bundle in bundles:
-            title = bundle.metadata.get('title', 'No title available')
-            storeIndex.append((h.url_for(bundle.id), title))
+        for package in packages:
+            title = package.metadata.get('title', 'No title available')
+            storeIndex.append((h.url_for(controller='store', action='view',
+                id=package.name), title))
         c.store_index = storeIndex
         def mycmp(x,y):
             return cmp(x[1], y[1])
         c.store_index.sort(mycmp)
         return render('store/index')
 
-    def _get_bundle(self, id):
+    def _get_package(self, id):
         if id is None:
-            msg = 'Please provide a bundle id.'
+            msg = 'Please provide a package id.'
             raise Exception(msg) 
         import econ.store
         index = econ.store.index()
         try:
-            bundle = index[id] 
+            package = index.get(id)
         except:
-            msg = 'The store does not contain a data bundle with id: %s' % id
+            msg = 'The store does not contain a data package with id: %s' % id
             raise Exception(msg) 
-        return bundle
+        return package
 
     def view(self, id):
-        bundle = self._get_bundle(id)
-        c.title = bundle.metadata.get('title', 'No Title Provided')
-        c.metadata = bundle.metadata
+        c.pkg = self._get_package(id)
         # limit to a maximum to avoid problems with huge datasets
         data_limit = 1000
         c.plot_data_url = h.url_for(controller='plot', action='chart', id=id,
@@ -48,9 +47,10 @@ class StoreController(BaseController):
         return render('store/view')
 
     def data(self, id):
-        bundle = self._get_bundle(id)
+        package = self._get_package(id)
+        fp = econ.store.get_data_path(package)
         try:
-            fileobj = file(bundle.data_path)
+            fileobj = file(fp)
             result = fileobj.read()
         except:
             result = 'It looks like there is no data file for this dataset'

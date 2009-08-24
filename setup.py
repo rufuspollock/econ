@@ -22,6 +22,9 @@ setup(
         'Pylons>=0.9.6.1,<0.9.6.99',
         'Genshi>=0.4',
         'swiss',
+        # probably have to get this from the repository at
+        # https://knowledgeforge.net/ckan/datapkg
+        'datapkg>=0.2.99'
         ],
     packages=find_packages(exclude=['docs']),
     include_package_data=True,
