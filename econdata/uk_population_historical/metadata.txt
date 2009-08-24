@@ -1,5 +1,6 @@
 [DEFAULT]
-id = 04995092-54f2-4d90-bc3a-e0bc6d509550
+name = 'uk_population_historical'
 title = UK Population Estimates 1520 to 1851
+license = PDDL
 source = Wrigley and Schofield statistics cited in Mark Overton, *Agricultural Revolution in England*, Table 3.5.
 
