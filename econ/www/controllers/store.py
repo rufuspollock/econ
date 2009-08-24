@@ -26,15 +26,14 @@ class StoreController(BaseController):
 
     def _get_package(self, id):
         if id is None:
-            msg = 'Please provide a package id.'
-            raise Exception(msg) 
+            abort(404)
         import econ.store
         index = econ.store.index()
         try:
             package = index.get(id)
         except:
             msg = 'The store does not contain a data package with id: %s' % id
-            raise Exception(msg) 
+            abort(404)
         return package
 
     def view(self, id):
