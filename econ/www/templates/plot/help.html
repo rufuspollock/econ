@@ -11,7 +11,7 @@
     </div>
 
     <p>The 'plot' service provides plotting functionality -- you can send data
-    to the service and it will produce a graph of that data using the PlotKit
+    to the service and it will produce a graph of that data using the Flot 
     Javascript plotting library. The plot service is located at:</p>
     <p>
     ${XML(
@@ -30,14 +30,13 @@
     <p>You send data to the service either by POSTing it or by providing the
     url at which the data is located (in which case you can use a POST or a
     GET). Currently the system will only plot tabular data in the comma
-    separated variables format. Furthermore, the data must be very clean -- no
-    blank lines, no empty or non-standard values for example.</p>
+    separated variables format.</p>
 
     <p>Arguments to provide when using the service:</p>
     <ul>
-      <li>data_url: a string providing the url to the data file you want
+      <li>EITHER: data_url: a string providing the url to the data file you want
       plotted.</li>
-      <li>data: the data itself (only supported with POSTs).</li>
+      <li>OR: data: the data itself (only supported with POSTs).</li>
       <li>limit: limit the rows of the dataset we use for plotting. Uses
       standard python list slicing syntax, e.g. limit=[2:] (all rows from 2
       onwards), limit=[:-4] (all rows from the start to the 4th before the end)

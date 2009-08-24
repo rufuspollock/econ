@@ -48,8 +48,9 @@ class StoreController(BaseController):
 
     def data(self, id):
         package = self._get_package(id)
+        fp = econ.store.get_data_path(package)
         try:
-            fileobj = file(package.data_path)
+            fileobj = file(fp)
             result = fileobj.read()
         except:
             result = 'It looks like there is no data file for this dataset'

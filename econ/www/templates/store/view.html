@@ -27,7 +27,7 @@
 
     <h3>Metadata</h3>
     <ul>
-      <li py:for="key in c.pkg.metadata_keys">
+      <li py:for="key in c.pkg.metadata.key_list">
       ${render_value(key, getattr(c.pkg, key))}
       </li>
     </ul>
