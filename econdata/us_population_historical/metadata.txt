@@ -1,5 +1,5 @@
 [DEFAULT]
-id = 40b8f442-9c62-4edc-b018-1ef0dab0c9a6
+id = us_population_historical
 title = US Population Estimates (mid year) 1790 to 2005
 source = <http://eh.net/databases/uspop/uspop.txt>. Original file included the following notes:
   

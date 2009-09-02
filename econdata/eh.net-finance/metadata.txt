@@ -1,5 +1,5 @@
 [DEFAULT]
-id = 27143e7e-4f96-4c1c-87b8-976ccc2bdc5a
+id = eh.net_finances_government_revenue
 title = Government revenue (for 17 Countries in the period 1880-1913)
 source: Original data retrieved from <http://eh.net/databases/finance/> and then
   reformatted (see ../prepare.py).

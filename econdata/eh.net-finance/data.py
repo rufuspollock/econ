@@ -153,6 +153,7 @@ def create_bundle(url, title, header, data):
 def process_all():
     urls = get_file_urls()
     print urls
+    return
     for url in urls:
         f1 = download(url)
         title, header, data = tidy(f1)
