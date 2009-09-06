@@ -1,0 +1,12 @@
+[DEFAULT]
+name: thatcher_wages_middle_ages 
+title: Daily Wages of Thatchers in the Middle Ages
+license: PDDL
+source: *Standards of Living in the Later Middle Ages*, Christopher Dyer, Cambridge University Press, 1989, p. 206 via <http://www.fordham.edu/halsall/source/medievalprices.html>
+notes: These look to be nominal not real values.
+
+ ### License
+ 
+ Too small to attract DB protection but probably want to attribute original compiler of the table.
+
+tags: size-xsmall wages thatchers middle-ages

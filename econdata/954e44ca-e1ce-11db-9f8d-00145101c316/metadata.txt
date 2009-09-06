@@ -1,6 +1,0 @@
-[DEFAULT]
-id = 954e44ca-e1ce-11db-9f8d-00145101c316
-title = Distribution of Estimated Patent Values in Various European Countries 
-comments = For Germany data relates to grants rather than applications. Table gives percentiles against $ value of patents in different European countries.
-source = Ariel S, 1986. "Patents as Options: Some Estimates of the Value of Holding European Patent Stocks," Econometrica, Econometric Society, vol. 54(4), pages 755-84, July. http://ideas.repec.org/a/ecm/emetrp/v54y1986i4p755-84.html. Table V (p.777) "Percentiles (p1) and Lorenz Curve Coefficients (lc) From the Distribution of Realized Patent Values".
-
