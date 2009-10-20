@@ -1,0 +1,14 @@
+[DEFAULT]
+id: ukgov_finances_pesa
+title: UK Government Finances - Public Expenditure Statistical Analyses
+source: <http://www.hm-treasury.gov.uk/pespub_pesa08.htm>
+requires-compilation: yes.
+tags: uk gov ukgov finances expenditure revenue pesa
+creator: rgrp
+license: Crown Copyright (Click-Use)
+notes: See <http://blog.okfn.org/2009/09/24/discovering-where-my-money-goes-i-pesa/> 
+
+ ### License
+ 
+ Source is UK Govt so presume covered by a click-use license.
+

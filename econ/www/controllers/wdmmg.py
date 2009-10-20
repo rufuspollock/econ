@@ -4,13 +4,13 @@ import genshi
 
 from econ.www.lib.base import *
 
-import econdata.ukgovfinances.data as d
+import econdata.ukgov_finances_pesa.data as d
 import econ.data
-import econdata.ukgovfinances.db
+import econdata.ukgov_finances_pesa.db
 
 class WdmmgController(BaseController):
-    dbmod = econdata.ukgovfinances.db
-    dbpath = os.path.join(config['db_store_path'], 'ukgovfinances.db')
+    dbmod = econdata.ukgov_finances_pesa.db
+    dbpath = os.path.join(config['db_store_path'], 'ukgov_finances_pesa.db')
     dburi = 'sqlite:///%s' % dbpath
 
     def __before__(self):

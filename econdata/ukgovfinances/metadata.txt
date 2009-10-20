@@ -1,8 +1,0 @@
-[DEFAULT]
-id: ukgov-finances
-title: UK Government Finances (Revenue and Expenditures)
-source: <http://www.hm-treasury.gov.uk/pespub_pesa08.htm>
-requires-compilation: yes.
-tags: uk gov finances expenditure revenue
-creator: rgrp
-license: Crown Copyright (Click-Use). (Source is UK Govt)
