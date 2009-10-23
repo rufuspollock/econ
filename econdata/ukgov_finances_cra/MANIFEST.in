@@ -1,0 +1,2 @@
+# Follows python MANIFEST.in syntax. See datapkg man for more details
+recursive-include ukgov-finances-cra *.txt *.csv *.js *.dat
