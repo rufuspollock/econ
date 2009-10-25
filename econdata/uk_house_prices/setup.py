@@ -11,13 +11,13 @@ setup(
     description='UK House Price Data',
 
     # URL of project/package homepage
-    url='',
+    url='http://www.openeconomics.net/store/view/uk-house-prices',
 
     # Download url for this package if it has a specific location
-    # download_url='',
+    download_url='http://www.openeconomics.net/store/view/uk-house-prices/data',
 
     # Space-separated keywords/tags
-    keywords='house price uk',
+    keywords='house, price, uk, country-uk, format-csv',
 
     # Notes or multi-line description for your project (in markdown)
     long_description='''
