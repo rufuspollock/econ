@@ -1,3 +1,10 @@
+v0.7 2009-??
+************
+
+  * Switch out data 'bundles' for datapkg Packages
+  * Major improvements to WDMMG
+  * Variety of improvements to integration of flot charting
+
 v0.6 2009-02
 ************
 
