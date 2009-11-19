@@ -8,8 +8,8 @@ import simplejson
 
 from econ.www.lib.base import *
 
-import econ.data.misc
-import econ.data.tabular
+import swiss.misc
+import swiss.tabular
 
 # Several steps:
 # 1. generate plot
@@ -55,7 +55,7 @@ class PlotController(BaseController):
             c.error = msg
 
     def _tabular_data(self, fileobj): 
-        reader = econ.data.tabular.ReaderCsv()
+        reader = swiss.tabular.ReaderCsv()
         tabdata = reader.read(fileobj)
         return tabdata
 
@@ -107,11 +107,14 @@ class PlotController(BaseController):
 #             idx = request.params.get(yvar_name, None)
 #             if idx:
 #                 ycols.append(int(idx))
-        cols = econ.data.misc.make_series(tabdata.data, xcol, ycols)
+        cols = swiss.misc.make_series(tabdata.data, xcol, ycols)
         c.datasets = []
         for ii in range(len(cols)):
             if tabdata.header:
                 name = tabdata.header[ycols[ii]]
+                # escape entities that will give html problems
+                name = name.replace('&', '+')
+                name = name.replace('<', 'lt')
             else:
                 name = 'data%s' % ii
             # use simplejson to ensure formatting is correct for js
@@ -124,8 +127,9 @@ class PlotController(BaseController):
         return result
 
     def get_html_table(self, tabdata):
-        writer = econ.data.tabular.WriterHtml({'id' : 'table_1'})
-        html = writer.write(tabdata)
+        writer = swiss.tabular.WriterHtml({'id' : 'table_1'})
+        html = writer.write_str(tabdata)
+        print html[:53]
         return html
 
     def test(self):
