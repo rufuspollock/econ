@@ -14,6 +14,8 @@
     <form action="" method="GET">
       ${h.text_field('q', c.q, size=40)}
       ${h.submit('Search &raquo;', 'Search')}
+			<br />
+			<span style="font-size: 0.9em; padding-left: 1em;">e.g. health, unemployment, olympics</span>
     </form>
     <div class="results" py:if="c.q">
       <p>There were ${c.count_results} matches found.</p>
