@@ -129,7 +129,6 @@ class PlotController(BaseController):
     def get_html_table(self, tabdata):
         writer = swiss.tabular.WriterHtml({'id' : 'table_1'})
         html = writer.write_str(tabdata)
-        print html[:53]
         return html
 
     def test(self):
