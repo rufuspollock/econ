@@ -1,3 +1,8 @@
+p:ukgovfinacnes 2009-11-02
+  1. Search by multiple terms in a crude way (best way is to use xapian or someting)
+  2. Select series
+  3. Display ...
+
 p:thoughts 2007-12-19 we should be clear that the data store and the data listing are separate. Not every item in the store need be in the listing and vice versa.
 
 p:code/plot/security 2007-06-01 data_url can be any url that urllib.urlopen will parse. Does this allow people to get access to any file on disk?

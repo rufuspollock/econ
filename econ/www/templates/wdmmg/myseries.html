@@ -1,0 +1,30 @@
+<html xmlns:py="http://genshi.edgewall.org/"
+  xmlns:xi="http://www.w3.org/2001/XInclude">
+  
+  <py:def function="page_title">Where Does My Money Go? - My Series</py:def>
+
+	<div py:match="content">
+    <h2>Selected Series</h2>
+    <p><a href="?clear=y">Clear current selection</a>.</p>
+    <ul>
+      <li py:for="prg in c.programmes">
+        ${prg.descriptor}
+        (<a href="${h.url_for(controller='wdmmg',
+          action='myseries', id=None, series_id=prg.series_id,
+          change='remove')}">remove</a>)
+      </li>
+    </ul>
+
+		<h2>Graph</h2>
+    ${c.chart_code}
+
+		<h2>Data</h2>
+		<div style="margin: 2em;">
+			${c.html_table}
+		</div>
+	</div>
+
+  <xi:include href="../layout.html" />
+</html>
+
+

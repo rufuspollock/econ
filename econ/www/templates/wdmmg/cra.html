@@ -1,0 +1,33 @@
+<html xmlns:py="http://genshi.edgewall.org/"
+  xmlns:xi="http://www.w3.org/2001/XInclude">
+  
+  <py:def function="page_title">Where Does My Money Go? - CRA</py:def>
+  <py:def function="page_specific_css">
+    <style type="text/css">
+      form {
+      }
+    </style>
+  </py:def>
+
+	<div py:match="content">
+    <h2>Country and Regional Analyses Data</h2>
+    <form action="" method="GET">
+      ${h.text_field('q', c.q, size=40)}
+      ${h.submit('Search &raquo;', 'Search')}
+    </form>
+    <div class="results" py:if="c.q">
+      <p>There were ${c.count_results} matches found.</p>
+      <ul>
+        <li py:for="programme in c.results">
+          <a href="${h.url_for(controller='wdmmg', action='myseries',
+            id=None, series_id=programme.series_id)}">
+          ${programme.descriptor}</a>
+        </li>
+      </ul>
+    </div>
+	</div>
+
+  <xi:include href="../layout.html" />
+</html>
+
+

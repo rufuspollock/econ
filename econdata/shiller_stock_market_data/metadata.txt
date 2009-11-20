@@ -1,0 +1,19 @@
+[DEFAULT]
+name = shiller_stock_market_data
+title: Monthly stock price, dividends, and earnings data and the consumer price index from January 1871
+url: http://www.openeconomics.net/store/shiller_stock_market_data/
+download_url: http://www.openeconomics.net/store/shiller_stock_market_data/
+source: <http://www.econ.yale.edu/~shiller/data.htm>
+author: Robert J. Shiller
+maintainer: Rufus Pollock <http://rufuspollock.org>
+licence: OKD Compliant::Open Data Commons Public Domain Dedication and License (PDDL)
+tags: stock price dividend earnings shiller cpi country-us
+requires-compilation: yes
+notes: From original web page:
+  
+ > Stock market data used in my book, Irrational Exuberance [Princeton University Press 2000, Broadway Books 2001] ... This data set consists of monthly stock price, dividends, and earnings data and the consumer price index (to allow conversion to real values), all starting January 1871. The price, dividend, and earnings series are from the same sources as described in Chapter 26 of my earlier book (Market Volatility [Cambridge, MA: MIT Press, 1989]), although now I use monthly data, rather than annual data. Monthly dividend and earnings data are computed from the S&P four-quarter tools for the quarter since 1926, with linear interpolation to monthly figures. Dividend and earnings data before 1926 are from Cowles and associates (Common Stock Indexes, 2nd ed. [Bloomington, Ind.: Principia Press, 1939]), interpolated from annual data. Stock price data are monthly averages of daily closing prices ... The CPI-U (Consumer Price Index-All Urban Consumers) published by the U.S. Bureau of Labor Statistics begins in 1913; for years before 1913 1 spliced to the CPI Warren and Pearson's price index, by multiplying it by the ratio of the indexes in January 1913. December 1999 and January 2000 values for the CPI-Uare extrapolated. See George F. Warren and Frank A. Pearson, Gold and Prices (New York: John Wiley and Sons, 1935). Data are from their Table 1, pp. 11–14.
+ 
+ ### License
+ 
+ Source indicates no restrictions on data so can license as PD.
+
