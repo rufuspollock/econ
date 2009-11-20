@@ -48,15 +48,14 @@ class WdmmgController(BaseController):
         # c.grid = Grid(self.dbmod.Expenditure, c.expenditures).render()
         # c.grid = genshi.HTML(c.grid)
         # fs = FieldSet(c.table)
-        import swiss.tabular
         td = swiss.tabular.TabularData()
         td.header = ['Year', 'Title', 'Amount']
         td.data = [ [ e.date, e.title, e.amount] for e in c.expenditures ]
         tdout = swiss.tabular.pivot(td,'Year','Title','Amount')
-        tdouttable = swiss.tabular.pivot(td,'Title','Year','Amount')
+        # tdouttable = swiss.tabular.pivot(td,'Title','Year','Amount')
 
         plotctr = econ.www.controllers.plot.PlotController()
-        c.html_table = genshi.XML(plotctr.get_html_table(tdouttable))
+        c.html_table = genshi.XML(plotctr.get_html_table(tdout))
         c.chart_code = genshi.HTML(plotctr._get_chart_code(tdout))
 
         return render('wdmmg/table')
@@ -111,4 +110,44 @@ class WdmmgController(BaseController):
             c.results = dbq.limit(200).all()
         c.q = q
         return render('wdmmg/cra')
+
+    def _handle_series_changes(self):
+        # we hack in some storage using cookies
+        if not 'datasets' in session:
+            session['datasets'] = []
+        seriesid = request.params.get('series_id')
+        change = request.params.get('change', 'add')
+        if seriesid:
+            if change == 'add':
+                session['datasets'] = session['datasets'] + [seriesid]
+            elif change == 'remove':
+                print 'removing', seriesid
+                if seriesid in session['datasets']:
+                    session['datasets'].remove(seriesid)
+            session.save()
+        if 'clear' in request.params:
+            session['datasets'] = []
+            session.save()
+
+    def myseries(self, id=None):
+        # overloading one url to be both add and view ...
+        self._handle_series_changes()
+        # now do display
+        # from pylons import session
+        c.programmes = []
+        for seriesid in session['datasets']:
+            dataset_code, id = seriesid.split('---')
+            if dataset_code == 'cra':
+                prg = self.dbmodcra.Area.query.get(id)
+                c.programmes.append(prg)
+
+        td = swiss.tabular.TabularData()
+        td.header = ['Year', 'Title', 'Amount']
+        for prg in c.programmes:
+            td.data += [ [ e.year, prg.title + '-' + prg.region, e.amount] for e in prg.expenditures ]
+        tdout = swiss.tabular.pivot(td,'Year','Title','Amount')
+        plotctr = econ.www.controllers.plot.PlotController()
+        c.html_table = genshi.XML(plotctr.get_html_table(tdout))
+        c.chart_code = genshi.HTML(plotctr._get_chart_code(tdout))
+        return render('wdmmg/myseries')
 

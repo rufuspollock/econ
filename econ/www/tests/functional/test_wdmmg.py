@@ -6,6 +6,13 @@ class TestStore(TestController2):
         res = self.app.get(offset)
         assert 'Where Does My Money Go' in res
 
+    def test_table(self):
+        offset = url_for(controller='wdmmg', action='index')
+        res = self.app.get(offset)
+        res = res.click('Table 1.1 Total Managed Expenditure, 2002-03 to 2010-11')
+        assert 'AME Margin' in res
+        assert '2002' in res
+
     def test_cra(self):
         offset = url_for(controller='wdmmg', action='cra')
         res = self.app.get(offset)
@@ -17,4 +24,13 @@ class TestStore(TestController2):
         res = form.submit()
         assert 'matches found' in res
         assert title in res
+
+        res = res.click('LA Dummy sprog 6. Housing and community amenities - ENGLAND_North East', index=0)
+        assert 'Graph' in res
+
+
+    def test_myseries(self):
+        offset = url_for(controller='wdmmg', action='myseries')
+        res = self.app.get(offset)
+        assert 'My Series' in res
 

@@ -12,6 +12,7 @@ Base = declarative_base(mapper=Session.mapper)
 
 def make_uuid(): return unicode(uuid.uuid4())
 
+## NOT using Account, Transaction, Tag model as yet ...
 class Account(Base):
     __tablename__ = 'account'
     id = Column(UnicodeText, primary_key=True, default=make_uuid)
@@ -41,6 +42,8 @@ class Tag(Base):
     __tablename__ = 'tag'
     id = Column('id', Integer, primary_key=True)
 
+
+## Alternative (simpler) domain model for CRA data
 class Area(Base):
     __tablename__ = 'area'
     id = Column(UnicodeText, primary_key=True, default=make_uuid)
@@ -51,6 +54,14 @@ class Area(Base):
     cap_or_cur = Column(UnicodeText)
     notes = Column(UnicodeText)
 
+    @property
+    def series_id(self):
+        return 'cra---' + self.id
+
+    @property
+    def descriptor(self):
+        return ' - '.join([self.title, self.region, self.department])
+
 class Expenditure(Base):
     __tablename__ = 'expenditure'
     id = Column(UnicodeText, primary_key=True, default=make_uuid)
@@ -59,15 +70,6 @@ class Expenditure(Base):
     area_id = Column(UnicodeText, ForeignKey('area.id'))
     area = relation('Area', backref='expenditures')
 
-# posting = Table('posting', metadata)
-
-
-# Programme
-  # classifiers
-  # Cur/Cap
-  # Central Gov or 
-  # Region
-  # ...
 
 class Repository:
     def __init__(self, dburi):
