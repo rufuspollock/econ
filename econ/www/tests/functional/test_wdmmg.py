@@ -6,13 +6,6 @@ class TestStore(TestController2):
         res = self.app.get(offset)
         assert 'Where Does My Money Go' in res
 
-    def test_table(self):
-        offset = url_for(controller='wdmmg', action='index')
-        res = self.app.get(offset)
-        res = res.click('Table 1.1 Total Managed Expenditure, 2002-03 to 2010-11')
-        assert 'AME Margin' in res
-        assert '2002' in res
-
     def test_cra(self):
         offset = url_for(controller='wdmmg', action='cra')
         res = self.app.get(offset)

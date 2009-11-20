@@ -8,15 +8,9 @@
       it gets spent on, who exactly receives it?</h1>
 		<h1>We're here to help you find out</h1>
 		
-		<h3 id="#participate">
-			We need your help!
-		</h3>
-		<p>Interested in where your money goes? Want to help us extend and improve this project? Then get in touch <a href="mailto:info@okfn.org?subject=Where Does My Money Go">by email</a> (or <a href="http://www.okfn.org/contact/">otherwise</a>). We need help with all kinds of things such as:</p>
-		<ul>
-			<li>Suggestions as to what data we should be looking at (and where we can find it)</li>
-			<li>Help with processing data and building compelling visualizations</li>
-			<li>Taking our findings to citizens and the media</li>
-		</ul>
+		<h2 id="#participate" style="text-align: center;">
+			2009-09: new project website <br /><a href="http://www.wheredoesmymoneygo.org/">http://www.wheredoesmymoneygo.org/</a>
+		</h2>
 
     <h3>To get started take a look at:</h3>
     <ul>
@@ -25,18 +19,11 @@
       <li><a href="${h.url_for(controller='wdmmg', action='dept', id='function')}">Spending by Function</a></li>
       <li><a href="${h.url_for(controller='wdmmg', action='spend', id=None)}">Total Government
         Spending</a></li>
+			<li><a href="${h.url_for(controller='wdmmg', action='cra', id=None)}">Search full database</a></li>
     </ul>
 
 		<h3>A Note on Sources</h3>
-		<p>This data comes from <a href="http://www.hm-treasury.gov.uk/pespub_index.htm">Public Expenditure Statistics Publications</a> published by HM Treasury. Our "packaged" version of the data, which includes all the code to get the data from human readable spreadsheets to something more useful to a computer, can be found at <a href="http://knowledgeforge.net/econ/hg/file/tip/econdata/ukgovfinances">http://knowledgeforge.net/econ/hg/file/tip/econdata/ukgovfinances</a>. We've also uploaded all of PESA (plus summary) to a <a href="http://spreadsheets.google.com/ccc?key=0Aon3JiuouxLUcnpMNTRLQjRLcnNkM1h1NzRQLWxLREE">Google docs spreadsheet</a> for easy viewing and editing.
-		</p>
-
-    <h3>Full List of Tables</h3>
-    <ul>
-      <li py:for="table in c.tables">
-        <a href="${h.url_for(action='table', id=table.id)}">${table.title}</a>
-      </li>
-    </ul>
+		<p>See <a href="http://www.wheredoesmymoneygo.org/data/">http://www.wheredoesmymoneygo.org/data/</a>.</p>
 
 	</div>
 
