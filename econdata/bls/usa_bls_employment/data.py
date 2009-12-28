@@ -46,12 +46,13 @@ class Parser(object):
         return row
 
     def parse_file(self, fo, title_line, value_range, footnote_range=[]):
-        count = 0
+        count = -1
         title = ''
         headings = []
         rows = []
         fns = []
         for line in fo:
+            count += 1
             line = line.strip()
             # skip blank lines
             if not line: continue
@@ -59,6 +60,7 @@ class Parser(object):
             if count == title_line:
                 title = line
             if count in value_range:
+                print line
                 row = self.get_row(line)
                 # remove blank lines
                 if row:
@@ -71,13 +73,12 @@ class Parser(object):
                     fns.append(line)
                 else:
                     fns[-1] += ' ' + line
-            count += 1
         return title, rows, fns
 
     # TODO: col titles (a complete mess ...)
     def parse_1(self, fo):
         comments = 'Persons 14 years of age and over 1940-1947, Persons 16 years of age and over 1948 onwards'
-        return self.parse_file(fo, 5, range(22, 101), [102, 103])
+        return self.parse_file(fo, 5, range(22, 103), [103, 104])
 
     def parse_2(self, fo):
         return self.parse_file(fo, 3, range(20, 103), [103])
