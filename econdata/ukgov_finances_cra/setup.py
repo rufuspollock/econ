@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='ukgov-finances-cra',
+    name='ukgov_finances_cra',
     version='0.1',
     # Name of License for your project
     # Suitable open licenses can be found at http://www.opendefinition.org/licenses/
@@ -17,7 +17,7 @@ setup(
     download_url='http://www.hm-treasury.gov.uk/d/cra_2009_db.xls',
 
     # Space-separated keywords/tags
-    keywords='ukgov country-uk gov size-medium format-csv format-xls',
+    keywords='ukgov, country-uk, gov, size-medium, format-csv, format-xls',
 
     # Notes or multi-line description for your project (in markdown)
     long_description='''
