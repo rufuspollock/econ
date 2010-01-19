@@ -3,12 +3,12 @@ import csv
 
 import dateutil.parser
 
-import econ.data as D
-import econ.data.tabular
+import swiss as D
+import swiss.tabular
 
 cache = 'cache'
 URL = 'http://www.w3schools.com/browsers/browsers_stats.asp'
-retriever = D.Retriever(cache)
+retriever = D.Cache(cache)
 
 class Parser:
     def __init__(self):
@@ -18,21 +18,22 @@ class Parser:
 
     def execute(self):
         html = open(retriever.retrieve(URL, force=False))
-        reader = econ.data.tabular.HtmlReader()
-        tdata = reader.read(html, table_index=2)
+        reader = swiss.tabular.HtmlReader()
+        tdata = reader.read(html, table_index=4)
+        # print [ t.data[0] for t in reader.tables ]
         self.parse(tdata)
         self.dump()
 
     def dump(self):
-        tdata = econ.data.tabular.TabularData()
+        tdata = swiss.tabular.TabularData()
         tdata.header = ['Date (Year-Month)'] + self.browsers
         self.dates.sort()
         for dd in self.dates:
             row = [dd] + [ self.results[b].get(dd, '') for b in self.browsers ]
             tdata.data.append(row)
         fileobj = file('data.csv', 'w')
-        writer = econ.data.tabular.CsvWriter()
-        writer.write(fileobj, tdata)
+        writer = swiss.tabular.CsvWriter()
+        writer.write(tdata, fileobj)
         fileobj.close()
 
     def parse(self, tdata):
@@ -63,7 +64,8 @@ class Parser:
                     self.results['MS (All)'][dd] = \
                             self.results['MS (All)'].get(dd, 0) \
                             + v
-                if browser.startswith('N') or browser in ['Fx', 'Moz']:
+                if browser.startswith('N') or browser in ['Fx', 'Firefox',
+                        'Moz', 'Mozilla']:
                     self.results['Moz (All)'][dd] = \
                             self.results['Moz (All)'].get(dd, 0) \
                             + v
@@ -100,7 +102,7 @@ def test_1():
 import datetime
 def plot():
     import pylab
-    reader = econ.data.tabular.CsvReader()
+    reader = swiss.tabular.CsvReader()
     tdata = reader.read(open('data.csv'))
     transposed = zip(*tdata.data)
     dates = transposed[0]
@@ -122,8 +124,25 @@ def plot():
     pylab.legend()
     pylab.savefig('browser_stats_ms_moz.png')
 
+import optparse
+import sys
 if __name__ == '__main__':
-    p = Parser()
-    p.execute()
-    plot()
+    usage = '''%prog {action}
+
+    extract: extract the data into data.csv
+    plot: plot local browser stats picture using matplotlib
+        (requires extraction first)
+
+You can run tests using nosetests.
+'''
+    parser = optparse.OptionParser(usage)
+    options, args = parser.parse_args()
+    if not args:
+        parser.print_help()
+        sys.exit(1)
+    if args[0] == 'extract':
+        p = Parser()
+        p.execute()
+    if args[0] == 'plot':
+        plot()
 
