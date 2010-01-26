@@ -121,7 +121,7 @@ class WdmmgController(BaseController):
             if change == 'add':
                 session['datasets'] = session['datasets'] + [seriesid]
             elif change == 'remove':
-                print 'removing', seriesid
+                # print 'removing', seriesid
                 if seriesid in session['datasets']:
                     session['datasets'].remove(seriesid)
             session.save()
