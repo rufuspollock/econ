@@ -13,6 +13,7 @@
       <input type="hidden" name="series" value="${c.series.code}" />
       <input type="checkbox" name="countries" value="${ctry.code}" py:for="ctry in c.countries">
       <a href="${h.url_for(action='country', id=ctry.code)}">${ctry.name}</a>
+      <br />
       </input>
     </form>
   </div>
