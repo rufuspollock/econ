@@ -26,8 +26,8 @@ class PlotController(BaseController):
     def help(self):
         return render('plot/help')
 
-    def _get_data(self, dataset_id=None):
-        limit = request.params.get('limit', '[:]')
+    def _get_data(self, dataset_id=None, limit='[:]'):
+        limit = request.params.get('limit', limit)
         if dataset_id:
             offset = h.url_for(controller='store', action='data', id=dataset_id)
             data_url = '%s://%s%s' % (request.scheme, request.host, offset)

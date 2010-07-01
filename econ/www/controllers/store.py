@@ -2,8 +2,9 @@ import os
 import urllib
 import StringIO
 
-from econ.www.lib.base import *
+import genshi
 
+from econ.www.lib.base import *
 import econ
 import econ.store
 
@@ -38,10 +39,19 @@ class StoreController(BaseController):
 
     def view(self, id):
         c.pkg = self._get_package(id)
+        c.metadata_keys = [ k for k in c.pkg.metadata.key_list if getattr(c.pkg, k) ]
         # limit to a maximum to avoid problems with huge datasets
-        data_limit = 1000
+        c.data_limit = 1000
         c.plot_data_url = h.url_for(controller='plot', action='chart', id=id,
-                limit='[:%s]' % data_limit)
+            limit='[:%s]' % c.data_limit)
+        import econ.www.controllers.plot
+        plotctr = econ.www.controllers.plot.PlotController()
+        plotctr._get_data(id, limit='[:%s]' % c.data_limit)
+        try:
+            c.html_table = genshi.XML(plotctr.get_html_table(plotctr.tabular))
+            c.chart_code = genshi.HTML(plotctr._get_chart_code(plotctr.tabular))
+        except Exception, inst:
+            c.error = 'Problem displaying graph or table for data'
         c.data_url = h.url_for(controller='store', action='data', id=id)
         return render('store/view')
 

@@ -2,12 +2,9 @@
   xmlns:xi="http://www.w3.org/2001/XInclude">
   
   <py:def function="page_title">Store - View</py:def>
-
-  <div py:match="content">
-    <h2>${c.pkg.title}</h2>
-
     <py:def function="render_value(key, value)">
-      <strong>${key}: </strong>
+      <th>${key.capitalize()}</th>
+      <td>
       <py:choose>
       <py:when test="key in ['description', 'notes', 'comment']">
         ${HTML(h.markdown(value.replace('\n', '\n\n')))}
@@ -23,21 +20,41 @@
         ${value}
       </py:otherwise>
       </py:choose>
+      </td>
     </py:def>
 
-    <h3>Metadata</h3>
+
+  <div py:match="content">
+    <h2>${c.pkg.title}</h2>
+    
     <ul>
-      <li py:for="key in c.pkg.metadata.key_list">
-      ${render_value(key, getattr(c.pkg, key))}
-      </li>
+      <li><a href="#metadata">Jump to metadata</a></li>
+      <li>Data shown is limited to maximum of ${c.data_limit} items. To
+    change this <a
+      href="${c.plot_data_url}">visit this dataset in the plotter</a> and
+    alter the limit query parameter.</li>
+      <li><a href="${h.url_for(action='data')}" rel="nofollow">Download
+        Complete Raw Dataset (csv format)</a> (Warning: may be very
+      large).</li>
     </ul>
 
-    <h3>Data</h3>
-    <ul>
-      <li><a href="${c.plot_data_url}">View This Dataset (Plot and Table)</a></li>
-      <li><a href="${h.url_for(action='data')}" rel="nofollow">Raw Data (csv format)</a> (Warning: may be
-      very large).</li>
-    </ul>
+    <p class="error" py:if="c.error">${c.error}</p>
+    ${c.chart_code}
+
+		<div style="margin: 2em;">
+			${c.html_table}
+		</div>
+
+    <h3 id="metadata">Metadata</h3>
+    <p><a href="#top">Back to top</a></p>
+    <table class="metadata">
+      <tbody>
+      <tr py:for="key in c.metadata_keys">
+        ${render_value(key, getattr(c.pkg, key))}
+      </tr>
+      </tbody>
+    </table>
+
   </div>
 
   <xi:include href="../layout.html" />
