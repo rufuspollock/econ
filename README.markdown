@@ -1,7 +1,18 @@
+## Deprecation Notice
+
+The code and data here is no longer actively maintained. The material here was developed primarily from 2005-2009 and powered <http://openeconomics.net/> until July 2011 -- the point at which <http://openeconomics.net/> became the home of the [Open Knowledge Foundation's Economics Working Group](http://economics.okfn.org/).
+
+From July 2011 until November 2011 it was located at <http://old.openeconomics.net/>. It was finally shut down in November 2011. You can see what the site used to look like using the WayBack machine at: <http://web.archive.org/web/20110109091529/http://openeconomics.net/>
+
+While this part of the Open Economics project is now retired much of its work lives on elsewhere in various forms:
+
+* All the data is being converted to individual datasets on the [DataHub](http://github.com/okfn/openspendingjs): <http://thedatahub.org/group/open-economics>
+* Much of the code, and especially the larger apps, have merged into [OpenSpending](http://openspending.org/) and [OpenSpendingJS](http://github.com/okfn/openspendingjs) or into [CKAN](http://ckan.org/)
+* Many of the data 'bundle' ideas live on in the concept of [data packages](http://www.dataprotocols.org/en/latest/packages.html) and the [data package manager](http://www.dataprotocols.org/en/latest/packages.html#data-package-manager).
+
 ## Introduction
 
 This project contains economics-related open source and open data material.
-
 
 ## Contributors, Copyright and License
 
