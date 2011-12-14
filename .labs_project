@@ -1,0 +1,10 @@
+labs_project({
+    "image" : "http://farm7.static.flickr.com/6059/6322530005_3885e380db_t.jpg",
+    "category" : "Open Knowledge Production",
+    "name" : "Open Economics",
+    "status" : "Active",
+    "strapline" : "The Open Economics project provides open content, data and code related to Economics. This includes a 'data store' and a service to graph data.",
+    "description" : "",
+    "link" : "http://www.openeconomics.net/",
+    "imagename" : "open_economics"
+});
